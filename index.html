@@ -47,40 +47,45 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .toast{bottom:calc(var(--tab) + var(--sb) + 22px)}
 input[type=file]{display:none}
 
-/* ---- Assistent: Muse ---- */
-.frames iframe{background:#F5F8FF}
-.tabs{background:#fff;border-top:0;box-shadow:0 -8px 30px rgba(20,50,140,.07);padding:4px 6px calc(4px + var(--sb));border-radius:22px 22px 0 0;align-items:center}
-.tab{color:#98A2B8;font-size:0;gap:0}
+/* ---- Assistent: Notizen ---- */
+.frames iframe{background:#FFFFFF}
+.tabs{background:#fff;border-top:0;box-shadow:0 -8px 30px rgba(0,0,0,.07);padding:4px 6px calc(4px + var(--sb));border-radius:22px 22px 0 0;align-items:center}
+.tab{color:#AEAEB2;font-size:0;gap:0}
 .tab .pill{width:46px;height:40px;border-radius:14px;background:none!important}
 .tab svg{width:24px;height:24px}
-.tab.on{color:#1F5EFF}
-.tab.on::after{content:"";position:absolute;bottom:6px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:#1F5EFF}
+.tab.on{color:#FF3B30}
+.tab.on::after{content:"";position:absolute;bottom:6px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:#FF3B30}
 .tab .bdg{top:4px;left:calc(50% + 4px);background:#E5484D;color:#fff;border:2px solid #fff;box-shadow:none;border-radius:999px;font-size:10.5px}
-.mig{background:#F5F8FF}
-.ic{background:#E6EEFF;color:#1F5EFF;border:0;border-radius:50%}
-.st{border:0;border-radius:999px;background:#EEF3FF;color:#6A7489}
-.st.ok{background:#E6EEFF;color:#1F5EFF}
-.toast{background:#0B1220;border-radius:16px}
-.tabs{background:rgba(255,255,255,.96);border-top:1px solid #E4EAF6;box-shadow:0 -6px 24px rgba(20,50,140,.06);border-radius:0;padding:6px 6px calc(6px + var(--sb))}
-.tab{font-size:10.5px;gap:3px;color:#6A7489;font-weight:700}
-.tab .pill{width:52px;height:30px;border-radius:15px;background:none}
-.tab.on{color:#1F5EFF}
+.mig{background:#FFFFFF}
+.ic{background:#FFF0EF;color:#FF3B30;border:0;border-radius:50%}
+.st{border:0;border-radius:999px;background:#F2F2F7;color:#8E8E93}
+.st.ok{background:#FFF0EF;color:#FF3B30}
+.toast{background:#1C1C1E;border-radius:16px}
+.frames iframe{background:#fff}
+.mig{background:#fff}
+/* Werkzeugleiste wie in Notizen: schwebende Glas-Kapsel */
+.tabs{left:50%;right:auto;bottom:calc(10px + var(--sb));transform:translateX(-50%);width:auto;max-width:calc(100% - 20px);height:58px;padding:6px;gap:2px;border:0;border-radius:999px;background:rgba(246,246,248,.86);-webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6);box-shadow:0 8px 28px rgba(0,0,0,.12),inset 0 0 0 .5px rgba(0,0,0,.08);align-items:center}
+.tab{flex:none;width:52px;height:46px;border-radius:999px;font-size:0;gap:0;color:#3A3A3C}
+.tab .pill{width:auto;height:auto;background:none!important}
+.tab svg{width:23px;height:23px}
+.tab.on{color:#FF3B30;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.08)}
 .tab.on::after{display:none}
-.tab.on .pill{background:#E6EEFF!important}
-.tab .bdg{background:#1F5EFF;color:#fff;border:2px solid #fff;font-size:10.5px}
-/* Responsiv: am großen Bildschirm Seitenleiste statt Leiste unten */
+.tab .bdg{top:2px;left:auto;right:4px;background:#FF3B30;color:#fff;border:2px solid #F6F6F8;font-size:10.5px}
 @media (min-width:900px){
-  .frames{left:236px;right:0;top:0;bottom:0;box-shadow:none}
-  .tabs{left:0;right:auto;top:0;bottom:0;width:236px;height:auto;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:4px;padding:92px 14px 24px;border-top:0;border-right:1px solid #E4EAF6;background:#fff;box-shadow:none}
-  .tabs::before{content:"Assistent";position:absolute;top:30px;left:24px;font-weight:800;font-size:24px;letter-spacing:-.035em;color:#0B1220}
-  .tabs::after{content:"von Thorsten von Plotho-Kettner";position:absolute;left:24px;right:14px;bottom:20px;font-size:11.5px;color:#98A2B8;line-height:1.4}
-  .tab{flex:none;flex-direction:row;justify-content:flex-start;gap:12px;height:48px;padding:0 12px;font-size:15px;border-radius:14px;width:100%;color:#4A5468}
-  .tab .pill{width:28px;height:28px;background:none!important}
-  .tab:hover{background:#F2F6FF}
-  .tab.on{background:#E6EEFF;color:#1F5EFF}
-  .tab .bdg{position:static;margin-left:auto;display:none}
+  .frames{left:240px;right:0;top:0;bottom:0}
+  .tabs{left:0;top:0;bottom:0;transform:none;width:240px;max-width:none;height:auto;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:2px;padding:88px 12px 24px;border-radius:0;background:#F6F6F8;box-shadow:inset -.5px 0 0 #DCDCE0;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .tabs::before{content:"ASSISTENT";position:absolute;top:30px;left:22px;font-weight:800;font-size:24px;color:#FF3B30;letter-spacing:-.005em}
+  .tabs::after{content:"von Thorsten von Plotho-Kettner";position:absolute;left:22px;right:12px;bottom:20px;font-size:11.5px;color:#AEAEB2}
+  .tab{width:100%;height:44px;flex-direction:row;justify-content:flex-start;gap:12px;padding:0 12px;border-radius:10px;font-size:15px;font-weight:600;color:#1C1C1E}
+  .tab .pill{width:26px}
+  .tab svg{width:21px;height:21px;color:#FF3B30}
+  .tab:hover{background:#ECECF0}
+  .tab.on{background:#FF3B30;color:#fff;box-shadow:none}
+  .tab.on svg{color:#fff}
+  .tab .bdg{position:static;margin-left:auto;display:none;border:0}
   .tab .bdg.on{display:flex}
-  .toast{left:calc(50% + 118px)}
+  .tab.on .bdg{background:#fff;color:#FF3B30}
+  .toast{left:calc(50% + 120px)}
 }
 </style>
 </head>
@@ -129,7 +134,7 @@ input[type=file]{display:none}
 
   <button class="done d-btn primary" id="migDone">Fertig</button>
   <p class="tip">Du findest diesen Assistenten jederzeit wieder im Menü jedes Bereichs. Wenn alles da ist, kannst du die alten Apps deinstallieren.</p>
-  <p class="tip" style="margin-top:22px">Assistent · Version 1.13<br>Entwickelt von Thorsten von Plotho-Kettner</p>
+  <p class="tip" style="margin-top:22px">Assistent · Version 1.14<br>Entwickelt von Thorsten von Plotho-Kettner</p>
   <input type="file" id="migFile" accept=".json,.ics,application/json,text/calendar,*/*">
 </section>
 <div class="d-toast toast" id="toast"></div>
@@ -212,7 +217,7 @@ if(N&&N.pomoClear)try{N.pomoClear()}catch(e){}
 /* Statusleiste passend zum Bereich (Start: Farbe des Himmels) */
 function syncBar(){
   if(!N||!N.setBars)return;
-  let c='#F5F8FF',dark=false;
+  let c='#FFFFFF',dark=false;
   if(active==='start'){const s=call('start','skyTop');if(s){c=s.color;dark=s.dark}}
   try{N.setBars(c,!dark)}catch(e){}
 }

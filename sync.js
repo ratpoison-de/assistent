@@ -249,27 +249,27 @@ const css=`
 .syn.on{transform:none}
 .syn .in{max-width:560px;margin:0 auto}
 .syn .hd{display:flex;align-items:center;gap:10px}.syn .hd .t{flex:1}
-.syn .x{width:44px;height:44px;border-radius:50%;background:var(--soft,#EEF3FF);display:grid;place-items:center;flex:none}
+.syn .x{width:44px;height:44px;border-radius:50%;background:var(--soft,#F2F2F7);display:grid;place-items:center;flex:none}
 .syn .lead{color:var(--mute);font-size:15px;line-height:1.5;margin:10px 2px 16px}
-.syn .box{background:#fff;border:1px solid var(--line,#E4EAF6);border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,50,140,.05),0 6px 22px rgba(20,50,140,.07)}
+.syn .box{background:#fff;border:1px solid var(--line,#E5E5EA);border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 6px 18px rgba(0,0,0,.05)}
 .syn label{display:block;font-size:12.5px;font-weight:700;color:var(--mute);margin:10px 2px 5px;letter-spacing:.02em}
-.syn input{width:100%;padding:13px 14px;border-radius:14px;border:0;background:var(--soft,#EEF3FF);font-size:16px;outline:none;font-family:var(--font);color:var(--ink)}
-.syn input:focus{box-shadow:0 0 0 2px var(--v,#1F5EFF) inset}
+.syn input{width:100%;padding:13px 14px;border-radius:14px;border:0;background:var(--soft,#F2F2F7);font-size:16px;outline:none;font-family:var(--font);color:var(--ink)}
+.syn input:focus{box-shadow:0 0 0 2px var(--v,#FF3B30) inset}
 .syn .row{display:flex;gap:10px}.syn .row>div{flex:1;min-width:0}
 .syn .d-btn{width:100%;margin-top:12px}
 .syn .msg{font-size:14px;margin-top:10px;line-height:1.45;min-height:1em}
 .syn .msg.err{color:var(--danger,#E5484D)}
 .syn .ss{display:flex;align-items:center;gap:12px}
 .syn .dot{width:12px;height:12px;border-radius:50%;background:#C7C7CC;flex:none}
-.syn .dot.ok{background:#34C759}.syn .dot.bad{background:var(--danger,#E5484D)}.syn .dot.run{background:var(--v,#1F5EFF);animation:synp 1s infinite}
+.syn .dot.ok{background:#34C759}.syn .dot.bad{background:var(--danger,#E5484D)}.syn .dot.run{background:var(--v,#FF3B30);animation:synp 1s infinite}
 @keyframes synp{50%{opacity:.35}}
 .syn .ss b{display:block;font-size:16px}.syn .ss small{display:block;color:var(--mute);font-size:13.5px;margin-top:1px}
 .syn ol{margin:6px 0 0;padding-left:20px;font-size:14.5px;line-height:1.55}.syn ol li{margin:4px 0}
-.syn code{background:var(--soft,#EEF3FF);padding:1px 6px;border-radius:6px;font-size:13.5px}
+.syn code{background:var(--soft,#F2F2F7);padding:1px 6px;border-radius:6px;font-size:13.5px}
 .syn .ch{display:flex;flex-direction:column;gap:10px;margin-top:12px}
-.syn .ch button{text-align:left;padding:13px 14px;border-radius:16px;background:var(--soft,#EEF3FF);font-size:15px}
+.syn .ch button{text-align:left;padding:13px 14px;border-radius:16px;background:var(--soft,#F2F2F7);font-size:15px}
 .syn .ch button b{display:block}.syn .ch button small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
-.syn .ch button.rec{background:var(--lav,#E6EEFF)}
+.syn .ch button.rec{background:var(--lav,#FFF0EF)}
 .syn .foot{text-align:center;color:var(--mute);font-size:12.5px;margin-top:22px;line-height:1.5}
 `;
 const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);

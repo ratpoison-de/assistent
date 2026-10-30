@@ -1,52 +1,50 @@
-/* Assistent – gemeinsames Design (Muse) (Weiß / Zartblau / Königsblau) */
+/* Assistent – gemeinsames Design (Notizen: Weiß / Rot / Gelb / Textmarker) */
 @font-face{font-family:"PJS";src:url(fonts/pjs-400.woff2) format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PJS";src:url(fonts/pjs-500.woff2) format("woff2");font-weight:500;font-display:swap}
 @font-face{font-family:"PJS";src:url(fonts/pjs-700.woff2) format("woff2");font-weight:600 700;font-display:swap}
 @font-face{font-family:"PJS";src:url(fonts/pjs-800.woff2) format("woff2");font-weight:800 900;font-display:swap}
 :root{
-  --bg:#F5F8FF; --card:#FFFFFF; --ink:#0B1220; --mute:#6A7489; --line:#E4EAF6; --soft:#EEF3FF; --soft2:#E3ECFF;
-  --accent:#1F5EFF; --accent-2:#4C86FF; --accent-ink:#FFFFFF; --accent-soft:#E6EEFF;
-  --grad:linear-gradient(180deg,#3B7BFF 0%,#1F5EFF 100%);
-  --danger:#E5484D; --ok:#12A150; --warn:#F2A60C;
-  --shadow:0 1px 2px rgba(20,50,140,.05),0 6px 22px rgba(20,50,140,.07);
-  --shadow-lift:0 18px 40px rgba(20,50,140,.22);
-  --shadow-btn:0 6px 16px rgba(31,94,255,.32);
-  --radius:18px; --scrim:rgba(10,20,50,.38);
-  --v:#1F5EFF; --v2:#4C86FF; --vd:#1546C8; --lav:#E6EEFF; --lav2:#CFDDFF; --vgrad:linear-gradient(150deg,#EAF1FF 0%,#D4E3FF 100%);
-  --green:#12A150; --yellow:#F2A60C; --blue:#1F5EFF; --pink:#E8508C; --orange:#F07A1E; --grey:#6A7489; --hs:0 6px 22px rgba(20,50,140,.07); --hs2:0 10px 24px rgba(31,94,255,.42);
-  --font:"PJS",system-ui,-apple-system,"Roboto","Segoe UI",sans-serif;
+  --bg:#FFFFFF; --card:#FFFFFF; --ink:#1C1C1E; --mute:#8E8E93; --line:#E5E5EA; --soft:#F2F2F7; --soft2:#E5E5EA;
+  --accent:#FF3B30; --accent-2:#FF6961; --accent-ink:#FFFFFF; --accent-soft:#FFF0EF;
+  --grad:#FF3B30; --danger:#FF3B30; --ok:#34C759; --warn:#FFCC00;
+  --v:#FF3B30; --v2:#FF6961; --vd:#D70015; --lav:#FFF0EF; --lav2:#FFD9D6; --vgrad:#F2F2F7;
+  --green:#34C759; --yellow:#FFCC00; --blue:#007AFF; --pink:#FF2D55; --orange:#FF9500; --grey:#8E8E93;
+  --shadow:0 1px 3px rgba(0,0,0,.06); --shadow-lift:0 16px 40px rgba(0,0,0,.18); --shadow-btn:0 6px 16px rgba(255,59,48,.30);
+  --hs:0 1px 3px rgba(0,0,0,.06); --hs2:0 8px 20px rgba(255,59,48,.35);
+  --radius:14px; --scrim:rgba(0,0,0,.30);
+  --font:-apple-system,"SF Pro Text","Segoe UI Variable Text","Segoe UI","Roboto",system-ui,sans-serif;
 }
 html,body{background:var(--bg);color:var(--ink);font-family:var(--font)}
-body{background:radial-gradient(520px 260px at 108% -40px,rgba(76,134,255,.20),transparent 70%),radial-gradient(380px 220px at -30% 0,rgba(76,134,255,.08),transparent 70%),var(--bg);background-attachment:fixed}
+body{background:var(--bg)}
 button,input,select,textarea{font-family:var(--font)}
 
-/* Überschriften im Stil „Schwarz + blaues Wort“ */
-.h-eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
-.h-big{margin:2px 0 0;font-size:30px;line-height:1.05;font-weight:800;letter-spacing:-.035em}
-.h-big em,.h-mid em{font-style:normal;color:var(--accent)}
-.h-mid{margin:0;font-size:21px;line-height:1.15;font-weight:800;letter-spacing:-.025em}
+/* Überschriften wie in Erinnerungen: rote Großbuchstaben, gelbe Zeile darunter */
+.h-eyebrow{font-size:13.5px;font-weight:600;color:#D99A00}
+.h-big{margin:2px 0 0;font-size:30px;line-height:1.1;font-weight:800;text-transform:uppercase;color:var(--accent)}
+.h-big em,.h-mid em{font-style:normal;color:inherit}
+.h-mid{margin:0;font-size:19px;line-height:1.2;font-weight:800;text-transform:uppercase}
 
 /* Bausteine */
-.d-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(228,234,246,.7)}
-.d-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:14px;font-weight:800;font-size:15px;background:var(--soft);color:var(--ink);border:0}
-.d-btn.primary{background:var(--grad);color:#fff;box-shadow:var(--shadow-btn)}
-.d-btn.ghost{background:var(--card);box-shadow:var(--shadow)}
-.d-btn.danger{color:var(--danger);background:#FDECEC}
-.d-btn:active{transform:scale(.98)}
-.d-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;background:var(--card);box-shadow:var(--shadow);font-weight:700;font-size:14px;white-space:nowrap}
-.d-chip.on{background:var(--grad);color:#fff;box-shadow:var(--shadow-btn)}
-.d-check{width:22px;height:22px;border-radius:11px;background:var(--grad);display:grid;place-items:center;flex:none;box-shadow:0 2px 6px rgba(31,94,255,.35)}
-.d-ib{width:42px;height:42px;border-radius:21px;display:grid;place-items:center;color:var(--ink);flex:none;background:transparent;border:0}
-.d-ib:active{background:var(--soft)}
-.d-ib.solid{background:var(--card);box-shadow:var(--shadow)}
-.d-fab{position:fixed;right:18px;bottom:20px;height:58px;min-width:58px;padding:0 20px;border-radius:29px;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:15.5px;box-shadow:0 10px 24px rgba(31,94,255,.42);z-index:30;border:0}
+.d-card{background:var(--soft);border-radius:var(--radius);box-shadow:none;border:0}
+.d-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 18px;border-radius:12px;font-weight:700;font-size:15.5px;background:var(--soft);color:var(--ink);border:0}
+.d-btn.primary{background:var(--accent);color:#fff}
+.d-btn.ghost{background:var(--soft)}
+.d-btn.danger{color:var(--danger);background:#FFF0EF}
+.d-btn:active{opacity:.75}
+.d-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:999px;background:var(--soft);border:0;box-shadow:none;font-weight:600;font-size:14px;white-space:nowrap;color:var(--ink)}
+.d-chip.on{background:var(--accent);color:#fff}
+.d-check{width:22px;height:22px;border-radius:50%;background:var(--accent);display:grid;place-items:center;flex:none}
+.d-ib{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--ink);flex:none;background:transparent;border:0}
+.d-ib.solid{background:var(--soft);box-shadow:none}
+.d-fab{position:fixed;right:18px;bottom:20px;height:56px;min-width:56px;padding:0 20px;border-radius:28px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:15.5px;box-shadow:var(--hs2);z-index:30;border:0}
 .d-fab:active{transform:scale(.96)}
-.d-toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,30px);opacity:0;background:#0B1220;color:#fff;padding:12px 16px;border-radius:14px;font-weight:600;font-size:14px;z-index:95;transition:all .25s;pointer-events:none;max-width:92vw;display:flex;gap:14px;align-items:center;box-shadow:var(--shadow-lift)}
+.d-toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,30px);opacity:0;background:#1C1C1E;color:#fff;padding:12px 16px;border-radius:14px;font-weight:600;font-size:14px;z-index:95;transition:all .25s;pointer-events:none;max-width:92vw;display:flex;gap:14px;align-items:center;box-shadow:var(--shadow-lift)}
 .d-toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
-.d-toast button{color:#8FB2FF;font-weight:800;background:none;border:0;font-size:14px}
-.d-tag{display:inline-block;background:var(--accent);color:#fff;font-weight:800;font-size:10.5px;padding:2px 7px;border-radius:999px;letter-spacing:.02em}
+.d-toast button{color:#FFD60A;font-weight:700;background:none;border:0;font-size:14px}
+.d-tag{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:10.5px;padding:2px 7px;border-radius:999px}
+/* Textmarker wie in Notizen */
+.mk1{background:#C9F3EA;color:#0B7F6E}.mk2{background:#FFE2C2;color:#B85C00}.mk3{background:#F2DCFF;color:#9A2FC2}
 /* Am PC: schmale, ruhige Scrollbalken */
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:#CBD5EA;border-radius:8px;border:2px solid transparent;background-clip:padding-box}
-::-webkit-scrollbar-thumb:hover{background:#A9B8D8;background-clip:padding-box}
+::-webkit-scrollbar-thumb{background:#D1D1D6;border-radius:8px;border:2px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:#AEAEB2;background-clip:padding-box}
