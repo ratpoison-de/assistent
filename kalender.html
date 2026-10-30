@@ -9,10 +9,10 @@
 <link rel="stylesheet" href="design.css">
 <style>
 :root{
-  --bg:#FFFFFF; --card:#FFFFFF; --ink:#111114; --mute:#8A8A99; --line:#ECECEF; --soft:#F6F6FA;
-  --accent:#1E8BFF; --accent-ink:#FFFFFF; --sel:#EAF3FF; --fer:#EAF3FF; --ferink:#0B63CE;
+  --bg:#F5F8FF; --card:#FFFFFF; --ink:#0B1220; --mute:#8A8A99; --line:#E4EAF6; --soft:#F6F6FA;
+  --accent:#1F5EFF; --accent-ink:#FFFFFF; --sel:#E6EEFF; --fer:#E7F7EE; --ferink:#12804A;
   --danger:#E5484D; --scrim:rgba(20,20,24,.38); --shadow:0 18px 40px rgba(0,0,0,.22);
-  --sh:0 1px 2px rgba(0,0,0,.05),0 6px 22px rgba(0,0,0,.07); --grad:linear-gradient(180deg,#5AA9FF,#0B63CE);
+  --sh:0 1px 2px rgba(0,0,0,.05),0 6px 22px rgba(0,0,0,.07); --grad:linear-gradient(180deg,#3B7BFF,#1F5EFF);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--ink)}
@@ -173,53 +173,65 @@ h1 em{font-style:normal;color:var(--accent)}
 .dlg .bts .ok{background:var(--grad)}
 .toast{background:#151518}
 
-/* ---- Assistent: Clean ---- */
-body{background:#FFFFFF}
-.top{background:#FFFFFF}
-h1{color:#111114}
-h1 em{color:#1E8BFF;background:none}
-#bMenu{background:#F4F4F6;border:0;border-radius:50%;box-shadow:none}
+/* ---- Assistent: Muse ---- */
+body{background:radial-gradient(520px 260px at 108% -40px,rgba(76,134,255,.20),transparent 70%),radial-gradient(380px 220px at -30% 0,rgba(76,134,255,.08),transparent 70%),#F5F8FF}
+.top{background:#F5F8FF}
+h1{color:#0B1220}
+h1 em{color:#1F5EFF;background:none}
+#bMenu{background:#EEF3FF;border:0;border-radius:50%;box-shadow:none}
 .ib{border-radius:50%}
-.today-btn{background:#EAF3FF;color:#1E8BFF;border:0;border-radius:999px;box-shadow:none}
-.seg{background:#F4F4F6;border:0;border-radius:14px;padding:3px}
-.seg button{color:#8E8E93}
-.seg button.on{background:#fff;color:#1E8BFF;box-shadow:0 2px 8px rgba(0,0,0,.1);border-radius:11px}
-.month{background:linear-gradient(135deg,#EEF0FF 0%,#F7F0FA 50%,#E9F3FF 100%);border:0;border-radius:24px;box-shadow:none}
+.today-btn{background:#E6EEFF;color:#1F5EFF;border:0;border-radius:999px;box-shadow:none}
+.seg{background:#EEF3FF;border:0;border-radius:14px;padding:3px}
+.seg button{color:#6A7489}
+.seg button.on{background:#fff;color:#1F5EFF;box-shadow:0 2px 8px rgba(20,50,140,.1);border-radius:11px}
+.month{background:linear-gradient(150deg,#EAF1FF 0%,#D4E3FF 100%);border:0;border-radius:24px;box-shadow:none}
 .cell{border-radius:12px}
-.cell.today .num{background:#1E8BFF;color:#fff;box-shadow:0 4px 10px rgba(30,139,255,.35);border-radius:50%}
+.cell.today .num{background:linear-gradient(180deg,#3B7BFF,#1F5EFF);color:#fff;box-shadow:0 4px 10px rgba(31,94,255,.35);border-radius:50%}
 .cell.sel{background:rgba(255,255,255,.85)}
-.cell.fer{background:rgba(30,139,255,.08)}
+.cell.fer{background:rgba(31,94,255,.08)}
 .cell.hol .num,.cell.sun .num{color:#E5484D}
 .mini{border-radius:4px}
-.mini.task{border:1.5px dashed #1E8BFF;color:#1E8BFF}
-.dayhead h2{color:#111114}
-.dayhead.today h2{color:#1E8BFF;background:none}
-.dayhead .wx{background:#F4F4F6;border:0;box-shadow:none;border-radius:999px}
-.ev{background:#fff;border:1px solid #ECECEF;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.05)}
+.mini.task{border:1.5px dashed #1F5EFF;color:#1F5EFF}
+.dayhead h2{color:#0B1220}
+.dayhead.today h2{color:#1F5EFF;background:none}
+.dayhead .wx{background:#EEF3FF;border:0;box-shadow:none;border-radius:999px}
+.ev{background:#fff;border:1px solid #E4EAF6;border-radius:18px;box-shadow:0 4px 16px rgba(20,50,140,.05)}
 .ev:active{transform:scale(.99)}
 .ban{border:0;border-radius:14px}
-.ban.fer{background:#EAF3FF;color:#0B63CE}
+.ban.fer{background:#E6EEFF;color:#1546C8}
 .ban.hol{background:#FDECEC;color:#B4262B}
-.search{background:#F4F4F6;border:0;border-radius:16px;box-shadow:none}
-.fab{background:#1E8BFF;color:#fff;border:0;border-radius:50%;box-shadow:0 10px 24px rgba(30,139,255,.38)}
+.search{background:#EEF3FF;border:0;border-radius:16px;box-shadow:none}
+.fab{background:linear-gradient(180deg,#3B7BFF,#1F5EFF);color:#fff;border:0;border-radius:50%;box-shadow:0 10px 24px rgba(31,94,255,.38)}
 .sheet{background:#fff;border-radius:26px 26px 0 0;border-top:0}
-.setting{background:#F4F4F6;border:0;border-radius:18px;box-shadow:none}
-.sw{background:#E2E2E6;border:0}
-.sw.on{background:#1E8BFF}
+.setting{background:#EEF3FF;border:0;border-radius:18px;box-shadow:none}
+.sw{background:#D5DEEE;border:0}
+.sw.on{background:#1F5EFF}
 .sw::after{top:3px;left:3px;border:0;width:22px;height:22px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
-.editor{background:#FFFFFF}
-.btn{border:0;border-radius:16px;box-shadow:none;background:#F4F4F6}
-.btn.primary{background:#1E8BFF;color:#fff;box-shadow:0 8px 20px rgba(30,139,255,.28)}
-.btn.ghost{background:#F4F4F6}
+.editor{background:#F5F8FF}
+.btn{border:0;border-radius:16px;box-shadow:none;background:#EEF3FF}
+.btn.primary{background:linear-gradient(180deg,#3B7BFF,#1F5EFF);color:#fff;box-shadow:0 8px 20px rgba(31,94,255,.28)}
+.btn.ghost{background:#EEF3FF}
 .btn.danger{background:#FDECEC;color:#E5484D}
-.box{background:#F4F4F6;border:0;border-radius:18px;box-shadow:none}
-.fr{border-bottom:1px solid #EDEDF0}
-.ftitle{border-bottom:1.5px solid #D3E5FF}
-.cat{background:#F4F4F6;border:0;border-radius:999px;box-shadow:none}
-.dlg{border:0;border-radius:24px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
-.dlg .bts button{background:#F4F4F6;border:0;border-radius:14px}
-.dlg .bts .ok{background:#1E8BFF;color:#fff}
-.toast{background:#1C1C1E;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.box{background:#EEF3FF;border:0;border-radius:18px;box-shadow:none}
+.fr{border-bottom:1px solid #E4EAF6}
+.ftitle{border-bottom:1.5px solid #CFDDFF}
+.cat{background:#EEF3FF;border:0;border-radius:999px;box-shadow:none}
+.dlg{border:0;border-radius:24px;box-shadow:0 20px 50px rgba(10,20,50,.25)}
+.dlg .bts button{background:#EEF3FF;border:0;border-radius:14px}
+.dlg .bts .ok{background:linear-gradient(180deg,#3B7BFF,#1F5EFF);color:#fff}
+.toast{background:#0B1220;border-radius:16px;box-shadow:0 10px 30px rgba(10,20,50,.25)}
+.eyebrow{text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.month{background:#fff;box-shadow:0 1px 2px rgba(20,50,140,.05),0 6px 22px rgba(20,50,140,.07)}
+.ev,.setting,.box{background:#fff;border:1px solid rgba(228,234,246,.8);box-shadow:0 1px 2px rgba(20,50,140,.05),0 6px 22px rgba(20,50,140,.07)}
+.ban.fer{background:#E7F7EE;color:#12804A}
+@media (min-width:900px){
+  html{background:radial-gradient(520px 260px at 108% -40px,rgba(76,134,255,.20),transparent 70%),radial-gradient(380px 220px at -30% 0,rgba(76,134,255,.08),transparent 70%),#F5F8FF;background-attachment:fixed}
+  body{max-width:1040px;margin:0 auto;background:transparent}
+  .cell{min-height:92px}
+  .sheet{left:calc(50% - 290px);right:calc(50% - 290px);border-radius:26px 26px 0 0}
+  .editor{left:calc(50% - 340px);right:calc(50% - 340px);top:28px;bottom:28px;border-radius:24px;box-shadow:0 30px 80px rgba(10,20,50,.25);transform:translateY(calc(100% + 80px))}
+  .editor.on{transform:none}
+}
 </style>
 </head>
 <body>
@@ -399,7 +411,7 @@ function itemsInRange(from,to){ // Map Datum → Liste
     for(let i=0;i<=len;i++){const d=addS(g.start,i);if(d<from||d>to)continue;
       put(d,{kind:'google',g,day:i,len,title:g.title||'(ohne Titel)',allDay:g.allDay,tStart:g.tStart,tEnd:g.tEnd,color:g.color||'#4285F4',loc:g.loc,rep:!!g.rrule,cal:calLabel(calById(g.cal))})}
   }
-  for(const t of extTasks)if(t.date>=from&&t.date<=to)put(t.date,{kind:'task',t,title:t.title,allDay:true,color:'#1E8BFF'});
+  for(const t of extTasks)if(t.date>=from&&t.date<=to)put(t.date,{kind:'task',t,title:t.title,allDay:true,color:'#1F5EFF'});
   for(const p of extPlans)if(p.date>=from&&p.date<=to)put(p.date,{kind:'plan',p,title:p.title,allDay:!p.time,tStart:p.time,color:'#7A5AF8',loc:p.place});
   const ord={local:0,google:0,plan:1,task:2};
   for(const d in map)map[d].sort((a,b)=>{
@@ -704,7 +716,7 @@ function openMenu(){
     '<button class="setting" id="oIcs"><span>Als .ics exportieren<small>z. B. für Google Kalender am PC</small></span></button>'+
     '<button class="setting" id="oImp"><span>Importieren<small>.json-Backup oder .ics-Datei</small></span></button>'+
     '<div class="label">Assistent</div><button class="setting" id="oMig"><span>Daten aus alten Apps übernehmen<small>Wochenstapel, Mein Kalender, Pinnwand</small></span></button>'+
-    '<div class="foot">Assistent · Version 1.12<br>Entwickelt von Thorsten von Plotho-Kettner</div>';
+    '<div class="foot">Assistent · Version 1.13<br>Entwickelt von Thorsten von Plotho-Kettner</div>';
   openSheet(h);
   const tg=(id,k)=>{const b=$(id);if(b)b.onclick=()=>{state.settings[k]=!state.settings[k];save();b.querySelector('.sw').classList.toggle('on',state.settings[k]);if(k==='tasks'){readPlans().then(render)}else{gInvalidate();render()}if(k==='gsync')openMenu()}};
   tg('oHol','hol');tg('oFer','fer');tg('oKw','kw');tg('oTasks','tasks');tg('oG','gsync');

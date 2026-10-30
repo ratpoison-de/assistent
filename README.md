@@ -1,4 +1,4 @@
-# Assistent – Web-App
+# Assistent – Web-App (responsiv)
 
 Die Web-Version des **Assistent** von Thorsten von Plotho-Kettner: Woche, Kalender, Pinnwand und Wetter in einer App.
 

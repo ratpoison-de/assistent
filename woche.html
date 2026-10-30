@@ -9,8 +9,8 @@
 <link rel="stylesheet" href="design.css">
 <style>
 :root{
-  --bg:#FFFFFF; --card:#FFFFFF; --ink:#111114; --mute:#8A8A99; --line:#ECECEF;
-  --accent:#1E8BFF; --accent-ink:#FFFFFF; --done:#9A9AA2; --scrim:rgba(20,20,24,.38);
+  --bg:#F5F8FF; --card:#FFFFFF; --ink:#0B1220; --mute:#8A8A99; --line:#E4EAF6;
+  --accent:#1F5EFF; --accent-ink:#FFFFFF; --done:#9A9AA2; --scrim:rgba(20,20,24,.38);
   --chip:#E2E2E7; --danger:#E5484D; --shadow:0 18px 40px rgba(0,0,0,.22);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -141,46 +141,55 @@ h1 em{font-style:normal;color:var(--accent)}
 .toast{background:#151518;color:#fff;bottom:24px}
 .toast button{color:#F5C518}
 
-/* ---- Assistent: Clean ---- */
-body{background:#FFFFFF}
+/* ---- Assistent: Muse ---- */
+body{background:radial-gradient(520px 260px at 108% -40px,rgba(76,134,255,.20),transparent 70%),radial-gradient(380px 220px at -30% 0,rgba(76,134,255,.08),transparent 70%),#F5F8FF}
 .top{padding:18px 16px 4px}
-h1{font-size:28px;font-weight:800;letter-spacing:-.025em;color:#111114}
-h1 em{font-style:normal;color:#1E8BFF;background:none}
-.eyebrow{color:#8E8E93;letter-spacing:0;text-transform:none;font-weight:600}
-.iconbtn{background:#F4F4F6;border:0;border-radius:50%;box-shadow:none;color:#111114}
-.meter{height:10px;border-radius:5px;background:#EAF3FF;border:0}
-.meter i{background:linear-gradient(90deg,#5AA9FF,#1E8BFF);border-radius:5px}
-.dhead h2{color:#111114}
-.day.today .dhead h2{color:#1E8BFF;background:none;padding:0}
+h1{font-size:28px;font-weight:800;letter-spacing:-.025em;color:#0B1220}
+h1 em{font-style:normal;color:#1F5EFF;background:none}
+.eyebrow{color:#6A7489;letter-spacing:0;text-transform:none;font-weight:600}
+.iconbtn{background:#EEF3FF;border:0;border-radius:50%;box-shadow:none;color:#0B1220}
+.meter{height:10px;border-radius:5px;background:#E6EEFF;border:0}
+.meter i{background:linear-gradient(90deg,#4C86FF,#1F5EFF);border-radius:5px}
+.dhead h2{color:#0B1220}
+.day.today .dhead h2{color:#1F5EFF;background:none;padding:0}
 .day.weekend .dhead h2{opacity:.5}
-.count{background:#EAF3FF;color:#1E8BFF;border:0;border-radius:999px;padding:2px 9px}
-.wx{background:#F4F4F6;border:0;box-shadow:none;border-radius:999px;color:#8E8E93}
-.task{background:#fff;border:1px solid #ECECEF;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.05);margin:9px 0}
+.count{background:#E6EEFF;color:#1F5EFF;border:0;border-radius:999px;padding:2px 9px}
+.wx{background:#EEF3FF;border:0;box-shadow:none;border-radius:999px;color:#6A7489}
+.task{background:#fff;border:1px solid #E4EAF6;border-radius:18px;box-shadow:0 4px 16px rgba(20,50,140,.05);margin:9px 0}
 .task:active{transform:scale(.99)}
-.check{border:2px solid #D1D1D6;border-radius:8px;background:#fff}
+.check{border:2px solid #C9D6F3;border-radius:8px;background:#fff}
 .task.done{opacity:.7}
-.task.done .check{background:#1E8BFF;border-color:#1E8BFF;box-shadow:none}
-.tag{background:#F4F4F6;color:#111114;border:0;border-radius:999px}
+.task.done .check{background:#1F5EFF;border-color:#1F5EFF;box-shadow:none}
+.tag{background:#EEF3FF;color:#0B1220;border:0;border-radius:999px}
 .tag.carry{background:#FDECEC;color:#E5484D}
-.tag.mail{background:#EAF3FF;color:#1E8BFF}
-.addbtn{color:#1E8BFF;font-weight:700}
-.addin{border:1.5px solid #1E8BFF;border-radius:18px;box-shadow:0 6px 18px rgba(30,139,255,.12)}
+.tag.mail{background:#E6EEFF;color:#1F5EFF}
+.addbtn{color:#1F5EFF;font-weight:700}
+.addin{border:1.5px solid #1F5EFF;border-radius:18px;box-shadow:0 6px 18px rgba(31,94,255,.12)}
 .sheet{background:#fff;border-radius:26px 26px 0 0;border-top:0}
-.sheet textarea{border:0;border-radius:16px;background:#F4F4F6}
-.chip{background:#F4F4F6;border:0;border-radius:999px;box-shadow:none;font-weight:700}
-.chip.on{background:#1E8BFF;color:#fff;box-shadow:none}
-.seg{background:#F4F4F6;border:0;border-radius:14px;padding:3px}
-.seg button.on{background:#fff;color:#1E8BFF;box-shadow:0 2px 8px rgba(0,0,0,.1);border-radius:11px}
-.btn{background:#F4F4F6;border:0;border-radius:16px;box-shadow:none;color:#111114}
-.btn.primary{background:#1E8BFF;color:#fff;box-shadow:0 8px 20px rgba(30,139,255,.28)}
+.sheet textarea{border:0;border-radius:16px;background:#EEF3FF}
+.chip{background:#EEF3FF;border:0;border-radius:999px;box-shadow:none;font-weight:700}
+.chip.on{background:linear-gradient(180deg,#3B7BFF,#1F5EFF);color:#fff;box-shadow:none}
+.seg{background:#EEF3FF;border:0;border-radius:14px;padding:3px}
+.seg button.on{background:#fff;color:#1F5EFF;box-shadow:0 2px 8px rgba(20,50,140,.1);border-radius:11px}
+.btn{background:#EEF3FF;border:0;border-radius:16px;box-shadow:none;color:#0B1220}
+.btn.primary{background:linear-gradient(180deg,#3B7BFF,#1F5EFF);color:#fff;box-shadow:0 8px 20px rgba(31,94,255,.28)}
 .btn.danger{background:#FDECEC;color:#E5484D}
-.btn.mail{background:#EAF3FF;color:#1E8BFF}
-.setting{background:#F4F4F6;border:0;border-radius:18px;box-shadow:none}
-.switch{background:#E2E2E6;border:0}
-.switch.on{background:#1E8BFF}
+.btn.mail{background:#E6EEFF;color:#1F5EFF}
+.setting{background:#EEF3FF;border:0;border-radius:18px;box-shadow:none}
+.switch{background:#D5DEEE;border:0}
+.switch.on{background:#1F5EFF}
 .switch::after{top:3px;left:3px;border:0;width:22px;height:22px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
-.toast{background:#1C1C1E;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-.toast button{color:#8CC4FF}
+.toast{background:#0B1220;border-radius:16px;box-shadow:0 10px 30px rgba(10,20,50,.25)}
+.toast button{color:#8FB2FF}
+.eyebrow{text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.task,.setting{background:#fff;border:1px solid rgba(228,234,246,.8);box-shadow:0 1px 2px rgba(20,50,140,.05),0 6px 22px rgba(20,50,140,.07)}
+@media (min-width:900px){
+  html{background:radial-gradient(520px 260px at 108% -40px,rgba(76,134,255,.20),transparent 70%),radial-gradient(380px 220px at -30% 0,rgba(76,134,255,.08),transparent 70%),#F5F8FF;background-attachment:fixed}
+  body{max-width:860px;margin:0 auto;background:transparent}
+  .sheet{left:calc(50% - 290px);right:calc(50% - 290px);border-radius:26px 26px 0 0}
+  .editor{left:calc(50% - 340px);right:calc(50% - 340px);top:28px;bottom:28px;border-radius:24px;box-shadow:0 30px 80px rgba(10,20,50,.25);transform:translateY(calc(100% + 80px))}
+  .editor.on{transform:none}
+}
 </style>
 </head>
 <body>
@@ -532,7 +541,7 @@ function openSettings(){
     +'<button class="setting" id="optImport"><span>Sicherung einfügen<small>Ersetzt alle Aufgaben durch die Zwischenablage</small></span></button>'
     +'<div class="label">Assistent</div>'
     +'<button class="setting" id="optMigrate"><span>Daten aus alten Apps übernehmen<small>Wochenstapel, Mein Kalender, Pinnwand</small></span></button>'
-    +'<div class="foot">Assistent · Version 1.12 · alles bleibt auf diesem Gerät<br>Entwickelt von Thorsten von Plotho-Kettner</div>'
+    +'<div class="foot">Assistent · Version 1.13 · alles bleibt auf diesem Gerät<br>Entwickelt von Thorsten von Plotho-Kettner</div>'
   );
   $('#optMigrate').onclick=()=>{closeSheet();try{parent.openImport()}catch(e){}};
   $('#optHide').onclick=()=>{state.settings.hideDone=!state.settings.hideDone;save();$('#optHide .switch').classList.toggle('on',state.settings.hideDone);render()};

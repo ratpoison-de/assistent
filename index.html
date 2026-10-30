@@ -47,30 +47,40 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .toast{bottom:calc(var(--tab) + var(--sb) + 22px)}
 input[type=file]{display:none}
 
-/* ---- Assistent: Clean ---- */
-.frames iframe{background:#FFFFFF}
-.tabs{background:#fff;border-top:0;box-shadow:0 -8px 30px rgba(0,0,0,.07);padding:4px 6px calc(4px + var(--sb));border-radius:22px 22px 0 0;align-items:center}
-.tab{color:#AEAEB2;font-size:0;gap:0}
+/* ---- Assistent: Muse ---- */
+.frames iframe{background:#F5F8FF}
+.tabs{background:#fff;border-top:0;box-shadow:0 -8px 30px rgba(20,50,140,.07);padding:4px 6px calc(4px + var(--sb));border-radius:22px 22px 0 0;align-items:center}
+.tab{color:#98A2B8;font-size:0;gap:0}
 .tab .pill{width:46px;height:40px;border-radius:14px;background:none!important}
 .tab svg{width:24px;height:24px}
-.tab.on{color:#1E8BFF}
-.tab.on::after{content:"";position:absolute;bottom:6px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:#1E8BFF}
+.tab.on{color:#1F5EFF}
+.tab.on::after{content:"";position:absolute;bottom:6px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:#1F5EFF}
 .tab .bdg{top:4px;left:calc(50% + 4px);background:#E5484D;color:#fff;border:2px solid #fff;box-shadow:none;border-radius:999px;font-size:10.5px}
-.mig{background:#FFFFFF}
-.ic{background:#EAF3FF;color:#1E8BFF;border:0;border-radius:50%}
-.st{border:0;border-radius:999px;background:#F4F4F6;color:#8E8E93}
-.st.ok{background:#EAF3FF;color:#1E8BFF}
-.toast{background:#1C1C1E;border-radius:16px}
-.tabs{border-radius:0;box-shadow:none;border-top:1px solid #ECECEF;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);padding:6px 6px calc(6px + var(--sb))}
-.tab{font-size:10.5px;gap:3px;color:#9A9AA0;font-weight:600}
-.tab .pill{height:30px}
-.tab.on{color:#1E8BFF}
+.mig{background:#F5F8FF}
+.ic{background:#E6EEFF;color:#1F5EFF;border:0;border-radius:50%}
+.st{border:0;border-radius:999px;background:#EEF3FF;color:#6A7489}
+.st.ok{background:#E6EEFF;color:#1F5EFF}
+.toast{background:#0B1220;border-radius:16px}
+.tabs{background:rgba(255,255,255,.96);border-top:1px solid #E4EAF6;box-shadow:0 -6px 24px rgba(20,50,140,.06);border-radius:0;padding:6px 6px calc(6px + var(--sb))}
+.tab{font-size:10.5px;gap:3px;color:#6A7489;font-weight:700}
+.tab .pill{width:52px;height:30px;border-radius:15px;background:none}
+.tab.on{color:#1F5EFF}
 .tab.on::after{display:none}
-/* Am großen Bildschirm (Windows, Browser): App als ruhige Spalte in der Mitte */
-@media (min-width:760px){
-  html,body{background:#F2F2F5}
-  .frames{left:calc(50% - 270px);right:calc(50% - 270px);box-shadow:0 0 0 1px #E6E6EA,0 20px 60px rgba(0,0,0,.06)}
-  .tabs{left:calc(50% - 270px);right:calc(50% - 270px);box-shadow:0 0 0 1px #E6E6EA}
+.tab.on .pill{background:#E6EEFF!important}
+.tab .bdg{background:#1F5EFF;color:#fff;border:2px solid #fff;font-size:10.5px}
+/* Responsiv: am großen Bildschirm Seitenleiste statt Leiste unten */
+@media (min-width:900px){
+  .frames{left:236px;right:0;top:0;bottom:0;box-shadow:none}
+  .tabs{left:0;right:auto;top:0;bottom:0;width:236px;height:auto;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:4px;padding:92px 14px 24px;border-top:0;border-right:1px solid #E4EAF6;background:#fff;box-shadow:none}
+  .tabs::before{content:"Assistent";position:absolute;top:30px;left:24px;font-weight:800;font-size:24px;letter-spacing:-.035em;color:#0B1220}
+  .tabs::after{content:"von Thorsten von Plotho-Kettner";position:absolute;left:24px;right:14px;bottom:20px;font-size:11.5px;color:#98A2B8;line-height:1.4}
+  .tab{flex:none;flex-direction:row;justify-content:flex-start;gap:12px;height:48px;padding:0 12px;font-size:15px;border-radius:14px;width:100%;color:#4A5468}
+  .tab .pill{width:28px;height:28px;background:none!important}
+  .tab:hover{background:#F2F6FF}
+  .tab.on{background:#E6EEFF;color:#1F5EFF}
+  .tab .bdg{position:static;margin-left:auto;display:none}
+  .tab .bdg.on{display:flex}
+  .toast{left:calc(50% + 118px)}
 }
 </style>
 </head>
@@ -119,7 +129,7 @@ input[type=file]{display:none}
 
   <button class="done d-btn primary" id="migDone">Fertig</button>
   <p class="tip">Du findest diesen Assistenten jederzeit wieder im Menü jedes Bereichs. Wenn alles da ist, kannst du die alten Apps deinstallieren.</p>
-  <p class="tip" style="margin-top:22px">Assistent · Version 1.12<br>Entwickelt von Thorsten von Plotho-Kettner</p>
+  <p class="tip" style="margin-top:22px">Assistent · Version 1.13<br>Entwickelt von Thorsten von Plotho-Kettner</p>
   <input type="file" id="migFile" accept=".json,.ics,application/json,text/calendar,*/*">
 </section>
 <div class="d-toast toast" id="toast"></div>
@@ -202,7 +212,7 @@ if(N&&N.pomoClear)try{N.pomoClear()}catch(e){}
 /* Statusleiste passend zum Bereich (Start: Farbe des Himmels) */
 function syncBar(){
   if(!N||!N.setBars)return;
-  let c='#FFFFFF',dark=false;
+  let c='#F5F8FF',dark=false;
   if(active==='start'){const s=call('start','skyTop');if(s){c=s.color;dark=s.dark}}
   try{N.setBars(c,!dark)}catch(e){}
 }

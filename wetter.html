@@ -65,23 +65,29 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .src{text-align:center;color:var(--mute);font-size:12px;margin-top:18px;line-height:1.5}
 .places{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 
-/* ---- Assistent: Clean ---- */
-body{background:#FFFFFF}
-.h-big em{background:none;color:#1E8BFF}
-.now{background:linear-gradient(135deg,#EEF0FF 0%,#F7F0FA 50%,#E9F3FF 100%);color:#111114;border:0;border-radius:26px;box-shadow:none}
+/* ---- Assistent: Muse ---- */
+body{background:radial-gradient(520px 260px at 108% -40px,rgba(76,134,255,.20),transparent 70%),radial-gradient(380px 220px at -30% 0,rgba(76,134,255,.08),transparent 70%),#F5F8FF}
+.h-big em{background:none;color:#1F5EFF}
+.now{background:linear-gradient(150deg,#EAF1FF 0%,#D4E3FF 100%);color:#0B1220;border:0;border-radius:26px;box-shadow:none}
 .now::after,.now::before{display:none}
-.now .sub{color:#6C6C72;opacity:1}
+.now .sub{color:#4A5468;opacity:1}
 .stat{background:rgba(255,255,255,.75);border:0;border-radius:14px}
-.stat small{opacity:1;color:#8E8E93}
-.hr{background:#F4F4F6;border:0;border-radius:18px;box-shadow:none}
-.hr.cur{background:#1E8BFF;color:#fff;box-shadow:0 8px 18px rgba(30,139,255,.3)}
-.hr.cur .p{color:#D3E5FF}
-.hr .p{color:#1E8BFF}
-.day{border-bottom:1px solid #F0F0F2}
-.day .pp{color:#1E8BFF}
-.track{border:0;background:#EAF3FF;height:7px}
-.track i{background:linear-gradient(90deg,#6E7BF2,#5AA9FF);border-radius:4px}
-.lbl{color:#111114}
+.stat small{opacity:1;color:#6A7489}
+.hr{background:#EEF3FF;border:0;border-radius:18px;box-shadow:none}
+.hr.cur{background:linear-gradient(180deg,#3B7BFF,#1F5EFF);color:#fff;box-shadow:0 8px 18px rgba(31,94,255,.3)}
+.hr.cur .p{color:#CFDDFF}
+.hr .p{color:#1F5EFF}
+.day{border-bottom:1px solid #EAF0FA}
+.day .pp{color:#1F5EFF}
+.track{border:0;background:#E6EEFF;height:7px}
+.track i{background:linear-gradient(90deg,#1546C8,#4C86FF);border-radius:4px}
+.lbl{color:#0B1220}
+.hr{background:#fff;border:0;box-shadow:0 1px 2px rgba(20,50,140,.05),0 4px 14px rgba(20,50,140,.06)}
+@media (min-width:900px){
+  html{background:radial-gradient(520px 260px at 108% -40px,rgba(76,134,255,.20),transparent 70%),radial-gradient(380px 220px at -30% 0,rgba(76,134,255,.08),transparent 70%),#F5F8FF;background-attachment:fixed}
+  body{max-width:980px;margin:0 auto;background:transparent}
+  .now{padding:30px 32px}
+}
 </style>
 </head>
 <body>
