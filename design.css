@@ -1,0 +1,46 @@
+/* Assistent – gemeinsames Design (Clean: Weiß / feine Linien / Blau) */
+@font-face{font-family:"PJS";src:url(fonts/pjs-400.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"PJS";src:url(fonts/pjs-500.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"PJS";src:url(fonts/pjs-700.woff2) format("woff2");font-weight:600 700;font-display:swap}
+@font-face{font-family:"PJS";src:url(fonts/pjs-800.woff2) format("woff2");font-weight:800 900;font-display:swap}
+:root{
+  --bg:#FFFFFF; --card:#FFFFFF; --ink:#111114; --mute:#8E8E93; --line:#ECECEF; --soft:#F4F4F6; --soft2:#ECECF2;
+  --v:#1E8BFF; --v2:#5AA9FF; --vd:#0B63CE; --navy:#6E7BF2; --lav:#EAF3FF; --lav2:#D3E5FF;
+  --vgrad:linear-gradient(135deg,#EEF0FF 0%,#F7F0FA 50%,#E9F3FF 100%);
+  --accent:#1E8BFF; --accent-2:#1E8BFF; --accent-ink:#FFFFFF; --accent-soft:#EAF3FF;
+  --grad:#1E8BFF; --yellow:#1E8BFF; --green:#1E8BFF; --greenbg:#EAF3FF; --pink:#E8508C; --orange:#F07A1E; --blue:#6E7BF2; --grey:#8E8E93;
+  --danger:#E5484D; --ok:#1E8BFF; --warn:#F5A524;
+  --bd:0; --hs:0 6px 20px rgba(0,0,0,.07); --hs2:0 10px 28px rgba(30,139,255,.30);
+  --shadow:0 6px 20px rgba(0,0,0,.07);
+  --shadow-lift:0 12px 30px rgba(0,0,0,.12);
+  --shadow-btn:0 8px 20px rgba(30,139,255,.28);
+  --radius:18px; --scrim:rgba(0,0,0,.40);
+  --font:"PJS",system-ui,-apple-system,"Roboto","Segoe UI",sans-serif;
+}
+html,body{background:var(--bg);color:var(--ink);font-family:var(--font)}
+body{background:var(--bg)}
+button,input,select,textarea{font-family:var(--font)}
+
+/* Überschriften */
+.h-eyebrow{font-size:13px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--mute)}
+.h-big{margin:2px 0 0;font-size:28px;line-height:1.15;font-weight:800;letter-spacing:-.025em}
+.h-big em,.h-mid em{font-style:normal;color:var(--v)}
+.h-mid{margin:0;font-size:20px;line-height:1.2;font-weight:800;letter-spacing:-.02em}
+
+/* Bausteine */
+.d-card{background:var(--soft);border-radius:var(--radius);box-shadow:none;border:0}
+.d-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 18px;border-radius:16px;font-weight:700;font-size:15px;background:var(--soft);color:var(--ink);border:0;box-shadow:none}
+.d-btn.primary{background:var(--v);color:#fff;box-shadow:var(--shadow-btn)}
+.d-btn.ghost{background:var(--soft)}
+.d-btn.danger{color:var(--danger);background:#FDECEC}
+.d-btn:active,.d-chip:active,.d-ib.solid:active,.d-fab:active{transform:scale(.97)}
+.d-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:var(--soft);border:0;box-shadow:none;font-weight:700;font-size:14px;white-space:nowrap;color:var(--ink)}
+.d-chip.on{background:var(--v);color:#fff}
+.d-check{width:22px;height:22px;border-radius:7px;background:var(--v);border:0;display:grid;place-items:center;flex:none}
+.d-ib{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--ink);flex:none;background:transparent;border:0}
+.d-ib.solid{background:var(--soft);border:0;box-shadow:none}
+.d-fab{position:fixed;right:18px;bottom:20px;height:56px;min-width:56px;padding:0 20px;border-radius:28px;background:var(--v);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:15.5px;border:0;box-shadow:var(--hs2);z-index:30}
+.d-toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,30px);opacity:0;background:#1C1C1E;color:#fff;padding:13px 18px;border-radius:16px;font-weight:600;font-size:14px;z-index:95;transition:all .25s;pointer-events:none;max-width:92vw;display:flex;gap:14px;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.d-toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.d-toast button{color:#8CC4FF;font-weight:800;background:none;border:0;font-size:14px}
+.d-tag{display:inline-block;background:var(--v);color:#fff;font-weight:700;font-size:10.5px;padding:2px 7px;border-radius:999px;letter-spacing:.02em}

@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="de">
+<head>
+<script src="platform.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ECECEF">
+<title>Pinnwand</title>
+<link rel="stylesheet" href="design.css">
+<style>
+:root{
+  --bg:#FFFFFF; --card:#FFFFFF; --text:#111114; --muted:#8A8A99; --line:#ECECEF; --soft:#F6F6FA;
+  --accent:#1E8BFF; --accent-ink:#FFFFFF; --danger:#E5484D;
+  --t-task:#12A150; --t-note:#B88A00; --t-photo:#7A5AF8; --t-plan:#151518;
+  --c-yellow:#FFF6CF; --c-green:#E2F6EA; --c-blue:#DADADF; --c-pink:#FFE5EE; --c-purple:#EEE7FF; --c-orange:#FFEBDB;
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 6px 22px rgba(0,0,0,.07);
+  --shadow-lift:0 18px 40px rgba(0,0,0,.22);
+  --radius:20px;
+  --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;color:var(--text);font-family:var(--font);font-size:16px;line-height:1.35}
+body{min-height:100vh;overscroll-behavior-y:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+input,textarea{font:inherit;color:inherit}
+svg{display:block}
+.hidden{display:none!important}
+
+/* ---------- Kopfzeile ---------- */
+.top{position:sticky;top:0;z-index:20;background:var(--bg);padding:calc(10px + var(--safe-top)) 16px 6px;display:flex;align-items:center;gap:6px}
+.board-btn{display:flex;align-items:center;gap:8px;min-width:0;flex:1;text-align:left;padding:6px 4px;border-radius:12px}
+.board-btn .emoji{font-size:26px;line-height:1}
+.board-btn .name{font-size:24px;font-weight:750;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.board-btn .chev{color:var(--muted);flex:none}
+.icon-btn{width:40px;height:40px;border-radius:20px;display:grid;place-items:center;color:var(--text);flex:none}
+.icon-btn:active{background:var(--soft)}
+.chips{position:sticky;top:calc(62px + var(--safe-top));z-index:19;background:var(--bg);display:flex;gap:8px;overflow-x:auto;padding:4px 16px 10px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:7px 13px;border-radius:999px;background:var(--soft);font-size:14px;font-weight:600;display:flex;gap:6px;align-items:center;white-space:nowrap}
+.chip .n{color:var(--muted);font-weight:600}
+.chip.on{background:var(--accent);color:var(--accent-ink)}
+.chip.on .n{color:inherit;opacity:.7}
+
+/* ---------- Board ---------- */
+#board{display:flex;gap:10px;padding:2px 12px calc(110px + var(--safe-bottom));align-items:flex-start}
+.col{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
+.empty{padding:60px 30px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--text);font-size:18px;margin-bottom:6px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;position:relative;user-select:none;-webkit-user-select:none;transition:transform .15s,opacity .15s}
+.card:active{transform:scale(.985)}
+.card[data-color="yellow"]{background:var(--c-yellow)} .card[data-color="green"]{background:var(--c-green)}
+.card[data-color="blue"]{background:var(--c-blue)} .card[data-color="pink"]{background:var(--c-pink)}
+.card[data-color="purple"]{background:var(--c-purple)} .card[data-color="orange"]{background:var(--c-orange)}
+.card.done{opacity:.55}
+.card.ghost{opacity:.25}
+.card.drop-target{outline:2.5px solid var(--accent);outline-offset:2px}
+.card .body{padding:12px 13px 13px}
+.kind{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.kind svg{width:14px;height:14px}
+.kind .pin{margin-left:auto;color:var(--muted)}
+.k-task{color:var(--t-task)} .k-note{color:var(--t-note)} .k-photo{color:var(--t-photo)} .k-plan{color:var(--t-plan)}
+.card h3{margin:0 0 6px;font-size:16px;font-weight:700;line-height:1.25;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
+.card .txt{font-size:14.5px;white-space:pre-wrap;word-wrap:break-word;display:-webkit-box;-webkit-line-clamp:9;-webkit-box-orient:vertical;overflow:hidden;color:var(--text);opacity:.88}
+.card img.ph{width:100%;display:block;max-height:340px;object-fit:cover;background:var(--soft)}
+.ph-empty{height:110px;display:grid;place-items:center;text-align:center;padding:0 16px;background:var(--soft);color:var(--muted);font-size:13px}
+.items{list-style:none;margin:2px 0 0;padding:0}
+.items li{display:flex;gap:8px;align-items:flex-start;padding:3px 0;font-size:14.5px}
+.items li.x span{text-decoration:line-through;color:var(--muted)}
+.box{width:20px;height:20px;border-radius:6px;border:2px solid var(--muted);flex:none;display:grid;place-items:center;margin-top:0}
+.box.on{background:var(--t-task);border-color:var(--t-task);color:#fff}
+.box svg{width:13px;height:13px}
+.more{font-size:13px;color:var(--muted);margin-top:4px}
+.prog{height:5px;border-radius:3px;background:var(--soft);margin-top:10px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--t-task);border-radius:3px}
+.prog-l{font-size:12px;color:var(--muted);margin-top:4px;font-weight:600}
+.plan{display:flex;gap:11px;align-items:center}
+.cal{width:48px;flex:none;border-radius:11px;overflow:hidden;text-align:center;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
+.cal .m{background:var(--accent);color:#fff;font-size:10.5px;font-weight:800;text-transform:uppercase;padding:2px 0;letter-spacing:.06em}
+.cal .d{font-size:22px;font-weight:800;padding:2px 0 0;line-height:1.1}
+.cal .w{font-size:10.5px;color:var(--muted);padding-bottom:4px;font-weight:600}
+.plan .meta{min-width:0}
+.rel{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--soft);margin-top:4px}
+.rel.today{background:var(--accent);color:#fff}
+.rel.past{background:var(--danger);color:#fff}
+.small{font-size:13px;color:var(--muted);margin-top:3px;word-wrap:break-word}
+
+.drag-clone{position:fixed;z-index:100;pointer-events:none;box-shadow:var(--shadow-lift);transform:rotate(2deg) scale(1.03);transition:none}
+
+/* ---------- FAB ---------- */
+.fab{position:fixed;right:20px;bottom:calc(22px + var(--safe-bottom));width:60px;height:60px;border-radius:30px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;box-shadow:0 6px 18px rgba(216,30,30,.35);z-index:30}
+.fab:active{transform:scale(.94)}
+
+/* ---------- Sheets ---------- */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:50;opacity:0;transition:opacity .2s;pointer-events:none}
+.scrim.show{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--bg);border-radius:22px 22px 0 0;padding:8px 16px calc(18px + var(--safe-bottom));transform:translateY(105%);transition:transform .25s cubic-bezier(.2,.8,.2,1);max-height:88vh;overflow-y:auto}
+.sheet.show{transform:none}
+.grab{width:38px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 12px}
+.sheet h2{font-size:18px;margin:2px 4px 12px;font-weight:750}
+.types{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.type{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;text-align:left;display:flex;flex-direction:column;gap:8px}
+.type .ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:#fff}
+.type b{font-size:15px}
+.type small{color:var(--muted);font-size:12.5px;line-height:1.3}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--line);width:100%;text-align:left}
+.row:last-child{border-bottom:0}
+.row .e{font-size:22px;width:28px;text-align:center}
+.row .l{flex:1;min-width:0}
+.row .l b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .l small{color:var(--muted);font-size:13px}
+.row.cur{background:var(--soft)}
+.row .act{color:var(--muted);width:34px;height:34px;display:grid;place-items:center;border-radius:17px}
+.row.danger{color:var(--danger)}
+.sec-t{font-size:13px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin:18px 6px 8px}
+.seg{display:flex;background:var(--soft);border-radius:10px;padding:2px}
+.seg button{flex:1;padding:7px;border-radius:8px;font-size:14px;font-weight:600}
+.seg button.on{background:var(--card);box-shadow:var(--shadow)}
+
+/* ---------- Editor ---------- */
+.editor{position:fixed;inset:0;z-index:70;background:var(--bg);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.editor.show{transform:none}
+.ed-top{display:flex;align-items:center;gap:4px;padding:calc(8px + var(--safe-top)) 8px 8px}
+.ed-top .kind{margin:0 0 0 6px;flex:1;font-size:12.5px}
+.ed-done{background:var(--accent);color:var(--accent-ink);font-weight:700;padding:8px 16px;border-radius:999px;margin-left:4px}
+.ed-body{flex:1;overflow-y:auto;padding:4px 18px calc(30px + var(--safe-bottom))}
+.ed-title{width:100%;border:0;background:transparent;font-size:24px;font-weight:750;letter-spacing:-.01em;padding:6px 0;outline:none}
+.ed-title::placeholder,.ed-text::placeholder,.field input::placeholder{color:var(--muted);opacity:.7}
+.ed-text{width:100%;border:0;background:transparent;font-size:17px;line-height:1.45;outline:none;resize:none;min-height:200px;padding:6px 0}
+.colors{display:flex;gap:10px;padding:10px 0 4px;flex-wrap:wrap}
+.sw{width:32px;height:32px;border-radius:16px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.sw.on{box-shadow:inset 0 0 0 1.5px var(--line),0 0 0 2.5px var(--bg),0 0 0 4.5px var(--accent)}
+.sw[data-c="none"]{background:var(--card)} .sw[data-c="yellow"]{background:var(--c-yellow)} .sw[data-c="green"]{background:var(--c-green)}
+.sw[data-c="blue"]{background:var(--c-blue)} .sw[data-c="pink"]{background:var(--c-pink)} .sw[data-c="purple"]{background:var(--c-purple)} .sw[data-c="orange"]{background:var(--c-orange)}
+.ed-items{list-style:none;padding:0;margin:8px 0}
+.ed-items li{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}
+.ed-items input[type=text]{flex:1;border:0;background:transparent;font-size:17px;outline:none;padding:6px 0;min-width:0}
+.ed-items li.x input[type=text]{text-decoration:line-through;color:var(--muted)}
+.ed-items .box{width:24px;height:24px;border-radius:7px}
+.ed-items .del{color:var(--muted);width:32px;height:32px;display:grid;place-items:center}
+.add-item{display:flex;align-items:center;gap:10px;color:var(--accent);font-weight:600;padding:10px 0}
+.field{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:12px 0;overflow:hidden}
+.field label{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.field label:last-child{border-bottom:0}
+.field label span{width:64px;color:var(--muted);font-size:14px;flex:none}
+.field input{flex:1;border:0;background:transparent;font-size:16px;outline:none;min-width:0}
+.ph-edit{border-radius:16px;overflow:hidden;background:var(--soft);margin:8px 0}
+.ph-edit img{width:100%;display:block}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:14px;background:var(--card);border:1px solid var(--line);font-weight:650;margin:10px 0}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.danger{color:var(--danger)}
+.ed-foot{margin-top:24px}
+.stamp{color:var(--muted);font-size:12.5px;text-align:center;margin-top:16px}
+
+/* ---------- Suche ---------- */
+.search{position:fixed;inset:0;z-index:65;background:var(--bg);display:flex;flex-direction:column}
+.s-top{display:flex;gap:8px;align-items:center;padding:calc(10px + var(--safe-top)) 12px 10px}
+.s-in{flex:1;display:flex;align-items:center;gap:8px;background:var(--soft);border-radius:12px;padding:9px 12px;color:var(--muted)}
+.s-in input{flex:1;border:0;background:transparent;outline:none;font-size:16px;color:var(--text);min-width:0}
+.s-res{flex:1;overflow-y:auto;padding:0 16px 30px}
+.s-res .row .l small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ---------- Dialog & Toast ---------- */
+.dialog{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:30px;background:rgba(0,0,0,.35)}
+.dlg{background:var(--card);border-radius:18px;padding:20px;width:100%;max-width:340px;box-shadow:var(--shadow-lift)}
+.dlg h3{margin:0 0 6px;font-size:18px}
+.dlg p{margin:0 0 14px;color:var(--muted);font-size:15px}
+.dlg input{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);font-size:16px;outline:none;margin-bottom:14px}
+.dlg .emojis{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.dlg .emojis button{font-size:22px;width:38px;height:38px;border-radius:10px}
+.dlg .emojis button.on{background:var(--soft);box-shadow:inset 0 0 0 2px var(--accent)}
+.dlg .bts{display:flex;gap:8px;justify-content:flex-end}
+.dlg .bts button{padding:10px 16px;border-radius:10px;font-weight:650}
+.dlg .bts .ok{background:var(--accent);color:var(--accent-ink)}
+.dlg .bts .ok.danger{background:var(--danger)}
+.toast{position:fixed;left:50%;bottom:calc(96px + var(--safe-bottom));transform:translate(-50%,20px);background:var(--text);color:var(--bg);padding:11px 16px;border-radius:12px;font-size:14px;font-weight:600;z-index:95;opacity:0;transition:.2s;pointer-events:none;display:flex;gap:14px;align-items:center;max-width:calc(100% - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast button{color:var(--accent);font-weight:800}
+.toast button{color:#FF6B6B}
+
+/* ---- Assistent: neues Design ---- */
+.top{background:linear-gradient(var(--bg) 80%,rgba(236,236,239,0))}
+.chips{background:linear-gradient(var(--bg) 70%,rgba(236,236,239,0))}
+.board-btn .name{font-weight:800;letter-spacing:-.035em;font-size:27px}
+.icon-btn{background:var(--card);box-shadow:var(--shadow)}
+.chip{background:var(--card);box-shadow:var(--shadow)}
+.chip.on{background:linear-gradient(180deg,#F5C518,#151518);color:#fff;box-shadow:0 6px 16px rgba(0,0,0,.32)}
+.card{border:0;box-shadow:var(--shadow)}
+.box{border-color:#8E8E96;border-radius:11px}
+.box.on{background:linear-gradient(180deg,#F5C518,#151518);border-color:transparent}
+.prog{height:6px;background:#DADADF}
+.prog i{background:linear-gradient(90deg,#F5C518,#151518)}
+.cal{box-shadow:0 1px 2px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.08)}
+.cal .m{background:linear-gradient(180deg,#F5C518,#151518)}
+.rel{background:var(--soft);color:var(--accent)}
+.fab{background:linear-gradient(180deg,#F5C518,#151518);box-shadow:0 10px 24px rgba(0,0,0,.42)}
+.type{border:0;box-shadow:var(--shadow);border-radius:20px}
+.list{border:0;box-shadow:var(--shadow);border-radius:18px}
+.field{border:0;box-shadow:var(--shadow);border-radius:18px}
+.btn{border:0;box-shadow:var(--shadow);border-radius:16px}
+.btn.primary{background:linear-gradient(180deg,#F5C518,#151518);box-shadow:0 6px 16px rgba(0,0,0,.32)}
+.sheet{border-radius:26px 26px 0 0}
+.ed-done{background:linear-gradient(180deg,#F5C518,#151518);box-shadow:0 6px 16px rgba(0,0,0,.32)}
+.ed-title{font-weight:800;letter-spacing:-.025em}
+.dlg{border-radius:22px}
+.dlg .bts .ok{background:linear-gradient(180deg,#F5C518,#151518)}
+.s-in{background:var(--card);box-shadow:var(--shadow)}
+.toast{background:#151518;color:#fff}
+.toast button{color:#F5C518}
+
+/* ---- Assistent: Clean ---- */
+body{background:#FFFFFF}
+.top,.chips{background:#FFFFFF}
+.board-btn .name{color:#111114}
+.icon-btn{background:#F4F4F6;border:0;border-radius:50%;box-shadow:none}
+.chip{background:#F4F4F6;border:0;border-radius:999px;box-shadow:none}
+.chip.on{background:#1E8BFF;color:#fff;box-shadow:none}
+.chip.on .n{opacity:.75}
+.card{border:0;border-radius:20px;box-shadow:0 4px 16px rgba(0,0,0,.06);background:#F4F4F6}
+.card:active{transform:scale(.98)}
+.card[data-color="yellow"]{background:#FFF6DA}.card[data-color="green"]{background:#E5F6EE}.card[data-color="blue"]{background:#E4EAFF}
+.card[data-color="pink"]{background:#FFE6F0}.card[data-color="purple"]{background:linear-gradient(135deg,#EEF0FF 0%,#F7F0FA 50%,#E9F3FF 100%)}.card[data-color="orange"]{background:#FFEBDD}
+.card img.ph{border-bottom:0}
+.box{border:2px solid #D1D1D6;border-radius:6px;background:#fff}
+.box.on{background:#1E8BFF;border-color:#1E8BFF}
+.prog{height:8px;border:0;background:rgba(30,139,255,.12);border-radius:4px}
+.prog i{background:#1E8BFF;border-radius:4px}
+.cal{border:0;box-shadow:0 2px 8px rgba(0,0,0,.1);border-radius:12px}
+.cal .m{background:#1E8BFF;color:#fff}
+.rel{background:#fff;color:#111114;border:0;border-radius:999px}
+.rel.today{background:#1E8BFF;color:#fff}
+.rel.past{background:#FDECEC;color:#E5484D}
+.fab{background:#1E8BFF;color:#fff;border:0;border-radius:50%;box-shadow:0 10px 24px rgba(30,139,255,.38)}
+.sheet,.editor,.search{background:#FFFFFF}
+.sheet{border-top:0;border-radius:26px 26px 0 0}
+.type{border:0;border-radius:18px;box-shadow:none;background:#F4F4F6}
+.type .ic{border:0;border-radius:50%}
+.list{border:0;border-radius:20px;box-shadow:none;background:#F4F4F6}
+.row{border-bottom:1px solid #EDEDF0}
+.row.cur{background:#EAF3FF}
+.field{border:0;border-radius:16px;box-shadow:none;background:#F4F4F6}
+.btn{border:0;border-radius:16px;box-shadow:none;background:#F4F4F6}
+.btn.primary{background:#1E8BFF;color:#fff;box-shadow:0 8px 20px rgba(30,139,255,.28)}
+.ed-done{background:#1E8BFF;color:#fff;border:0;border-radius:999px;box-shadow:0 6px 16px rgba(30,139,255,.28)}
+.ed-items li{border-bottom:1px solid #EDEDF0}
+.add-item{color:#1E8BFF}
+.dlg{border:0;border-radius:24px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.dlg input{border:0;background:#F4F4F6}
+.dlg .bts button{border:0;border-radius:14px;background:#F4F4F6}
+.dlg .bts .ok{background:#1E8BFF;color:#fff}
+.dlg .bts .ok.danger{background:#E5484D;color:#fff}
+.s-in{background:#F4F4F6;border:0;border-radius:16px;box-shadow:none}
+.sw{border:0}
+.toast{background:#1C1C1E;color:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.toast button{color:#8CC4FF}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <button class="board-btn" id="boardBtn" aria-label="Boards wechseln">
+    <span class="emoji" id="bEmoji">📌</span><span class="name" id="bName">Pinnwand</span>
+    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+  </button>
+  <button class="icon-btn" id="searchBtn" aria-label="Suchen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+  <button class="icon-btn" id="menuBtn" aria-label="Menü"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>
+</header>
+<nav class="chips" id="chips"></nav>
+<main id="board"></main>
+<button class="fab" id="fab" aria-label="Neue Karte"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+
+<div class="scrim" id="scrim"></div>
+
+<section class="sheet" id="addSheet">
+  <div class="grab"></div>
+  <h2>Neue Karte</h2>
+  <div class="types" id="types"></div>
+</section>
+
+<section class="sheet" id="boardSheet">
+  <div class="grab"></div>
+  <h2>Deine Boards</h2>
+  <div class="list" id="boardList"></div>
+  <div class="sec-t">Neues Board</div>
+  <div class="list" id="tplList"></div>
+</section>
+
+<section class="sheet" id="menuSheet">
+  <div class="grab"></div>
+  <h2>Einstellungen</h2>
+  <div class="sec-t" style="margin-top:4px">Dieses Board</div>
+  <div class="list">
+    <button class="row" id="mRename"><span class="e">✏️</span><span class="l"><b>Umbenennen</b></span></button>
+    <button class="row" id="mClearDone"><span class="e">🧹</span><span class="l"><b>Erledigte Karten löschen</b></span></button>
+    <button class="row danger" id="mDelBoard"><span class="e">🗑️</span><span class="l"><b>Board löschen</b></span></button>
+  </div>
+  <div class="sec-t">Sicherung</div>
+  <div class="list">
+    <button class="row" id="mExport"><span class="e">💾</span><span class="l"><b>Sicherung exportieren</b><small>Alle Boards inkl. Fotos als Datei</small></span></button>
+    <button class="row" id="mImport"><span class="e">📂</span><span class="l"><b>Sicherung importieren</b><small>Ersetzt die aktuellen Daten</small></span></button>
+  </div>
+  <div class="sec-t">Assistent</div>
+  <div class="list">
+    <button class="row" id="mMigrate"><span class="e">📥</span><span class="l"><b>Daten aus alten Apps übernehmen</b><small>Wochenstapel, Mein Kalender, Pinnwand</small></span></button>
+  </div>
+  <p class="stamp">Assistent · Version 1.12 · Alle Daten bleiben auf deinem Gerät<br>Entwickelt von Thorsten von Plotho-Kettner</p>
+  <input type="file" id="importFile" accept="application/json,.json,*/*" class="hidden">
+</section>
+
+<section class="editor" id="editor">
+  <div class="ed-top">
+    <span class="kind" id="edKind"></span>
+    <button class="icon-btn" id="edPin" aria-label="Anheften"></button>
+    <button class="icon-btn" id="edDelete" aria-label="Löschen"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></button>
+    <button class="ed-done" id="edClose">Fertig</button>
+  </div>
+  <div class="ed-body" id="edBody"></div>
+</section>
+
+<section class="search hidden" id="search">
+  <div class="s-top">
+    <div class="s-in"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="sInput" placeholder="In allen Boards suchen" autocomplete="off"></div>
+    <button class="ed-done" id="sClose" style="background:none;color:var(--accent)">Abbrechen</button>
+  </div>
+  <div class="s-res" id="sRes"></div>
+</section>
+
+<input type="file" id="photoFile" accept="image/*" class="hidden">
+<div class="toast" id="toast"><span id="toastMsg"></span><button id="toastBtn" class="hidden">Rückgängig</button></div>
+
+<script>
+"use strict";
+/* ================= Icons & Typen ================= */
+const IC = {
+  task:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="m8 12 3 3 5-6"/></svg>',
+  note:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h10l4 4v14H5z"/><path d="M9 11h6M9 15h4"/></svg>',
+  photo:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="15" rx="3"/><circle cx="12" cy="12.5" r="3.5"/><path d="M8 5l1.5-2h5L16 5"/></svg>',
+  plan:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16.5" rx="3"/><path d="M3 10h18M8 2.5v4M16 2.5v4"/></svg>',
+  pin:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.5 2.5 21.5 9.5l-2 1-3.5 3.5.5 4.5-1.5 1.5-4-4-5.5 5.5H4.5v-1L10 15l-4-4L7.5 9.5l4.5.5L15.5 6.5z"/></svg>',
+  pinO:'<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M14.5 2.5 21.5 9.5l-2 1-3.5 3.5.5 4.5-1.5 1.5-4-4-5.5 5.5H4.5v-1L10 15l-4-4L7.5 9.5l4.5.5L15.5 6.5z"/></svg>',
+  pinF:'<svg width="21" height="21" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"><path d="M14.5 2.5 21.5 9.5l-2 1-3.5 3.5.5 4.5-1.5 1.5-4-4-5.5 5.5H4.5v-1L10 15l-4-4L7.5 9.5l4.5.5L15.5 6.5z"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
+  x:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  plus:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  dots:'<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>'
+};
+const TYPES = {
+  task:{label:'Aufgaben', one:'Aufgabe', hint:'Checkliste mit Fortschritt'},
+  note:{label:'Notizen', one:'Notiz', hint:'Gedanken, Ideen, Infos'},
+  photo:{label:'Fotos', one:'Foto', hint:'Bild aus Kamera oder Galerie'},
+  plan:{label:'Pläne', one:'Plan', hint:'Termin mit Datum und Ort'}
+};
+const COLORS = ['none','yellow','green','blue','pink','purple','orange'];
+const EMOJIS = ['📌','🏠','🏫','💼','🗓️','✈️','🎨','📚','🛒','💡','❤️','🌱','⚽','🎄','🧳','⭐'];
+const MONTHS = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+const WDAYS = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+
+/* ================= Hilfsfunktionen ================= */
+const $ = s => document.querySelector(s);
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,8);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const NAT = window.Native || (parent && parent.Native) || null;
+const vibrate = ms => { try{ if(NAT) NAT.haptic(); else navigator.vibrate && navigator.vibrate(ms) }catch(e){} };
+function isoDay(d){ const z=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate()); }
+function addDays(n){ const d=new Date(); d.setDate(d.getDate()+n); return isoDay(d); }
+
+/* ================= Speicher (IndexedDB) ================= */
+const DB = {
+  db:null,
+  open(){ return new Promise((res,rej)=>{ const r=indexedDB.open('pinnwand',1);
+    r.onupgradeneeded=()=>{ const d=r.result; d.createObjectStore('kv'); d.createObjectStore('img'); };
+    r.onsuccess=()=>{ this.db=r.result; res(); }; r.onerror=()=>rej(r.error); }); },
+  tx(store,mode,fn){ return new Promise((res,rej)=>{ const t=this.db.transaction(store,mode); const s=t.objectStore(store); const out=fn(s);
+    t.oncomplete=()=>res(out&&out.result); t.onerror=()=>rej(t.error); }); },
+  get(store,k){ return this.tx(store,'readonly',s=>s.get(k)); },
+  put(store,k,v){ return this.tx(store,'readwrite',s=>s.put(v,k)); },
+  del(store,k){ return this.tx(store,'readwrite',s=>s.delete(k)); },
+  keys(store){ return this.tx(store,'readonly',s=>s.getAllKeys()); },
+  clear(store){ return this.tx(store,'readwrite',s=>s.clear()); }
+};
+const imgCache = new Map();
+async function getImg(id){ if(!id) return null; if(imgCache.has(id)) return imgCache.get(id); const v=await DB.get('img',id); if(v) imgCache.set(id,v); return v||null; }
+async function putImg(id,data){ imgCache.set(id,data); await DB.put('img',id,data); }
+
+let S = null; // Zustand
+let saveT = null;
+function save(){ clearTimeout(saveT); saveT=setTimeout(()=>DB.put('kv','state',S).catch(e=>toast('Speichern fehlgeschlagen')),250); }
+function saveNow(){ clearTimeout(saveT); return DB.put('kv','state',S); }
+
+/* ================= Vorlagen ================= */
+function mkCard(type, o={}){ return Object.assign({id:uid(),type,title:'',color:'none',pinned:false,done:false,created:Date.now(),updated:Date.now()},
+  type==='task'?{items:[]}:type==='note'?{text:''}:type==='photo'?{photo:null,text:''}:{date:addDays(1),time:'',place:'',text:''}, o); }
+const items = arr => arr.map(t=>({id:uid(),text:t.replace(/^\+/,''),done:t.startsWith('+')}));
+const TEMPLATES = [
+  {key:'empty', emoji:'📌', name:'Leeres Board', desc:'Ohne Karten starten', cards:()=>[]},
+  {key:'home', emoji:'🏠', name:'Zuhause', desc:'Haushalt, Einkauf, Familie', cards:()=>[
+    mkCard('task',{title:'Einkaufsliste',color:'green',items:items(['Brot','Milch','Obst'])}),
+    mkCard('task',{title:'Haushalt diese Woche',items:items(['Wäsche','Altpapier rausbringen','Pflanzen gießen'])}),
+    mkCard('plan',{title:'Müllabfuhr',date:addDays(2),time:'07:00'}),
+    mkCard('note',{title:'Wichtige Nummern',color:'yellow',text:'Hausarzt: \nSchule: \nHandwerker: '})]},
+  {key:'school', emoji:'🏫', name:'Schule', desc:'Unterricht, Korrekturen, Termine', cards:()=>[
+    mkCard('task',{title:'Diese Woche',color:'blue',items:items(['Arbeitsblätter kopieren','Klassenarbeit korrigieren','Elternbrief schreiben'])}),
+    mkCard('plan',{title:'Konferenz',date:addDays(3),time:'14:30',place:'Lehrerzimmer'}),
+    mkCard('note',{title:'Ideen für den Unterricht',color:'yellow',text:''}),
+    mkCard('task',{title:'Irgendwann',items:items(['Material sortieren'])})]},
+  {key:'week', emoji:'🗓️', name:'Meine Woche', desc:'Fokus, Top 3, Termine', cards:()=>[
+    mkCard('note',{title:'Fokus der Woche',color:'purple',text:'Was soll am Freitag erledigt sein?'}),
+    mkCard('task',{title:'Top 3',color:'orange',items:items(['','',''].map((_,i)=>'Priorität '+(i+1)))}),
+    mkCard('task',{title:'Kleinkram',items:[]}),
+    mkCard('plan',{title:'Wochenrückblick',date:addDays((5-new Date().getDay()+7)%7||7),time:'16:00'})]},
+  {key:'trip', emoji:'✈️', name:'Reise', desc:'Packliste, Abfahrt, Unterkunft', cards:()=>[
+    mkCard('task',{title:'Packliste',color:'blue',items:items(['Ausweise','Ladekabel','Medikamente','Kleidung'])}),
+    mkCard('plan',{title:'Abfahrt',date:addDays(14),time:'08:00'}),
+    mkCard('note',{title:'Unterkunft',text:'Adresse:\nCheck-in:\nKontakt:'}),
+    mkCard('task',{title:'Vorher erledigen',items:items(['Nachbarn Bescheid geben','Pflanzen versorgen'])})]}
+];
+function welcome(){ return {id:uid(),name:'Mein Board',emoji:'📌',demo:true,cards:[
+  mkCard('note',{title:'Willkommen auf deiner Pinnwand 👋',color:'yellow',text:'Aufgaben, Notizen, Fotos und Pläne – alles auf einem Board, alles im Blick.\n\nTippe auf eine Karte, um sie zu bearbeiten.'}),
+  mkCard('task',{title:'Erste Schritte',color:'green',items:items(['+Assistent installieren','Mit + eine Karte anlegen','Karte gedrückt halten und verschieben','Oben auf den Board-Namen tippen für weitere Boards'])}),
+  mkCard('plan',{title:'Board einrichten',date:addDays(0),time:'',text:'Lege dir z. B. ein Board für Zuhause und eins für die Schule an.'}),
+  mkCard('photo',{title:'',text:'Füge Fotos hinzu – z. B. vom Tafelbild oder Stundenplan.'})]}; }
+
+/* ================= Zugriff ================= */
+const board = () => S.boards.find(b=>b.id===S.current) || S.boards[0];
+function findCard(id){ for(const b of S.boards){ const c=b.cards.find(c=>c.id===id); if(c) return {b,c}; } return {}; }
+
+/* ================= Theme ================= */
+function applyTheme(){ return; }
+
+/* ================= Datum ================= */
+function relDay(iso){ if(!iso) return null; const d=new Date(iso+'T00:00:00'); const t=new Date(); t.setHours(0,0,0,0);
+  const n=Math.round((d-t)/864e5);
+  if(n===0) return {t:'Heute',c:'today'}; if(n===1) return {t:'Morgen',c:''}; if(n===2) return {t:'Übermorgen',c:''};
+  if(n===-1) return {t:'Gestern',c:'past'}; if(n<0) return {t:'vor '+(-n)+' Tagen',c:'past'};
+  if(n<7) return {t:'in '+n+' Tagen',c:''}; if(n<14) return {t:'nächste Woche',c:''};
+  return {t:'in '+Math.round(n/7)+' Wochen',c:''}; }
+
+/* ================= Rendering: Chips ================= */
+function visible(c, f){ if(f==='done') return c.done; if(c.done) return false; return f==='all' || c.type===f; }
+function renderChips(){ const b=board(); const f=S.filter||'all';
+  const cnt = k => b.cards.filter(c=>visible(c,k)).length;
+  const defs=[['all','Alle'],['task','Aufgaben'],['note','Notizen'],['photo','Fotos'],['plan','Pläne'],['done','Erledigt']];
+  $('#chips').innerHTML = defs.map(([k,l])=>{ const n=cnt(k); if(k!=='all'&&k!==f&&!n) return '';
+    return `<button class="chip ${k===f?'on':''}" data-f="${k}">${l}<span class="n">${n}</span></button>`; }).join(''); }
+$('#chips').addEventListener('click',e=>{ const b=e.target.closest('.chip'); if(!b) return; S.filter=b.dataset.f; save(); render(); window.scrollTo({top:0}); });
+
+/* ================= Rendering: Karten ================= */
+function cardHTML(c){
+  const kind = `<div class="kind k-${c.type}">${IC[c.type]}<span>${TYPES[c.type].one}</span>${c.pinned?`<span class="pin">${IC.pin.replace('<svg','<svg width="14" height="14"')}</span>`:''}</div>`;
+  let inner='';
+  if(c.type==='task'){
+    const total=c.items.length, dn=c.items.filter(i=>i.done).length;
+    const show=[...c.items.filter(i=>!i.done), ...c.items.filter(i=>i.done)].slice(0,6);
+    inner = (c.title?`<h3>${esc(c.title)}</h3>`:'') +
+      (total?`<ul class="items">${show.map(i=>`<li class="${i.done?'x':''}" data-item="${i.id}"><span class="box ${i.done?'on':''}">${i.done?IC.check:''}</span><span>${esc(i.text)||'…'}</span></li>`).join('')}</ul>`
+      + (total>6?`<div class="more">+ ${total-6} weitere</div>`:'')
+      + `<div class="prog"><i style="width:${total?Math.round(dn/total*100):0}%"></i></div><div class="prog-l">${dn} von ${total} erledigt</div>`
+      : `<div class="small">Noch keine Einträge</div>`);
+  } else if(c.type==='note'){
+    inner = (c.title?`<h3>${esc(c.title)}</h3>`:'') + (c.text?`<div class="txt">${esc(c.text)}</div>`:(!c.title?'<div class="small">Leere Notiz</div>':''));
+  } else if(c.type==='photo'){
+    return `<article class="card ${c.done?'done':''}" data-id="${c.id}" data-color="${c.color}">`+
+      (c.photo?`<img class="ph" data-img="${c.photo}" alt="" style="aspect-ratio:${c.ratio||1.33}">`:`<div class="ph-empty">Tippen, um ein Foto hinzuzufügen</div>`)+
+      `<div class="body">${kind}${c.title?`<h3>${esc(c.title)}</h3>`:''}${c.text?`<div class="txt" style="-webkit-line-clamp:4">${esc(c.text)}</div>`:''}</div></article>`;
+  } else if(c.type==='plan'){
+    const d=c.date?new Date(c.date+'T00:00:00'):null; const r=relDay(c.date);
+    inner = `<div class="plan">${d?`<div class="cal"><div class="m">${MONTHS[d.getMonth()]}</div><div class="d">${d.getDate()}</div><div class="w">${WDAYS[d.getDay()]}</div></div>`:''}
+      <div class="meta"><h3 style="margin:0">${esc(c.title)||'Termin'}</h3>${c.time?`<div class="small">🕒 ${esc(c.time)} Uhr</div>`:''}${c.place?`<div class="small">📍 ${esc(c.place)}</div>`:''}${r&&!c.done?`<span class="rel ${r.c}">${r.t}</span>`:''}</div></div>`+
+      (c.text?`<div class="txt" style="margin-top:8px;-webkit-line-clamp:4;font-size:13.5px">${esc(c.text)}</div>`:'');
+  }
+  return `<article class="card ${c.done?'done':''}" data-id="${c.id}" data-color="${c.color}"><div class="body">${kind}${inner}</div></article>`;
+}
+function colCount(){ const w=window.innerWidth; return w>=1100?4:w>=760?3:w>=300?2:1; }
+function sortedCards(){ const b=board(), f=S.filter||'all'; const v=b.cards.filter(c=>visible(c,f));
+  return [...v.filter(c=>c.pinned), ...v.filter(c=>!c.pinned)]; }
+function render(){
+  const b=board(); $('#bEmoji').textContent=b.emoji; $('#bName').textContent=b.name; document.title=b.name;
+  renderChips();
+  const cards=sortedCards(); const el=$('#board');
+  if(!cards.length){ const f=S.filter||'all';
+    el.innerHTML = `<div class="empty"><b>${f==='done'?'Noch nichts erledigt':'Hier ist noch Platz'}</b>${f==='done'?'Erledigte Karten landen hier.':'Tippe auf +, um deine erste Karte anzulegen.'}</div>`; return; }
+  const n=colCount(); el.innerHTML = Array.from({length:n},()=>'<div class="col"></div>').join('');
+  const cols=[...el.children]; const h=new Array(n).fill(0);
+  // Karten nacheinander in die jeweils kürzeste Spalte legen (Lesefolge links→rechts)
+  for(const c of cards){ let k=0; for(let i=1;i<n;i++) if(h[i]<h[k]-4) k=i;
+    cols[k].insertAdjacentHTML('beforeend',cardHTML(c)); const node=cols[k].lastElementChild;
+    h[k]+= node.offsetHeight + 10; }
+  el.querySelectorAll('img[data-img]').forEach(async im=>{ const d=await getImg(im.dataset.img); if(d) im.src=d; });
+}
+window.addEventListener('resize',()=>{ clearTimeout(window.__rz); window.__rz=setTimeout(render,150); });
+
+/* ================= Interaktion auf dem Board ================= */
+let drag=null, press=null, suppressClick=false;
+$('#board').addEventListener('click',e=>{
+  if(suppressClick){ suppressClick=false; return; }
+  const card=e.target.closest('.card'); if(!card) return;
+  const li=e.target.closest('li[data-item]');
+  if(li && e.target.closest('.box')){ const {c}=findCard(card.dataset.id); const it=c.items.find(i=>i.id===li.dataset.item);
+    it.done=!it.done; c.updated=Date.now(); vibrate(10); save();
+    if(c.items.length && c.items.every(i=>i.done)) toast('Alles erledigt! 🎉'); render(); return; }
+  openEditor(card.dataset.id);
+});
+function pointer(e){ const t=e.touches?e.touches[0]||e.changedTouches[0]:e; return {x:t.clientX,y:t.clientY}; }
+function startPress(e){ const card=e.target.closest('.card'); if(!card||drag) return; if(e.button>0) return;
+  const p=pointer(e); press={card,x:p.x,y:p.y,timer:setTimeout(()=>beginDrag(card,p),420)}; }
+function beginDrag(card,p){ const r=card.getBoundingClientRect(); vibrate(25);
+  const cl=card.cloneNode(true); cl.classList.add('drag-clone'); cl.style.width=r.width+'px'; cl.style.left=r.left+'px'; cl.style.top=r.top+'px';
+  document.body.appendChild(cl); card.classList.add('ghost');
+  drag={id:card.dataset.id,card,clone:cl,dx:p.x-r.left,dy:p.y-r.top,target:null}; press=null; }
+function movePress(e){
+  if(press){ const p=pointer(e); if(Math.hypot(p.x-press.x,p.y-press.y)>9){ clearTimeout(press.timer); press=null; } return; }
+  if(!drag) return; e.preventDefault(); const p=pointer(e);
+  drag.clone.style.left=(p.x-drag.dx)+'px'; drag.clone.style.top=(p.y-drag.dy)+'px';
+  const under=document.elementFromPoint(p.x,p.y); const t=under&&under.closest('.card:not(.ghost)');
+  if(drag.target&&drag.target!==t) drag.target.classList.remove('drop-target');
+  drag.target=t||null; if(t) t.classList.add('drop-target');
+  // Auto-Scroll am Rand
+  const edge=70; if(p.y<edge+60) window.scrollBy(0,-12); else if(p.y>innerHeight-edge) window.scrollBy(0,12); }
+function endPress(){
+  if(press){ clearTimeout(press.timer); press=null; return; }
+  if(!drag) return; const d=drag; drag=null; d.clone.remove(); d.card.classList.remove('ghost'); suppressClick=true; setTimeout(()=>suppressClick=false,350);
+  if(d.target){ d.target.classList.remove('drop-target'); const b=board(); const from=b.cards.findIndex(c=>c.id===d.id);
+    const [m]=b.cards.splice(from,1); const tc=b.cards.find(c=>c.id===d.target.dataset.id); let to=b.cards.indexOf(tc);
+    const fromAfter = from>to; // nach vorn gezogen → davor einfügen, sonst dahinter
+    b.cards.splice(fromAfter?to:to+1,0,m); if(tc.pinned!==m.pinned) m.pinned=tc.pinned; save(); vibrate(10); }
+  render(); }
+const bd=$('#board');
+bd.addEventListener('touchstart',startPress,{passive:true});
+bd.addEventListener('mousedown',startPress);
+window.addEventListener('touchmove',movePress,{passive:false});
+window.addEventListener('mousemove',movePress);
+window.addEventListener('touchend',endPress); window.addEventListener('touchcancel',endPress); window.addEventListener('mouseup',endPress);
+bd.addEventListener('contextmenu',e=>e.preventDefault());
+
+/* ================= Sheets ================= */
+let openSheetEl=null;
+function openSheet(id){ closeSheet(true); openSheetEl=$(id); $('#scrim').classList.add('show'); openSheetEl.classList.add('show'); }
+function closeSheet(quick){ if(!openSheetEl) return; openSheetEl.classList.remove('show'); openSheetEl=null; $('#scrim').classList.remove('show'); }
+$('#scrim').addEventListener('click',()=>closeSheet());
+// Wischen nach unten schließt
+document.querySelectorAll('.sheet').forEach(sh=>{ let y0=null;
+  sh.addEventListener('touchstart',e=>{ if(sh.scrollTop<=0) y0=e.touches[0].clientY; },{passive:true});
+  sh.addEventListener('touchmove',e=>{ if(y0!=null){ const dy=e.touches[0].clientY-y0; if(dy>0) sh.style.transform=`translateY(${dy}px)`; } },{passive:true});
+  sh.addEventListener('touchend',e=>{ if(y0!=null){ const dy=e.changedTouches[0].clientY-y0; sh.style.transform=''; if(dy>90) closeSheet(); } y0=null; }); });
+
+/* Neue Karte */
+$('#types').innerHTML = Object.entries(TYPES).map(([k,t])=>`<button class="type" data-t="${k}"><span class="ic" style="background:var(--t-${k})">${IC[k].replace('<svg','<svg width="21" height="21"')}</span><b>${t.one}</b><small>${t.hint}</small></button>`).join('');
+$('#fab').addEventListener('click',()=>openSheet('#addSheet'));
+$('#types').addEventListener('click',e=>{ const b=e.target.closest('.type'); if(!b) return; closeSheet();
+  const c=mkCard(b.dataset.t); const bo=board(); bo.cards.unshift(c); c.__new=true;
+  if(S.filter!=='all' && S.filter!==c.type) S.filter='all'; save(); render(); openEditor(c.id,true);
+  if(c.type==='photo') setTimeout(()=>pickPhoto(c.id),280); });
+
+/* Boards */
+function renderBoards(){
+  $('#boardList').innerHTML = S.boards.map(b=>{ const open=b.cards.filter(c=>!c.done).length;
+    return `<div class="row ${b.id===S.current?'cur':''}" data-b="${b.id}"><span class="e">${b.emoji}</span><span class="l"><b>${esc(b.name)}</b><small>${open} ${open===1?'Karte':'Karten'}</small></span><button class="act" data-edit="${b.id}" aria-label="Bearbeiten">${IC.dots}</button></div>`; }).join('');
+  $('#tplList').innerHTML = TEMPLATES.map(t=>`<button class="row" data-tpl="${t.key}"><span class="e">${t.emoji}</span><span class="l"><b>${t.name}</b><small>${t.desc}</small></span><span class="act">${IC.plus}</span></button>`).join(''); }
+$('#boardBtn').addEventListener('click',()=>{ renderBoards(); openSheet('#boardSheet'); });
+$('#boardList').addEventListener('click',e=>{ const ed=e.target.closest('[data-edit]');
+  if(ed){ editBoard(ed.dataset.edit); return; }
+  const r=e.target.closest('[data-b]'); if(!r) return; S.current=r.dataset.b; S.filter='all'; save(); closeSheet(); render(); window.scrollTo({top:0}); });
+$('#tplList').addEventListener('click',async e=>{ const r=e.target.closest('[data-tpl]'); if(!r) return; const t=TEMPLATES.find(x=>x.key===r.dataset.tpl);
+  const res=await promptDialog({title:'Neues Board',value:t.key==='empty'?'':t.name,placeholder:'Name des Boards',emoji:t.emoji,ok:'Anlegen'}); if(!res) return;
+  const b={id:uid(),name:res.value||t.name,emoji:res.emoji,cards:t.cards()}; S.boards.push(b); S.current=b.id; S.filter='all'; save(); closeSheet(); render(); toast('Board „'+b.name+'“ angelegt'); });
+async function editBoard(id){ const b=S.boards.find(x=>x.id===id);
+  const res=await promptDialog({title:'Board bearbeiten',value:b.name,placeholder:'Name',emoji:b.emoji,ok:'Speichern'}); if(!res) return;
+  b.name=res.value||b.name; b.emoji=res.emoji; save(); renderBoards(); render(); }
+
+/* Menü */
+$('#menuBtn').addEventListener('click',()=>{ applyTheme(); openSheet('#menuSheet'); });
+$('#mRename').addEventListener('click',()=>{ closeSheet(); editBoard(board().id); });
+$('#mClearDone').addEventListener('click',async()=>{ const b=board(); const n=b.cards.filter(c=>c.done).length; closeSheet();
+  if(!n){ toast('Keine erledigten Karten'); return; }
+  if(!await confirmDialog({title:n+' erledigte '+(n===1?'Karte':'Karten')+' löschen?',text:'Das kann nicht rückgängig gemacht werden.',ok:'Löschen',danger:true})) return;
+  const gone=b.cards.filter(c=>c.done); b.cards=b.cards.filter(c=>!c.done); gone.forEach(c=>c.photo&&DB.del('img',c.photo)); save(); render(); toast('Gelöscht'); });
+$('#mDelBoard').addEventListener('click',async()=>{ const b=board(); closeSheet();
+  if(S.boards.length===1){ toast('Das letzte Board kann nicht gelöscht werden'); return; }
+  if(!await confirmDialog({title:'„'+b.name+'“ löschen?',text:'Alle '+b.cards.length+' Karten auf diesem Board werden gelöscht.',ok:'Löschen',danger:true})) return;
+  b.cards.forEach(c=>c.photo&&DB.del('img',c.photo)); S.boards=S.boards.filter(x=>x!==b); S.current=S.boards[0].id; save(); render(); toast('Board gelöscht'); });
+$('#mExport').addEventListener('click',exportData);
+$('#mMigrate').addEventListener('click',()=>{ closeSheet(); try{ parent.openImport(); }catch(e){} });
+$('#mImport').addEventListener('click',()=>$('#importFile').click());
+$('#importFile').addEventListener('change',importData);
+
+/* ================= Editor ================= */
+let edId=null;
+function openEditor(id,isNew){ edId=id; renderEditor(isNew); $('#editor').classList.add('show');
+  if(isNew){ const f=$('#editor .ed-title'); const c=findCard(id).c; if(c.type!=='photo') setTimeout(()=>f&&f.focus(),300); } }
+function closeEditor(){ if(!edId) return; const {b,c}=findCard(edId); $('#editor').classList.remove('show');
+  if(document.activeElement) document.activeElement.blur();
+  if(c){ delete c.__new; c.items && (c.items=c.items.filter(i=>i.text.trim()||i.done));
+    const empty = !c.title.trim() && !(c.text||'').trim() && !(c.items&&c.items.length) && !c.photo && c.type!=='plan';
+    if(empty){ b.cards=b.cards.filter(x=>x!==c); } }
+  edId=null; save(); render(); }
+$('#edClose').addEventListener('click',closeEditor);
+$('#edPin').addEventListener('click',()=>{ const {c}=findCard(edId); c.pinned=!c.pinned; save(); renderEdTop(c); toast(c.pinned?'Oben angeheftet':'Nicht mehr angeheftet'); });
+$('#edDelete').addEventListener('click',()=>{ const {b,c}=findCard(edId); const idx=b.cards.indexOf(c); b.cards.splice(idx,1); edId=null;
+  $('#editor').classList.remove('show'); save(); render();
+  toast('Karte gelöscht',()=>{ b.cards.splice(idx,0,c); save(); render(); }, ()=>{ if(c.photo) DB.del('img',c.photo); }); });
+function renderEdTop(c){ $('#edKind').className='kind k-'+c.type; $('#edKind').innerHTML=IC[c.type]+'<span>'+TYPES[c.type].one+'</span>';
+  $('#edPin').innerHTML = c.pinned?IC.pinF:IC.pinO; }
+function colorsHTML(c){ return `<div class="colors">${COLORS.map(k=>`<button class="sw ${c.color===k?'on':''}" data-c="${k}" aria-label="Farbe ${k}"></button>`).join('')}</div>`; }
+function renderEditor(){
+  const {b,c}=findCard(edId); if(!c) return; renderEdTop(c);
+  let h=`<input class="ed-title" id="eTitle" placeholder="${c.type==='plan'?'Was steht an?':'Titel'}" value="${esc(c.title)}">`;
+  if(c.type==='task'){
+    h+=`<ul class="ed-items" id="eItems">${c.items.map(itemRow).join('')}</ul>
+        <button class="add-item" id="eAdd">${IC.plus}Eintrag hinzufügen</button>`;
+  } else if(c.type==='note'){
+    h+=`<textarea class="ed-text" id="eText" placeholder="Schreib los …">${esc(c.text)}</textarea>`;
+  } else if(c.type==='photo'){
+    h+=`<div class="ph-edit" id="ePh">${c.photo?`<img id="ePhImg" alt="">`:`<div class="ph-empty" style="height:180px">Noch kein Foto</div>`}</div>
+        <button class="btn" id="ePick">${IC.photo.replace('<svg','<svg width="20" height="20"')}${c.photo?'Foto ändern':'Foto aufnehmen oder auswählen'}</button>
+        <textarea class="ed-text" id="eText" style="min-height:90px" placeholder="Beschreibung (optional)">${esc(c.text)}</textarea>`;
+  } else if(c.type==='plan'){
+    h+=`<div class="field"><label><span>Datum</span><input type="date" id="eDate" value="${esc(c.date)}"></label>
+        <label><span>Uhrzeit</span><input type="time" id="eTime" value="${esc(c.time)}"></label>
+        <label><span>Ort</span><input id="ePlace" placeholder="optional" value="${esc(c.place)}"></label></div>
+        <textarea class="ed-text" id="eText" style="min-height:120px" placeholder="Notizen zum Termin">${esc(c.text)}</textarea>`;
+  }
+  h+=`<div class="sec-t" style="margin-left:0">Farbe</div>${colorsHTML(c)}`;
+  h+=`<div class="ed-foot"><button class="btn ${c.done?'':'primary'}" id="eDone">${c.done?'Wieder aktivieren':'Als erledigt markieren'}</button>`;
+  if(S.boards.length>1) h+=`<button class="btn" id="eMove">Auf anderes Board verschieben</button>`;
+  h+=`</div><div class="stamp">Erstellt ${new Date(c.created).toLocaleDateString('de-DE')} · zuletzt geändert ${new Date(c.updated).toLocaleString('de-DE',{dateStyle:'short',timeStyle:'short'})}</div>`;
+  const body=$('#edBody'); body.innerHTML=h; body.scrollTop=0;
+  if(c.type==='photo'&&c.photo) getImg(c.photo).then(d=>{ const im=$('#ePhImg'); if(im&&d) im.src=d; });
+  autosize();
+}
+function itemRow(i){ return `<li class="${i.done?'x':''}" data-i="${i.id}"><button class="box ${i.done?'on':''}">${i.done?IC.check:''}</button><input type="text" value="${esc(i.text)}" placeholder="Neuer Eintrag" enterkeyhint="next"><button class="del" aria-label="Entfernen">${IC.x}</button></li>`; }
+function autosize(){ document.querySelectorAll('#edBody textarea').forEach(t=>{ t.style.height='auto'; t.style.height=Math.max(t.scrollHeight, t.id==='eText'&&findCard(edId).c.type==='note'?220:0)+'px'; }); }
+function touch(c){ c.updated=Date.now(); save(); }
+$('#edBody').addEventListener('input',e=>{ const {c}=findCard(edId); if(!c) return; const t=e.target;
+  if(t.id==='eTitle') c.title=t.value; else if(t.id==='eText'){ c.text=t.value; autosize(); }
+  else if(t.id==='eDate') c.date=t.value; else if(t.id==='eTime') c.time=t.value; else if(t.id==='ePlace') c.place=t.value;
+  else if(t.closest('li[data-i]')){ const it=c.items.find(i=>i.id===t.closest('li').dataset.i); it.text=t.value; }
+  touch(c); });
+$('#edBody').addEventListener('keydown',e=>{ const li=e.target.closest('#eItems li'); if(!li) return; const {c}=findCard(edId);
+  if(e.key==='Enter'){ e.preventDefault(); addItem(c, li.dataset.i); }
+  if(e.key==='Backspace' && !e.target.value){ e.preventDefault(); const idx=c.items.findIndex(i=>i.id===li.dataset.i); const prev=li.previousElementSibling;
+    c.items.splice(idx,1); li.remove(); touch(c); if(prev) { const inp=prev.querySelector('input'); inp.focus(); inp.setSelectionRange(inp.value.length,inp.value.length);} } });
+$('#edBody').addEventListener('keydown',e=>{ if(e.target.id==='eTitle'&&e.key==='Enter'){ e.preventDefault(); const {c}=findCard(edId);
+  if(c.type==='task'){ if(c.items.length) $('#eItems input').focus(); else addItem(c); } else { const t=$('#eText')||$('#eDate'); t&&t.focus(); } } });
+function addItem(c, afterId){ const it={id:uid(),text:'',done:false}; let idx=afterId?c.items.findIndex(i=>i.id===afterId)+1:c.items.length; c.items.splice(idx,0,it); touch(c);
+  const ul=$('#eItems'); const ref=afterId?ul.querySelector(`li[data-i="${afterId}"]`):null; const html=itemRow(it);
+  if(ref) ref.insertAdjacentHTML('afterend',html); else ul.insertAdjacentHTML('beforeend',html);
+  ul.querySelector(`li[data-i="${it.id}"] input`).focus(); }
+$('#edBody').addEventListener('click',e=>{ const {b,c}=findCard(edId); if(!c) return;
+  const sw=e.target.closest('.sw'); if(sw){ c.color=sw.dataset.c; touch(c); document.querySelectorAll('.sw').forEach(x=>x.classList.toggle('on',x===sw)); return; }
+  if(e.target.closest('#eAdd')){ addItem(c); return; }
+  const li=e.target.closest('#eItems li');
+  if(li && e.target.closest('.box')){ const it=c.items.find(i=>i.id===li.dataset.i); it.done=!it.done; vibrate(10); touch(c); li.outerHTML=itemRow(it); return; }
+  if(li && e.target.closest('.del')){ c.items=c.items.filter(i=>i.id!==li.dataset.i); li.remove(); touch(c); return; }
+  if(e.target.closest('#ePick')||e.target.closest('#ePh')){ pickPhoto(c.id); return; }
+  if(e.target.closest('#eDone')){ c.done=!c.done; touch(c); const was=c.done; closeEditor(); toast(was?'Erledigt ✓':'Wieder aktiv'); return; }
+  if(e.target.closest('#eMove')){ moveCard(c,b); return; } });
+async function moveCard(c,from){ const others=S.boards.filter(x=>x!==from);
+  const pick=await choiceDialog('Verschieben nach …', others.map(o=>({v:o.id,l:o.emoji+'  '+o.name}))); if(!pick) return;
+  const to=S.boards.find(x=>x.id===pick); from.cards=from.cards.filter(x=>x!==c); to.cards.unshift(c); edId=null; $('#editor').classList.remove('show');
+  save(); render(); toast('Verschoben nach „'+to.name+'“'); }
+
+/* ================= Fotos ================= */
+let photoTarget=null;
+function pickPhoto(id){ photoTarget=id; const f=$('#photoFile'); f.value=''; f.click(); }
+$('#photoFile').addEventListener('change',async e=>{ const file=e.target.files[0]; if(!file||!photoTarget) return; const {c}=findCard(photoTarget); if(!c) return;
+  try{ const {data,ratio}=await shrink(file,1600,.82); const old=c.photo; const id='i'+uid(); await putImg(id,data); c.photo=id; c.ratio=ratio; touch(c);
+    if(old){ DB.del('img',old); imgCache.delete(old); } if(edId===c.id) renderEditor(); render(); }
+  catch(err){ toast('Foto konnte nicht geladen werden'); } });
+function shrink(file,max,q){ return new Promise((res,rej)=>{ const url=URL.createObjectURL(file); const im=new Image();
+  im.onload=()=>{ let w=im.naturalWidth,h=im.naturalHeight; const s=Math.min(1,max/Math.max(w,h)); w=Math.round(w*s); h=Math.round(h*s);
+    const cv=document.createElement('canvas'); cv.width=w; cv.height=h; cv.getContext('2d').drawImage(im,0,0,w,h); URL.revokeObjectURL(url);
+    res({data:cv.toDataURL('image/jpeg',q),ratio:w/h}); };
+  im.onerror=()=>{ URL.revokeObjectURL(url); rej(); }; im.src=url; }); }
+
+/* ================= Suche ================= */
+$('#searchBtn').addEventListener('click',()=>{ $('#search').classList.remove('hidden'); $('#sInput').value=''; runSearch(); setTimeout(()=>$('#sInput').focus(),50); });
+$('#sClose').addEventListener('click',closeSearch);
+function closeSearch(){ $('#search').classList.add('hidden'); $('#sInput').blur(); }
+$('#sInput').addEventListener('input',runSearch);
+function runSearch(){ const q=$('#sInput').value.trim().toLowerCase(); const out=[];
+  if(q) for(const b of S.boards) for(const c of b.cards){ const hay=[c.title,c.text,c.place,...(c.items||[]).map(i=>i.text)].join(' ').toLowerCase();
+    if(hay.includes(q)) out.push({b,c}); }
+  $('#sRes').innerHTML = !q?'<div class="empty">Suche nach Titeln, Notizen, Einträgen und Orten.</div>':
+    !out.length?'<div class="empty"><b>Nichts gefunden</b>Versuch es mit einem anderen Wort.</div>':
+    '<div class="list">'+out.map(({b,c})=>{ const sn=(c.text||(c.items||[]).map(i=>i.text).join(', ')||c.place||'');
+      return `<button class="row" data-id="${c.id}" data-b="${b.id}"><span class="e" style="color:var(--t-${c.type})">${IC[c.type].replace('<svg','<svg width="22" height="22"')}</span><span class="l"><b>${esc(c.title||TYPES[c.type].one)}${c.done?' ✓':''}</b><small>${b.emoji} ${esc(b.name)}${sn?' · '+esc(sn.slice(0,80)):''}</small></span></button>`; }).join('')+'</div>'; }
+$('#sRes').addEventListener('click',e=>{ const r=e.target.closest('[data-id]'); if(!r) return; S.current=r.dataset.b; S.filter='all'; closeSearch(); render(); openEditor(r.dataset.id); });
+
+/* ================= Sicherung ================= */
+async function exportData(){ closeSheet(); const images={}; for(const b of S.boards) for(const c of b.cards) if(c.photo){ const d=await getImg(c.photo); if(d) images[c.photo]=d; }
+  const json=JSON.stringify({app:'pinnwand',version:1,exported:new Date().toISOString(),state:S,images});
+  const name='pinnwand-sicherung-'+isoDay(new Date())+'.json';
+  if(NAT){ let r=''; try{ r=NAT.saveFile(name,'application/json',json); }catch(e){} toast(r?'Gespeichert in '+r:'Export fehlgeschlagen'); return; }
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([json],{type:'application/json'})); a.download=name; a.click(); toast('Sicherung exportiert'); }
+async function importData(e){ const f=e.target.files[0]; e.target.value=''; if(!f) return; closeSheet();
+  try{ const data=JSON.parse(await f.text()); if(data.app!=='pinnwand'||!data.state||!data.state.boards) throw 0;
+    const nb=data.state.boards.length, nc=data.state.boards.reduce((a,b)=>a+b.cards.length,0);
+    if(!await confirmDialog({title:'Sicherung importieren?',text:`${nb} Boards mit ${nc} Karten. Deine aktuellen Daten werden ersetzt.`,ok:'Importieren',danger:true})) return;
+    await DB.clear('img'); imgCache.clear(); for(const [k,v] of Object.entries(data.images||{})) await putImg(k,v);
+    S=data.state; await saveNow(); applyTheme(); render(); toast('Sicherung wiederhergestellt'); }
+  catch(err){ toast('Das ist keine gültige Pinnwand-Sicherung'); } }
+
+/* ================= Dialoge & Toast ================= */
+function dialogShell(html){ const d=document.createElement('div'); d.className='dialog'; d.innerHTML=`<div class="dlg">${html}</div>`; document.body.appendChild(d); openDialog=d; return d; }
+let openDialog=null;
+function confirmDialog({title,text,ok,danger}){ return new Promise(res=>{ const d=dialogShell(`<h3>${esc(title)}</h3><p>${esc(text)}</p><div class="bts"><button class="no">Abbrechen</button><button class="ok ${danger?'danger':''}">${esc(ok)}</button></div>`);
+  const done=v=>{ d.remove(); openDialog=null; res(v); }; d.__cancel=()=>done(false);
+  d.querySelector('.no').onclick=()=>done(false); d.querySelector('.ok').onclick=()=>done(true); d.onclick=e=>{ if(e.target===d) done(false); }; }); }
+function promptDialog({title,value,placeholder,emoji,ok}){ return new Promise(res=>{ let em=emoji;
+  const d=dialogShell(`<h3>${esc(title)}</h3><div class="emojis">${EMOJIS.map(x=>`<button data-e="${x}" class="${x===em?'on':''}">${x}</button>`).join('')}</div><input value="${esc(value)}" placeholder="${esc(placeholder)}" maxlength="40"><div class="bts"><button class="no">Abbrechen</button><button class="ok">${esc(ok)}</button></div>`);
+  const inp=d.querySelector('input'); setTimeout(()=>inp.focus(),50);
+  const done=v=>{ d.remove(); openDialog=null; res(v); }; d.__cancel=()=>done(null);
+  d.querySelector('.emojis').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; em=b.dataset.e; d.querySelectorAll('.emojis button').forEach(x=>x.classList.toggle('on',x===b)); };
+  d.querySelector('.no').onclick=()=>done(null); d.querySelector('.ok').onclick=()=>done({value:inp.value.trim(),emoji:em});
+  inp.onkeydown=e=>{ if(e.key==='Enter') done({value:inp.value.trim(),emoji:em}); }; }); }
+function choiceDialog(title,opts){ return new Promise(res=>{ const d=dialogShell(`<h3>${esc(title)}</h3><div class="list" style="margin:10px 0 14px">${opts.map(o=>`<button class="row" data-v="${o.v}"><span class="l"><b>${esc(o.l)}</b></span></button>`).join('')}</div><div class="bts"><button class="no">Abbrechen</button></div>`);
+  const done=v=>{ d.remove(); openDialog=null; res(v); }; d.__cancel=()=>done(null);
+  d.querySelector('.no').onclick=()=>done(null); d.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>done(b.dataset.v)); }); }
+let toastT=null, toastFinal=null;
+function toast(msg,undo,final){ const t=$('#toast'); if(toastFinal){ toastFinal(); toastFinal=null; }
+  $('#toastMsg').textContent=msg; const b=$('#toastBtn'); b.classList.toggle('hidden',!undo);
+  b.onclick=()=>{ toastFinal=null; undo(); t.classList.remove('show'); };
+  toastFinal=final||null; t.classList.add('show'); clearTimeout(toastT);
+  toastT=setTimeout(()=>{ t.classList.remove('show'); if(toastFinal){ toastFinal(); toastFinal=null; } }, undo?4500:2200); }
+
+/* ================= Zurück-Taste (Android) ================= */
+window.handleBack = function(){
+  if(drag){ endPress(); return true; }
+  if(openDialog){ openDialog.__cancel(); return true; }
+  if(!$('#search').classList.contains('hidden')){ closeSearch(); return true; }
+  if(edId){ closeEditor(); return true; }
+  if(openSheetEl){ closeSheet(); return true; }
+  if(S && S.filter && S.filter!=='all'){ S.filter='all'; save(); render(); return true; }
+  return false; };
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') window.handleBack(); });
+document.addEventListener('visibilitychange',()=>{ if(document.hidden && S) saveNow(); });
+
+/* ================= Assistent: Datenübernahme ================= */
+window.importData = async function(data){
+  if(!data||!data.state||!Array.isArray(data.state.boards)) return 0;
+  for(const [k,v] of Object.entries(data.images||{})) await putImg(k,v);
+  // unberührtes Willkommens-Board entfernen
+  S.boards = S.boards.filter(b=>!(b.demo && b.cards.every(c=>c.updated===c.created)));
+  const have=new Set(S.boards.map(b=>b.id)); let n=0;
+  for(const b of data.state.boards){ if(have.has(b.id)) continue; S.boards.push(b); n+=b.cards.length; }
+  if(!S.boards.length){ const w=welcome(); S.boards=[w]; }
+  if(!S.boards.find(b=>b.id===S.current)) S.current=(data.state.current && S.boards.find(b=>b.id===data.state.current))?data.state.current:S.boards[0].id;
+  S.filter='all'; await saveNow(); render(); return n;
+};
+window.ready = new Promise(r=>window.__readyRes=r);
+window.briefing = async function(){
+  await window.ready;
+  const t=isoDay(new Date()), lim=addDays(7); const pinned=[], plans=[]; let openItems=0;
+  for(const b of S.boards) for(const c of b.cards){ if(c.done) continue;
+    if(c.pinned) pinned.push({id:c.id,title:c.title||TYPES[c.type].one,type:c.type,board:b.name,emoji:b.emoji,open:c.type==='task'?c.items.filter(i=>!i.done).length:null});
+    if(c.type==='plan'&&c.date&&c.date>=t&&c.date<=lim) plans.push({id:c.id,title:c.title||'Termin',date:c.date,time:c.time||'',board:b.name,emoji:b.emoji});
+    if(c.type==='task') openItems+=c.items.filter(i=>!i.done).length; }
+  plans.sort((a,b)=>(a.date+a.time)<(b.date+b.time)?-1:1);
+  return {pinned:pinned.slice(0,4),plans:plans.slice(0,3),openItems,boards:S.boards.length};
+};
+window.openCardById = function(id){ const {b}=findCard(id); if(!b) return; closeSheet(); if(!$('#search').classList.contains('hidden')) closeSearch(); S.current=b.id; S.filter='all'; save(); render(); openEditor(id); };
+
+/* Synchronisation: neuen Stand aus der Datenbank laden, ohne die Seite neu zu laden */
+window.reloadData = async function(){
+  try{ const n=await DB.get('kv','state'); if(!n||!n.boards||!n.boards.length) return; const cur=S&&S.current; S=n; if(cur&&S.boards.find(b=>b.id===cur)) S.current=cur; if(!S.boards.find(b=>b.id===S.current)) S.current=S.boards[0].id; imgCache.clear(); render(); }catch(e){}
+};
+
+/* ================= Start ================= */
+(async function init(){
+  try{ await DB.open(); S=await DB.get('kv','state'); }catch(e){ console.error(e); }
+  if(!S||!S.boards||!S.boards.length){ const w=welcome(); S={version:1,boards:[w],current:w.id,filter:'all',theme:'auto'}; save(); }
+  if(!S.boards.find(b=>b.id===S.current)) S.current=S.boards[0].id;
+  applyTheme(); render(); window.__readyRes();
+})();
+</script>
+</body>
+</html>

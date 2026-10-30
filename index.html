@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="de">
+<head>
+<script src="platform.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="author" content="Thorsten von Plotho-Kettner">
+<title>Assistent</title>
+<link rel="stylesheet" href="design.css">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#FFFFFF">
+<style>
+:root{--tab:72px;--sb:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+.frames{position:fixed;left:0;right:0;top:0;bottom:calc(var(--tab) + var(--sb))}
+.frames iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#ECECEF;visibility:hidden}
+.frames iframe.on{visibility:visible}
+.tabs{position:fixed;left:0;right:0;bottom:0;height:calc(var(--tab) + var(--sb));padding:6px 6px calc(6px + var(--sb));display:flex;gap:2px;background:rgba(236,236,239,.97);border-top:1px solid var(--line);box-shadow:0 -6px 24px rgba(0,0,0,.05);z-index:10}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--mute);font-size:10.5px;letter-spacing:-.01em;font-weight:700;border-radius:16px;position:relative;min-width:0}
+.tab .pill{width:46px;height:30px;border-radius:15px;display:grid;place-items:center;transition:background .2s}
+.tab svg{width:23px;height:23px}
+.tab.on{color:var(--accent)}
+.tab.on .pill{background:var(--accent-soft)}
+.tab .bdg{position:absolute;top:2px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--accent);color:#fff;font-size:11px;font-weight:800;display:none;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff}
+.tab .bdg.on{display:flex}
+
+/* Datenübernahme */
+.mig{position:fixed;inset:0;z-index:50;background:var(--bg);overflow-y:auto;padding:22px 16px 40px;transform:translateY(100%);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.mig.on{transform:none}
+.lead{color:var(--mute);font-size:15px;line-height:1.5;margin:10px 2px 16px}
+.step{padding:16px;margin-bottom:12px}
+.sh{display:flex;align-items:center;gap:11px;margin-bottom:10px}
+.ic{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;flex:none;background:var(--accent-soft);color:var(--accent)}
+.sh b{font-size:17px;flex:1;font-weight:800}
+.st{font-size:12px;font-weight:800;padding:5px 10px;border-radius:999px;background:var(--soft);color:var(--mute);white-space:nowrap}
+.st.ok{background:#E3F6EA;color:var(--ok)}
+.how{font-size:14.5px;line-height:1.5;margin:0 0 10px}
+.how b{white-space:nowrap}
+.act{width:100%;margin-top:6px}
+.done{width:100%;margin-top:6px;padding:15px;font-size:16px}
+.tip{font-size:13px;color:var(--mute);text-align:center;margin-top:12px;line-height:1.45}
+.toast{bottom:calc(var(--tab) + var(--sb) + 22px)}
+input[type=file]{display:none}
+
+/* ---- Assistent: Clean ---- */
+.frames iframe{background:#FFFFFF}
+.tabs{background:#fff;border-top:0;box-shadow:0 -8px 30px rgba(0,0,0,.07);padding:4px 6px calc(4px + var(--sb));border-radius:22px 22px 0 0;align-items:center}
+.tab{color:#AEAEB2;font-size:0;gap:0}
+.tab .pill{width:46px;height:40px;border-radius:14px;background:none!important}
+.tab svg{width:24px;height:24px}
+.tab.on{color:#1E8BFF}
+.tab.on::after{content:"";position:absolute;bottom:6px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:#1E8BFF}
+.tab .bdg{top:4px;left:calc(50% + 4px);background:#E5484D;color:#fff;border:2px solid #fff;box-shadow:none;border-radius:999px;font-size:10.5px}
+.mig{background:#FFFFFF}
+.ic{background:#EAF3FF;color:#1E8BFF;border:0;border-radius:50%}
+.st{border:0;border-radius:999px;background:#F4F4F6;color:#8E8E93}
+.st.ok{background:#EAF3FF;color:#1E8BFF}
+.toast{background:#1C1C1E;border-radius:16px}
+.tabs{border-radius:0;box-shadow:none;border-top:1px solid #ECECEF;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);padding:6px 6px calc(6px + var(--sb))}
+.tab{font-size:10.5px;gap:3px;color:#9A9AA0;font-weight:600}
+.tab .pill{height:30px}
+.tab.on{color:#1E8BFF}
+.tab.on::after{display:none}
+/* Am großen Bildschirm (Windows, Browser): App als ruhige Spalte in der Mitte */
+@media (min-width:760px){
+  html,body{background:#F2F2F5}
+  .frames{left:calc(50% - 270px);right:calc(50% - 270px);box-shadow:0 0 0 1px #E6E6EA,0 20px 60px rgba(0,0,0,.06)}
+  .tabs{left:calc(50% - 270px);right:calc(50% - 270px);box-shadow:0 0 0 1px #E6E6EA}
+}
+</style>
+</head>
+<body>
+<div class="frames" id="frames">
+  <iframe id="f-start" title="Start"></iframe>
+  <iframe id="f-woche" title="Woche"></iframe>
+  <iframe id="f-kalender" title="Kalender"></iframe>
+  <iframe id="f-mail" title="Mail"></iframe>
+  <iframe id="f-pinnwand" title="Pinnwand"></iframe>
+  <iframe id="f-wetter" title="Wetter"></iframe>
+</div>
+<nav class="tabs" id="tabs">
+  <button class="tab" data-t="start"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9v11h13V9"/><path d="M10 20v-5.5h4V20"/></svg></span>Start</button>
+  <button class="tab" data-t="woche"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 7h14M5 12h10M5 17h6"/></svg></span>Woche</button>
+  <button class="tab" data-t="kalender"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16.5" rx="3"/><path d="M3 10h18M8 2.5v4M16 2.5v4"/></svg></span>Kalender</button>
+  <button class="tab" data-t="mail"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="m3.5 7 8.5 6 8.5-6"/></svg></span>Mail<span class="bdg" id="bdg-mail"></span></button>
+  <button class="tab" data-t="pinnwand"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7.5" height="9" rx="2"/><rect x="13" y="3.5" width="7.5" height="6" rx="2"/><rect x="3.5" y="14.5" width="7.5" height="6" rx="2"/><rect x="13" y="11.5" width="7.5" height="9" rx="2"/></svg></span>Pinnwand</button>
+  <button class="tab" data-t="wetter"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6.1 11 3.5 3.5 0 0 0 7 18z"/><path d="M15.5 3.5v1M20 5.5l-.7.7M21.5 10h-1"/></svg></span>Wetter</button>
+</nav>
+
+<section class="mig" id="mig">
+  <div class="h-eyebrow">Assistent</div>
+  <h1 class="h-big">Daten <em>übernehmen</em></h1>
+  <p class="lead">Android lässt Apps nicht gegenseitig in ihre Daten schauen. Deshalb sicherst du in jeder alten App einmal kurz und holst die Sicherung hier herein. Bereits vorhandene Einträge werden nicht doppelt angelegt.</p>
+
+  <div class="step d-card">
+    <div class="sh"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 7h14M5 12h10M5 17h6"/></svg></span><b>Wochenstapel</b><span class="st" id="stW">offen</span></div>
+    <p class="how">Öffne Wochenstapel, tippe auf <b>⋯</b> → <b>Sicherung kopieren</b>. Komm dann hierher zurück.</p>
+    <button class="act d-btn primary" id="pasteW">Aus Zwischenablage einfügen</button>
+  </div>
+
+  <div class="step d-card">
+    <div class="sh"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16.5" rx="3"/><path d="M3 10h18M8 2.5v4M16 2.5v4"/></svg></span><b>Mein Kalender</b><span class="st" id="stK">offen</span></div>
+    <p class="how"><b>Google-Termine</b> brauchst du nicht zu übertragen. Sie erscheinen direkt, sobald du den Zugriff erlaubst.</p>
+    <button class="act d-btn primary" id="connG">Google Kalender verbinden</button>
+    <p class="how" style="margin-top:14px"><b>Termine nur auf dem Handy:</b> In Mein Kalender auf <b>⋮</b> → <b>Backup speichern</b>. Die Datei landet in „Downloads“.</p>
+    <button class="act d-btn ghost" data-file>Backup-Datei wählen</button>
+  </div>
+
+  <div class="step d-card">
+    <div class="sh"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7.5" height="9" rx="2"/><rect x="13" y="3.5" width="7.5" height="6" rx="2"/><rect x="3.5" y="14.5" width="7.5" height="6" rx="2"/><rect x="13" y="11.5" width="7.5" height="9" rx="2"/></svg></span><b>Pinnwand</b><span class="st" id="stP">offen</span></div>
+    <p class="how">In der Pinnwand auf <b>⋯</b> → <b>Sicherung exportieren</b>. Die Datei landet in „Downloads“, Fotos sind enthalten.</p>
+    <button class="act d-btn ghost" data-file>Sicherungsdatei wählen</button>
+  </div>
+
+  <button class="done d-btn primary" id="migDone">Fertig</button>
+  <p class="tip">Du findest diesen Assistenten jederzeit wieder im Menü jedes Bereichs. Wenn alles da ist, kannst du die alten Apps deinstallieren.</p>
+  <p class="tip" style="margin-top:22px">Assistent · Version 1.12<br>Entwickelt von Thorsten von Plotho-Kettner</p>
+  <input type="file" id="migFile" accept=".json,.ics,application/json,text/calendar,*/*">
+</section>
+<div class="d-toast toast" id="toast"></div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const N=window.Native||null;
+const TABS=['start','woche','kalender','mail','pinnwand','wetter'];
+const SRC={start:'start.html',woche:'woche.html',kalender:'kalender.html',mail:'mail.html',pinnwand:'pinnwand.html',wetter:'wetter.html'};
+const loaded={};
+let active='start'; /* Die App beginnt immer mit der Begrüßung */
+
+function frame(t){return $('f-'+t)}
+function ensure(t){
+  if(loaded[t])return loaded[t];
+  loaded[t]=new Promise(res=>{const f=frame(t);f.addEventListener('load',async()=>{try{const w=f.contentWindow;if(w.ready)await w.ready}catch(e){}res(f.contentWindow)},{once:true});f.src=SRC[t]});
+  return loaded[t];
+}
+function call(t,fn,...a){try{const w=frame(t).contentWindow;if(w&&typeof w[fn]==='function')return w[fn](...a)}catch(e){}}
+function showTab(t,payload){
+  if(!TABS.includes(t))return;
+  if(active&&active!==t&&loaded[active])call(active,'onHide');
+  active=t;try{localStorage.setItem('planer.tab',t)}catch(e){}
+  for(const x of TABS)frame(x).classList.toggle('on',x===t);
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  syncBar();
+  ensure(t).then(()=>{call(t,'onShow');syncBar();
+    if(payload&&payload.task)call('woche','openTaskById',payload.task);
+    if(payload&&payload.card)call('pinnwand','openCardById',payload.card);
+    if(payload&&(payload.msgid||payload.compose||payload.triage))call('mail','openFromShell',payload);
+    if(payload&&payload.newEvent)call('kalender','newEventFrom',payload.newEvent);});
+}
+$('tabs').onclick=e=>{const b=e.target.closest('.tab');if(!b)return;if(b.dataset.t===active){try{frame(active).contentWindow.scrollTo({top:0,behavior:'smooth'})}catch(_){}}showTab(b.dataset.t);if(N)try{N.haptic()}catch(_){}};
+
+/* ---------- Datenübernahme ---------- */
+let tt=0;function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),3200)}
+function setSt(id,txt,ok){const s=$(id);s.textContent=txt;s.classList.toggle('ok',!!ok)}
+function refreshStatus(){
+  let st={};try{st=JSON.parse(localStorage.getItem('planer.import')||'{}')}catch(e){}
+  if(st.w!=null)setSt('stW',st.w+' Aufgaben',true);
+  let g=false;try{g=N&&N.calPerm()==='granted'}catch(e){}
+  if(st.k!=null||g)setSt('stK',[g?'Google verbunden':'',st.k!=null?st.k+' Termine':''].filter(Boolean).join(' · '),true);
+  $('connG').style.display=g?'none':'';
+  if(st.p!=null)setSt('stP',st.p+' Karten',true);
+}
+function mark(k,n){let st={};try{st=JSON.parse(localStorage.getItem('planer.import')||'{}')}catch(e){}st[k]=(st[k]||0)+n;try{localStorage.setItem('planer.import',JSON.stringify(st))}catch(e){}refreshStatus()}
+window.openImport=function(){refreshStatus();$('mig').classList.add('on');$('mig').scrollTop=0};
+function closeImport(){$('mig').classList.remove('on');try{localStorage.setItem('planer.onboarded','1')}catch(e){}call(active,'onShow')}
+$('migDone').onclick=closeImport;
+
+async function importText(txt,from){
+  txt=String(txt||'').trim();
+  if(!txt){toast(from==='clip'?'Die Zwischenablage ist leer. Erst in der alten App „Sicherung kopieren“ tippen.':'Die Datei ist leer');return}
+  if(txt.includes('BEGIN:VCALENDAR')){const w=await ensure('kalender');const n=w.importICS(txt);mark('k',n);toast(n+' Termine aus der .ics-Datei übernommen');return}
+  let d;try{d=JSON.parse(txt)}catch(e){toast(from==='clip'?'In der Zwischenablage ist keine Sicherung':'Diese Datei ist keine Sicherung');return}
+  if(d&&d.app==='wochenstapel'&&Array.isArray(d.tasks)){const w=await ensure('woche');const n=w.importData(d);mark('w',n);toast(n?n+' Aufgaben übernommen':'Alle Aufgaben waren schon da');return}
+  if(d&&d.app==='pinnwand'&&d.state){const w=await ensure('pinnwand');const n=await w.importData(d);mark('p',n);toast(n?n+' Karten übernommen':'Diese Boards waren schon da');return}
+  if(d&&Array.isArray(d.events)){const w=await ensure('kalender');const n=w.importData(d);mark('k',n);toast(n?n+' Termine übernommen':'Alle Termine waren schon da');return}
+  toast('Diese Sicherung erkenne ich nicht');
+}
+$('pasteW').onclick=async()=>{let s='';try{s=N?N.paste():await navigator.clipboard.readText()}catch(e){}importText(s,'clip')};
+document.querySelectorAll('[data-file]').forEach(b=>b.onclick=()=>{$('migFile').value='';$('migFile').click()});
+$('migFile').onchange=()=>{const f=$('migFile').files[0];if(!f)return;const r=new FileReader();r.onload=()=>importText(r.result,'file');r.onerror=()=>toast('Datei konnte nicht gelesen werden');r.readAsText(f)};
+$('connG').onclick=()=>{try{N?N.askCalPerm():toast('Nur in der Android-App')}catch(e){}};
+
+/* ---------- Android ---------- */
+window.handleBack=function(){
+  if($('mig').classList.contains('on')){closeImport();return true}
+  const r=call(active,'handleBack');if(r)return true;
+  return false;
+};
+window.onCalPerm=function(ok){refreshStatus();ensure('kalender').then(()=>call('kalender','onCalPerm',ok))};
+window.onResumeApp=function(){for(const t of TABS)if(loaded[t]&&t!==active)call(t,'onResumeApp');call(active,'onShow');refreshStatus()};
+window.showTab=showTab;
+window.call=call;
+/* Fokus-Timer entfernt (1.11): alte Daten aufräumen */
+try{['planer.pomo','planer.pomo.cfg','planer.pomo.log'].forEach(k=>localStorage.removeItem(k))}catch(e){}
+if(N&&N.pomoClear)try{N.pomoClear()}catch(e){}
+/* Statusleiste passend zum Bereich (Start: Farbe des Himmels) */
+function syncBar(){
+  if(!N||!N.setBars)return;
+  let c='#FFFFFF',dark=false;
+  if(active==='start'){const s=call('start','skyTop');if(s){c=s.color;dark=s.dark}}
+  try{N.setBars(c,!dark)}catch(e){}
+}
+window.updateBar=function(){if(active==='start')syncBar()};
+/* Jede erledigte Aufgabe spielt den nächsten Ton */
+let AC=null;
+const NOTES=[392,440,523.25,587.33,659.25,783.99,880,1046.5];
+window.playNote=function(final,preview){
+  try{if(localStorage.getItem('planer.sound')==='0'&&!preview)return}catch(e){}
+  try{
+    AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();
+    const d=new Date(),k=d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
+    let st={k:'',i:0};try{st=JSON.parse(localStorage.getItem('planer.note')||'{}')}catch(e){}
+    if(st.k!==k)st={k,i:0};
+    const tone=(f,t0,len,vol)=>{const o=AC.createOscillator(),o2=AC.createOscillator(),g=AC.createGain();
+      o.type='sine';o2.type='triangle';o.frequency.value=f;o2.frequency.value=f*2;
+      const g2=AC.createGain();g2.gain.value=.18;o2.connect(g2);g2.connect(g);o.connect(g);g.connect(AC.destination);
+      const t=AC.currentTime+t0;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.012);g.gain.exponentialRampToValueAtTime(.0008,t+len);
+      o.start(t);o2.start(t);o.stop(t+len+.05);o2.stop(t+len+.05)};
+    if(final){[523.25,659.25,783.99,1046.5].forEach((f,i)=>tone(f,i*.09,1.4,.16))}
+    else{tone(NOTES[st.i%NOTES.length],0,1.1,.2);st.i++;try{localStorage.setItem('planer.note',JSON.stringify(st))}catch(e){}}
+  }catch(e){}
+};
+window.ensure=ensure;
+window.setBadge=function(t,n){const b=$('bdg-'+t);if(!b)return;n=+n||0;b.textContent=n>99?'99+':String(n);b.classList.toggle('on',n>0)};
+window.__mailCb=function(id,ok,p){call('mail','mailCb',id,ok,p)};
+window.__geoCb=function(ok,p){call('wetter','geoCb',ok,p)};
+window.weatherUpdated=function(){for(const t of ['start','woche','kalender'])if(loaded[t])call(t,'onWeather')};
+
+showTab(active);
+setTimeout(()=>{for(const t of TABS)ensure(t)},700);
+/* Wetter im Hintergrund aktuell halten, sobald der Standort einmal erlaubt ist */
+setTimeout(()=>{let ok=false;try{ok=N&&N.locPerm&&N.locPerm()==='granted'}catch(e){}if(ok)ensure('wetter').then(()=>call('wetter','refreshWeather'))},2500);
+let onb=null;try{onb=localStorage.getItem('planer.onboarded')}catch(e){}
+if(!onb&&N)setTimeout(window.openImport,500);
+</script>
+<script src="sync.js"></script>
+<script>
+/* Windows und Web: statt der Übernahme aus den alten Handy-Apps gleich den Abgleich einrichten */
+if(!N){window.openImport=window.openSync;try{if(!JSON.parse(localStorage.getItem('planer.sync.cfg')||'{}').on&&!localStorage.getItem('planer.onboarded')){localStorage.setItem('planer.onboarded','1');setTimeout(window.openSync,600)}}catch(e){}}
+(function(){const hb=window.handleBack;window.handleBack=function(){if(window.AssistentSync&&AssistentSync.isOpen()){AssistentSync.close();return true}return hb()}})();
+window.onResumeApp=(function(f){return function(){f();try{AssistentSync.sync('resume')}catch(e){}}})(window.onResumeApp);
+</script>
+</body>
+</html>
