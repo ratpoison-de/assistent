@@ -278,6 +278,7 @@ body{background:#fff}
 .next .when{background:#FF3B30;color:#fff;box-shadow:none;border-radius:12px}
 .pill{background:#FF3B30}
 .burst{background:#FF3B30}
+.myday{margin:18px 0 6px}
 @media (min-width:900px){
   html{background:#fff}
   .top,.content{max-width:1120px;margin-left:auto;margin-right:auto}
@@ -311,10 +312,10 @@ body{background:#fff}
   <form class="qa" id="qaF" autocomplete="off"><label class="press"><span class="hash">#</span><input id="qa" placeholder="Schnell eintragen …" enterkeyhint="done"><button type="button" class="when" id="qaWhen">heute</button></label><button class="plus press" id="qaGo" aria-label="Hinzufügen"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></form>
   <div id="alert"></div>
   <div class="folders hidden" id="folders" aria-hidden="true"></div>
-  <div class="secT">Heute</div>
+  <div class="cards myday" id="myday"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 1.16<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 1.17<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
@@ -509,7 +510,7 @@ function summaryHTML(p){
     if(left)s+=' Offen: '+plural(left,'Aufgabe','Aufgaben')+' – sie wandern sonst auf morgen.';
     if(k){const tm=k.tomorrow;const first=tm.filter(e=>!e.allDay&&e.tStart).sort((a,b)=>a.tStart<b.tStart?-1:1)[0];
       s+=' Morgen: '+(tm.length?'<b>'+plural(tm.length,'Termin','Termine')+'</b>'+(first?', der erste um '+first.tStart+' Uhr':''):'keine Termine')+'.'}}
-  let h='<button class="card" data-go="wetter"><div class="ch"><span class="ci">'+(ev?IC.moon:IC.sun)+'</span><h3>'+(ev?'Dein Abend':'Dein Tag')+'</h3></div><div class="sumtxt">'+s+'</div>';
+  let h='<button class="card" data-go="wetter"><div class="ch"><span class="ci">'+(ev?IC.moon:IC.sun)+'</span><h3>'+(ev?'Mein Abend':'Mein Tag')+'</h3></div><div class="sumtxt">'+s+'</div>';
   if(w){const d=w.data,c=d.current,day=d.daily;
     h+='<div class="wxrow"><div class="ic">'+(ev?wxIcon(day.weather_code[1]):wxIcon(c.weather_code,!c.is_day))+'</div>'+(ev?
       '<div class="tx"><b>Morgen '+wtxt(day.weather_code[1])+'</b>'+Math.round(day.temperature_2m_min[1])+'° bis '+Math.round(day.temperature_2m_max[1])+'°'+(day.precipitation_probability_max[1]>=20?' · Regen '+day.precipitation_probability_max[1]+'%':'')+(w.place?' · '+esc(w.place):'')+'</div>':
@@ -603,7 +604,8 @@ function render(){
   $('alert').innerHTML=alertHTML();
   $('tasks').innerHTML=tasksHTML(p);
   const ev=p==='abend'||p==='nacht';
-  $('cards').innerHTML=summaryHTML(p)+nextHTML(p)+(ev?tomorrowHTML(p)+mailHTML()+calHTML():calHTML()+mailHTML()+tomorrowHTML(p))+pinHTML();
+  $('myday').innerHTML=summaryHTML(p);
+  $('cards').innerHTML=nextHTML(p)+(ev?tomorrowHTML(p)+mailHTML()+calHTML():calHTML()+mailHTML()+tomorrowHTML(p))+pinHTML();
 }
 let loading=false;
 async function load(){
@@ -635,7 +637,7 @@ $('cards').addEventListener('click',e=>{
 $('bCal').onclick=()=>P&&P.showTab('kalender');
 $('bMail').onclick=()=>P&&P.showTab('mail');
 const goClick=e=>{const tr=e.target.closest('[data-triage]');if(tr){P&&P.showTab('mail',{triage:true});return}const go=e.target.closest('[data-go]');if(go)P&&P.showTab(go.dataset.go)};
-$('folders').addEventListener('click',goClick);$('alert').addEventListener('click',goClick);
+$('folders').addEventListener('click',goClick);$('myday').addEventListener('click',goClick);$('alert').addEventListener('click',goClick);
 /* Schnell eintragen */
 let qaDay=0;
 $('qaWhen').onclick=e=>{e.preventDefault();qaDay=qaDay?0:1;$('qaWhen').textContent=qaDay?'morgen':'heute'};

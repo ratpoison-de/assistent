@@ -728,7 +728,7 @@ function openMenu(){
     '<button class="setting" id="oIcs"><span>Als .ics exportieren<small>z. B. für Google Kalender am PC</small></span></button>'+
     '<button class="setting" id="oImp"><span>Importieren<small>.json-Backup oder .ics-Datei</small></span></button>'+
     '<div class="label">Assistent</div><button class="setting" id="oMig"><span>Daten aus alten Apps übernehmen<small>Wochenstapel, Mein Kalender, Pinnwand</small></span></button>'+
-    '<div class="foot">Assistent · Version 1.16<br>Entwickelt von Thorsten von Plotho-Kettner</div>';
+    '<div class="foot">Assistent · Version 1.17<br>Entwickelt von Thorsten von Plotho-Kettner</div>';
   openSheet(h);
   const tg=(id,k)=>{const b=$(id);if(b)b.onclick=()=>{state.settings[k]=!state.settings[k];save();b.querySelector('.sw').classList.toggle('on',state.settings[k]);if(k==='tasks'){readPlans().then(render)}else{gInvalidate();render()}if(k==='gsync')openMenu()}};
   tg('oHol','hol');tg('oFer','fer');tg('oKw','kw');tg('oTasks','tasks');tg('oG','gsync');
