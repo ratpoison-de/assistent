@@ -559,7 +559,7 @@ function openSettings(){
     +'<button class="setting" id="optImport"><span>Sicherung einfügen<small>Ersetzt alle Aufgaben durch die Zwischenablage</small></span></button>'
     +'<div class="label">Assistent</div>'
     +'<button class="setting" id="optMigrate"><span>Daten aus alten Apps übernehmen<small>Wochenstapel, Mein Kalender, Pinnwand</small></span></button>'
-    +'<div class="foot">Assistent · Version 1.15 · alles bleibt auf diesem Gerät<br>Entwickelt von Thorsten von Plotho-Kettner</div>'
+    +'<div class="foot">Assistent · Version 1.16 · alles bleibt auf diesem Gerät<br>Entwickelt von Thorsten von Plotho-Kettner</div>'
   );
   $('#optMigrate').onclick=()=>{closeSheet();try{parent.openImport()}catch(e){}};
   $('#optHide').onclick=()=>{state.settings.hideDone=!state.settings.hideDone;save();$('#optHide .switch').classList.toggle('on',state.settings.hideDone);render()};

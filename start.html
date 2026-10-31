@@ -310,12 +310,11 @@ body{background:#fff}
 <main class="content">
   <form class="qa" id="qaF" autocomplete="off"><label class="press"><span class="hash">#</span><input id="qa" placeholder="Schnell eintragen …" enterkeyhint="done"><button type="button" class="when" id="qaWhen">heute</button></label><button class="plus press" id="qaGo" aria-label="Hinzufügen"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></form>
   <div id="alert"></div>
-  <div class="secT">Meine Bereiche</div>
-  <div class="folders" id="folders"></div>
+  <div class="folders hidden" id="folders" aria-hidden="true"></div>
   <div class="secT">Heute</div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 1.15<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 1.16<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
@@ -600,7 +599,7 @@ function alertHTML(){
 }
 function render(){
   const p=header();landscape();
-  $('folders').innerHTML=foldersHTML();
+  /* Bereich „Meine Bereiche“ ausgeblendet (1.16) */
   $('alert').innerHTML=alertHTML();
   $('tasks').innerHTML=tasksHTML(p);
   const ev=p==='abend'||p==='nacht';
