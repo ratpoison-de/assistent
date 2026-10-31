@@ -85,6 +85,9 @@ const SLOTS={
     get:async()=>{const s=await dget('kv','state');if(!s)return undefined;const o=clone(s);delete o.current;delete o.filter;return o},
     set:async v=>{if(!v)return;const cur=await dget('kv','state')||{};const o=clone(v);o.current=cur.current;o.filter=cur.filter||'all';
       if(!o.boards||!o.boards.find(b=>b.id===o.current))o.current=o.boards&&o.boards[0]&&o.boards[0].id;await dput('kv','state',o)}},
+  projekte:{frames:['projekte','start'],
+    get:()=>parse(localStorage.getItem('planer.brain'),undefined),
+    set:v=>{if(v===undefined)localStorage.removeItem('planer.brain');else localStorage.setItem('planer.brain',JSON.stringify(v))}},
   profil:{frames:['start','woche'],
     get:()=>({name:localStorage.getItem('planer.name')||'',doneDays:parse(localStorage.getItem('planer.doneDays'),[])}),
     set:v=>{if(!v)return;if(v.name)localStorage.setItem('planer.name',v.name);if(v.doneDays)localStorage.setItem('planer.doneDays',JSON.stringify(v.doneDays))}}
@@ -283,7 +286,7 @@ function render(){
   let h=head;
   if(s.on){
     const cls=s.running?'run':s.err?'bad':'ok';
-    h+='<p class="lead">Aufgaben, Termine, Pinnwand mit Fotos und dein Name werden über dein privates GitHub-Repo zwischen allen Geräten abgeglichen – automatisch, sobald du etwas änderst, und jede Minute.</p>'+
+    h+='<p class="lead">Aufgaben, Termine, Projekte, Pinnwand mit Fotos und dein Name werden über dein privates GitHub-Repo zwischen allen Geräten abgeglichen – automatisch, sobald du etwas änderst, und jede Minute.</p>'+
       '<div class="box"><div class="ss"><span class="dot '+cls+'"></span><div><b>'+(s.running?'Gleiche ab …':s.err?'Abgleich hakt':'Alles abgeglichen')+'</b><small>'+(s.err?esc(ERR[s.err]||s.err):'Zuletzt '+ago(s.last)+(s.by?' · letzte Änderung von '+esc(s.by):''))+'</small></div></div>'+
       '<button class="d-btn primary" id="synNow">Jetzt abgleichen</button></div>'+
       '<div class="box"><div class="ss"><div><b>'+esc(cfg.owner)+' / '+esc(cfg.repo)+'</b><small>Dieses Gerät: '+DEVICE+'</small></div></div>'+

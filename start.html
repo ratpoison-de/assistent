@@ -315,7 +315,7 @@ body{background:#fff}
   <div class="cards myday" id="myday"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 1.17<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 1.18<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
@@ -332,6 +332,7 @@ const ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const WD=['So','Mo','Di','Mi','Do','Fr','Sa'],WDL=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],MONS=['Jan.','Feb.','März','Apr.','Mai','Juni','Juli','Aug.','Sep.','Okt.','Nov.','Dez.'];
 let tt=0;function toast(m){$('toastMsg').textContent=m;$('toast').classList.add('on');clearTimeout(tt);tt=setTimeout(()=>$('toast').classList.remove('on'),2400)}
 const IC={
+  proj:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5A2 2 0 0 1 5.5 5.5H10l2 2.2h6.5a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/><path d="M8.5 13.2l2.2 2.1 4.6-4.4"/></svg>',
   cal:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16.5" rx="3"/><path d="M3 10h18M8 2.5v4M16 2.5v4"/></svg>',
   mail:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>',
   pin:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7.5" height="9" rx="2"/><rect x="13" y="3.5" width="7.5" height="6" rx="2"/><rect x="3.5" y="14.5" width="7.5" height="6" rx="2"/><rect x="13" y="11.5" width="7.5" height="9" rx="2"/></svg>',
@@ -560,6 +561,16 @@ function mailHTML(){
   if(m.error)h+='<div class="empty" style="margin-top:8px;font-size:13px">'+esc(m.error)+' – zeige letzten Stand.</div>';
   return h+'</div>';
 }
+function projHTML(){
+  const b=D.proj;if(!b||(!b.count&&!b.inbox))return'';
+  const dl=s=>{const t=ymd(new Date());const tm=new Date();tm.setDate(tm.getDate()+1);if(s<t)return'überfällig';if(s===t)return'heute fällig';if(s===ymd(tm))return'morgen fällig';const d=new Date(s+'T12:00:00');return'fällig '+WD[d.getDay()]+', '+d.getDate()+'.'+(d.getMonth()+1)+'.'};
+  const ring=(d,t,c)=>{const r=8,C=2*Math.PI*r,f=t?d/t:0;return '<svg width="22" height="22" viewBox="0 0 22 22" style="flex:none"><circle cx="11" cy="11" r="8" fill="none" stroke="#E5E5EA" stroke-width="2.6"/>'+(f>0?'<circle cx="11" cy="11" r="8" fill="none" stroke="'+c+'" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="'+(C*f).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 11 11)"/>':'')+'</svg>'};
+  const list=(b.due.length?b.due:b.top).slice(0,4);
+  let h='<div class="card"><button class="ch" data-go="projekte" style="width:100%"><span class="ci">'+IC.proj+'</span><h3>Projekte</h3>'+(b.count?'<span class="pill">'+b.count+'</span>':'')+'<span class="go">Öffnen ›</span></button>';
+  h+=list.map(x=>'<button class="pin" data-proj="'+x.id+'"><span class="e" style="background:'+x.tint+';border-radius:8px;height:30px;display:grid;place-items:center;font-size:16px">'+esc(x.icon)+'</span><span class="pt"><b>'+esc(x.name)+'</b><span>'+[x.area,x.due?'<em style="font-style:normal;color:'+(x.overdue?'#FF3B30':'inherit')+'">'+dl(x.due)+'</em>':''].filter(Boolean).join(' · ')+'</span></span>'+(x.total?'<small style="font-size:12.5px;color:#8E8E93;margin-right:6px;flex:none">'+x.done+'/'+x.total+'</small>':'')+ring(x.done,x.total,x.color)+'</button>').join('');
+  if(b.inbox)h+='<button class="pin" data-go="projekte"><span class="e">📥</span><span class="pt"><b>'+plural(b.inbox,'Gedanke','Gedanken')+' im Eingang</b><span>Zum Einsortieren tippen</span></span></button>';
+  return h+'</div>';
+}
 function pinHTML(){
   const b=D.pin;if(!b||(!b.pinned.length&&!b.plans.length))return'';
   const dLabel=s=>{const t=ymd(new Date());const tm=new Date();tm.setDate(tm.getDate()+1);if(s===t)return'Heute';if(s===ymd(tm))return'Morgen';const d=new Date(s+'T12:00:00');return WD[d.getDay()]+', '+d.getDate()+'.'+(d.getMonth()+1)+'.'};
@@ -605,12 +616,12 @@ function render(){
   $('tasks').innerHTML=tasksHTML(p);
   const ev=p==='abend'||p==='nacht';
   $('myday').innerHTML=summaryHTML(p);
-  $('cards').innerHTML=nextHTML(p)+(ev?tomorrowHTML(p)+mailHTML()+calHTML():calHTML()+mailHTML()+tomorrowHTML(p))+pinHTML();
+  $('cards').innerHTML=nextHTML(p)+(ev?tomorrowHTML(p)+mailHTML()+calHTML():calHTML()+mailHTML()+tomorrowHTML(p))+projHTML()+pinHTML();
 }
 let loading=false;
 async function load(){
   if(loading)return;loading=true;render();
-  await Promise.all([['woche','woche',4000],['kal','kalender',9000],['pin','pinnwand',5000],['mail','mail',12000]].map(async([k,tab,to])=>{D[k]=await from(tab,to);render()}));
+  await Promise.all([['woche','woche',4000],['kal','kalender',9000],['pin','pinnwand',5000],['proj','projekte',4000],['mail','mail',12000]].map(async([k,tab,to])=>{D[k]=await from(tab,to);render()}));
   loading=false;
 }
 
@@ -632,6 +643,7 @@ $('cards').addEventListener('click',e=>{
   const tr=e.target.closest('[data-triage]');if(tr){P&&P.showTab('mail',{triage:true});return}
   const ms=e.target.closest('[data-msg]');if(ms){P&&P.showTab('mail',{msgid:ms.dataset.msg});return}
   const cd=e.target.closest('[data-card]');if(cd){P&&P.showTab('pinnwand',{card:cd.dataset.card});return}
+  const pj=e.target.closest('[data-proj]');if(pj){P&&P.showTab('projekte',{project:pj.dataset.proj});return}
   const go=e.target.closest('[data-go]');if(go){P&&P.showTab(go.dataset.go);return}
 });
 $('bCal').onclick=()=>P&&P.showTab('kalender');

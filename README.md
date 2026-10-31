@@ -1,6 +1,6 @@
 # Assistent – Web-App (responsiv)
 
-Die Web-Version des **Assistent** von Thorsten von Plotho-Kettner: Woche, Kalender, Pinnwand und Wetter in einer App.
+Die Web-Version des **Assistent** von Thorsten von Plotho-Kettner: Woche, Kalender, Projekte, Pinnwand und Wetter in einer App.
 
 **Öffnen:** https://ratpoison-de.github.io/assistent/
 
