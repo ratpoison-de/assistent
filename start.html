@@ -253,6 +253,14 @@ body{background:#fff}
 .fold .fm,.fold:first-child .fm{left:56px;top:13px;color:#8E8E93;font-weight:500}
 .fold .d-tag,.fold:first-child .d-tag{background:#FF3B30;color:#fff}
 .fold b{font-weight:700;color:#3A3A3C;margin-top:18px;font-size:16px}
+.fold .fb,.fold:first-child .fb{display:grid;grid-template-columns:34px minmax(0,1fr);grid-template-areas:"i m" "n n";column-gap:10px;row-gap:14px;align-content:space-between;min-height:104px}
+.fold .fi,.fold:first-child .fi{grid-area:i;align-self:start}
+.fold .fm,.fold:first-child .fm{grid-area:m;position:static;left:auto;top:auto;right:auto;align-self:center;font-size:12.5px;line-height:1.35;overflow-wrap:anywhere;min-width:0}
+.fold .fm .d-tag{margin-left:4px;vertical-align:1px;white-space:nowrap}
+.fold b{grid-area:n;margin:0;align-self:end;line-height:1.2}
+.greet{font-size:clamp(24px,7.4vw,30px)}
+.fold{display:flex}
+.fold .fb,.fold:first-child .fb{flex:1;width:100%}
 .box,.card{background:#fff;border:0;border-top:.5px solid #DCDCE0;box-shadow:none;border-radius:0;padding:16px 2px 8px}
 .sec-h h2,.ch h3{text-transform:uppercase;font-weight:800;font-size:16px;color:#1C1C1E;letter-spacing:0}
 .task{border-bottom:.5px solid #DCDCE0}
@@ -307,7 +315,7 @@ body{background:#fff}
   <div class="secT">Heute</div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 1.14<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 1.15<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>

@@ -65,7 +65,8 @@ input[type=file]{display:none}
 .mig{background:#fff}
 /* Werkzeugleiste wie in Notizen: schwebende Glas-Kapsel */
 .tabs{left:50%;right:auto;bottom:calc(10px + var(--sb));transform:translateX(-50%);width:auto;max-width:calc(100% - 20px);height:58px;padding:6px;gap:2px;border:0;border-radius:999px;background:rgba(246,246,248,.86);-webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6);box-shadow:0 8px 28px rgba(0,0,0,.12),inset 0 0 0 .5px rgba(0,0,0,.08);align-items:center}
-.tab{flex:none;width:52px;height:46px;border-radius:999px;font-size:0;gap:0;color:#3A3A3C}
+.tab{flex:1 1 0;width:auto;max-width:56px;min-width:38px;height:46px;border-radius:999px;font-size:0;gap:0;color:#3A3A3C}
+.tabs{width:min(calc(100% - 20px),380px)}
 .tab .pill{width:auto;height:auto;background:none!important}
 .tab svg{width:23px;height:23px}
 .tab.on{color:#FF3B30;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.08)}
@@ -76,7 +77,7 @@ input[type=file]{display:none}
   .tabs{left:0;top:0;bottom:0;transform:none;width:240px;max-width:none;height:auto;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:2px;padding:88px 12px 24px;border-radius:0;background:#F6F6F8;box-shadow:inset -.5px 0 0 #DCDCE0;-webkit-backdrop-filter:none;backdrop-filter:none}
   .tabs::before{content:"ASSISTENT";position:absolute;top:30px;left:22px;font-weight:800;font-size:24px;color:#FF3B30;letter-spacing:-.005em}
   .tabs::after{content:"von Thorsten von Plotho-Kettner";position:absolute;left:22px;right:12px;bottom:20px;font-size:11.5px;color:#AEAEB2}
-  .tab{width:100%;height:44px;flex-direction:row;justify-content:flex-start;gap:12px;padding:0 12px;border-radius:10px;font-size:15px;font-weight:600;color:#1C1C1E}
+  .tab{flex:none;max-width:none;width:100%;height:44px;flex-direction:row;justify-content:flex-start;gap:12px;padding:0 12px;border-radius:10px;font-size:15px;font-weight:600;color:#1C1C1E}
   .tab .pill{width:26px}
   .tab svg{width:21px;height:21px;color:#FF3B30}
   .tab:hover{background:#ECECF0}
@@ -134,7 +135,7 @@ input[type=file]{display:none}
 
   <button class="done d-btn primary" id="migDone">Fertig</button>
   <p class="tip">Du findest diesen Assistenten jederzeit wieder im Menü jedes Bereichs. Wenn alles da ist, kannst du die alten Apps deinstallieren.</p>
-  <p class="tip" style="margin-top:22px">Assistent · Version 1.14<br>Entwickelt von Thorsten von Plotho-Kettner</p>
+  <p class="tip" style="margin-top:22px">Assistent · Version 1.15<br>Entwickelt von Thorsten von Plotho-Kettner</p>
   <input type="file" id="migFile" accept=".json,.ics,application/json,text/calendar,*/*">
 </section>
 <div class="d-toast toast" id="toast"></div>
