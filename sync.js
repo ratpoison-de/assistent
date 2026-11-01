@@ -89,8 +89,8 @@ const SLOTS={
     get:()=>parse(localStorage.getItem('planer.brain'),undefined),
     set:v=>{if(v===undefined)localStorage.removeItem('planer.brain');else localStorage.setItem('planer.brain',JSON.stringify(v))}},
   profil:{frames:['start','woche'],
-    get:()=>({name:localStorage.getItem('planer.name')||'',doneDays:parse(localStorage.getItem('planer.doneDays'),[])}),
-    set:v=>{if(!v)return;if(v.name)localStorage.setItem('planer.name',v.name);if(v.doneDays)localStorage.setItem('planer.doneDays',JSON.stringify(v.doneDays))}}
+    get:()=>({name:localStorage.getItem('planer.name')||'',doneDays:parse(localStorage.getItem('planer.doneDays'),[]),green:(g=>g&&{done:g.done||{}})(parse(localStorage.getItem('planer.green'),null))||undefined}),
+    set:v=>{if(!v)return;if(v.name)localStorage.setItem('planer.name',v.name);if(v.green){const g=parse(localStorage.getItem('planer.green'),{})||{};g.done=v.green.done||{};localStorage.setItem('planer.green',JSON.stringify(g))}if(v.doneDays)localStorage.setItem('planer.doneDays',JSON.stringify(v.doneDays))}}
 };
 async function readLocal(){const o={};for(const k in SLOTS){try{const v=await SLOTS[k].get();if(v!==undefined)o[k]=v}catch(e){}}return o}
 
