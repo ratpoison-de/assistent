@@ -353,6 +353,44 @@ body{background:#fff}
 }
 @media (min-width:1300px){.folders{grid-template-columns:repeat(6,1fr)}}
 @media (min-width:900px){.trays{max-width:440px}}
+/* ---- Things 3 ---- */
+.sheet h3,.h-mid{text-transform:none}
+.sq{background:#F2F3F5}
+.greet{text-transform:none;color:#1C1C1E;font-weight:800;letter-spacing:-.02em;font-size:clamp(26px,7.6vw,32px)}
+.greet .hi{font-weight:500;color:#1C1C1E}
+.sub{color:#8A8F98}
+.sub .d-tag{background:#F2F3F5;color:#6E737C;font-weight:600}
+#hS rect{fill:#2A82F6}
+.qa label{background:#F0F1F4;border-radius:10px}
+.qa .hash{color:#B0B4BB}
+.qa .when{color:#2A82F6;background:#fff}
+.qa .plus{background:#2A82F6;box-shadow:0 6px 16px rgba(42,130,246,.35)}
+.alert{background:#F4F7FD;color:#1C1C1E;border-radius:12px}
+.alert .bell{background:#2A82F6}
+.alert .bell svg *{stroke:#fff}
+.alert small{color:#6E737C}
+.box,.card{border-top:1px solid #EBEBEF}
+.ch h3,.sec-h h2{text-transform:none;font-size:19px;font-weight:700;letter-spacing:-.01em;color:#1C1C1E}
+.ci{background:none!important;width:26px;height:26px}
+.ci svg *{stroke:#2A82F6}
+.myday .ci svg *{stroke:#F2A900}
+.sumtxt b,.sumtxt b:nth-of-type(n){background:none;color:#1C1C1E;font-weight:700;padding:0}
+.hint{background:#F4F7FD;box-shadow:none;color:#1C1C1E}
+.pill,.d-tag{background:#2A82F6}
+.next .when{background:#2A82F6}
+.slh{border-bottom:1px solid #EBEBEF;padding-top:16px}
+.slh b{text-transform:none;font-size:15.5px;font-weight:700;letter-spacing:0}
+.sl[style*="#FF3B30"]{--k:#E5A400}.sl[style*="#AF52DE"]{--k:#2FB3A6}.sl[style*="#007AFF"]{--k:#2A82F6}
+.slb .task,.task{border-bottom:0}
+.slb .task{padding:8px 0}
+.ck,.slb .ck{border-radius:6px;border:1.6px solid #C3C7CE;background:#fff;box-shadow:none;width:20px;height:20px}
+.task.done .ck{background:#2A82F6!important;border-color:#2A82F6!important;box-shadow:none}
+.slb .task .tx b{font-weight:400;font-size:16px}
+.slb .task .tx span{color:#8A8F98}
+.add{color:#2A82F6}
+.add i{border-radius:6px;border-color:#C3C7CE}
+.burst{background:#2A82F6}
+.tl em{background:#F0F1F4}
 </style>
 </head>
 <body>
@@ -377,7 +415,7 @@ body{background:#fff}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 1.21<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 1.22<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
@@ -531,9 +569,9 @@ function gauge(done,total){
   const f=total?done/total:0;const a0=Math.PI*0.95,a1=Math.PI*0.05;const R=24,cx=31,cy=32;
   const pt=a=>[cx+R*Math.cos(a),cy-R*Math.sin(a)];const ang=a0-(a0-a1)*f;
   const [x0,y0]=pt(a0),[x1,y1]=pt(a1),[xf,yf]=pt(ang);
-  return '<svg viewBox="0 0 62 40"><path d="M'+x0.toFixed(1)+' '+y0.toFixed(1)+' A'+R+' '+R+' 0 0 1 '+x1.toFixed(1)+' '+y1.toFixed(1)+'" fill="none" stroke="#F2F2F7" stroke-width="6" stroke-linecap="round"/>'+
-    (f>0?'<path d="M'+x0.toFixed(1)+' '+y0.toFixed(1)+' A'+R+' '+R+' 0 0 1 '+xf.toFixed(1)+' '+yf.toFixed(1)+'" fill="none" stroke="#FF3B30" stroke-width="6" stroke-linecap="round"/>':'')+
-    '<circle cx="'+xf.toFixed(1)+'" cy="'+yf.toFixed(1)+'" r="5" fill="#fff" stroke="#FF3B30" stroke-width="2.5"/></svg>';
+  return '<svg viewBox="0 0 62 40"><path d="M'+x0.toFixed(1)+' '+y0.toFixed(1)+' A'+R+' '+R+' 0 0 1 '+x1.toFixed(1)+' '+y1.toFixed(1)+'" fill="none" stroke="#EBEDF0" stroke-width="6" stroke-linecap="round"/>'+
+    (f>0?'<path d="M'+x0.toFixed(1)+' '+y0.toFixed(1)+' A'+R+' '+R+' 0 0 1 '+xf.toFixed(1)+' '+yf.toFixed(1)+'" fill="none" stroke="#2A82F6" stroke-width="6" stroke-linecap="round"/>':'')+
+    '<circle cx="'+xf.toFixed(1)+'" cy="'+yf.toFixed(1)+'" r="5" fill="#fff" stroke="#2A82F6" stroke-width="2.5"/></svg>';
 }
 function tasksHTML(p){
   const t=D.woche,[name,,endH]=PHASE[p];
@@ -556,9 +594,9 @@ function tasksHTML(p){
   const gRow='<div class="task gr'+(g.done?' done':'')+'"><button class="ck" data-green="'+g.i+'" aria-label="Abhaken">'+(g.done?IC.check:'')+'</button><div class="tx"><b>'+esc(GREEN[g.i])+'</b><span>🌱 Heute nachhaltig · ⇄ Täglich'+(g.n?' · '+g.n+' von '+GREEN.length+' geschafft':'')+'</span></div>'+(g.done?'':'<button class="fl" data-gskip aria-label="Andere Idee"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C7C7CC" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 4v5h-5"/></svg></button>')+'</div>';
   const sec=(k,title,deco,col,body,empty)=>{const c=closedSec.has(k);
     return '<section class="sl'+(c?' closed':'')+'" style="--k:'+col+'"><button class="slh" data-sec="'+k+'"><b>'+title+'</b><i>'+deco+'</i><span class="sp"></span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="slb">'+(body||'<div class="slempty">'+empty+'</div>')+'</div></section>'};
-  h+=sec('prio','Prioritäten','!!','#FF3B30',ord(prio).map(wRow).join(''),'Tippe bei einer Aufgabe auf ⚑, dann steht sie hier ganz oben.');
-  h+=sec('rout','Routinen','⇄','#AF52DE',ord(rout).map(wRow).join('')+gRow,'');
-  h+=sec('task','Aufgaben','✓','#007AFF',ord(rest).map(wRow).join('')+ord(pj).map(pRow).join(''),'Sonst steht heute nichts an.');
+  h+=sec('prio','Prioritäten','!!','#E5A400',ord(prio).map(wRow).join(''),'Tippe bei einer Aufgabe auf ⚑, dann steht sie hier ganz oben.');
+  h+=sec('rout','Routinen','⇄','#2FB3A6',ord(rout).map(wRow).join('')+gRow,'');
+  h+=sec('task','Aufgaben','✓','#2A82F6',ord(rest).map(wRow).join('')+ord(pj).map(pRow).join(''),'Sonst steht heute nichts an.');
   h+='</div><button class="add" id="addRow"><i>+</i>Aufgabe für heute</button>';
   return h;
 }
@@ -678,7 +716,7 @@ document.addEventListener('click',e=>{
 function projHTML(){
   const b=D.proj;if(!b||(!b.count&&!b.inbox))return'';
   const dl=s=>{const t=ymd(new Date());const tm=new Date();tm.setDate(tm.getDate()+1);if(s<t)return'überfällig';if(s===t)return'heute fällig';if(s===ymd(tm))return'morgen fällig';const d=new Date(s+'T12:00:00');return'fällig '+WD[d.getDay()]+', '+d.getDate()+'.'+(d.getMonth()+1)+'.'};
-  const ring=(d,t,c)=>{const r=8,C=2*Math.PI*r,f=t?d/t:0;return '<svg width="22" height="22" viewBox="0 0 22 22" style="flex:none"><circle cx="11" cy="11" r="8" fill="none" stroke="#E5E5EA" stroke-width="2.6"/>'+(f>0?'<circle cx="11" cy="11" r="8" fill="none" stroke="'+c+'" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="'+(C*f).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 11 11)"/>':'')+'</svg>'};
+  const ring=function(d,t,c){const f=t?Math.min(1,d/t):0;let w='';if(f>=1)w='<circle cx="11" cy="11" r="6.2" fill="'+c+'"/>';else if(f>0){const a=f*2*Math.PI,x=11+6.2*Math.sin(a),y=11-6.2*Math.cos(a);w='<path d="M11 11V4.8A6.2 6.2 0 '+(f>.5?1:0)+' 1 '+x.toFixed(2)+' '+y.toFixed(2)+'Z" fill="'+c+'"/>'.replace('0 '+(f>.5?1:0)+' 1','0 '+(f>.5?1:0)+' 1')}return '<svg class="ring" width="22" height="22" viewBox="0 0 22 22" style="flex:none"><circle cx="11" cy="11" r="8.6" fill="none" stroke="'+c+'" stroke-width="1.6"/>'+w+'</svg>'};
   const list=(b.due.length?b.due:b.top).slice(0,4);
   let h='<div class="card"><button class="ch" data-go="projekte" style="width:100%"><span class="ci">'+IC.proj+'</span><h3>Projekte</h3>'+(b.count?'<span class="pill">'+b.count+'</span>':'')+'<span class="go">Öffnen ›</span></button>';
   h+=list.map(x=>'<button class="pin" data-proj="'+x.id+'"><span class="e" style="background:'+x.tint+';border-radius:8px;height:30px;display:grid;place-items:center;font-size:16px">'+esc(x.icon)+'</span><span class="pt"><b>'+esc(x.name)+'</b><span>'+[x.area,x.due?'<em style="font-style:normal;color:'+(x.overdue?'#FF3B30':'inherit')+'">'+dl(x.due)+'</em>':''].filter(Boolean).join(' · ')+'</span></span>'+(x.total?'<small style="font-size:12.5px;color:#8E8E93;margin-right:6px;flex:none">'+x.done+'/'+x.total+'</small>':'')+ring(x.done,x.total,x.color)+'</button>').join('');

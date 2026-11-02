@@ -88,6 +88,23 @@ input[type=file]{display:none}
   .tab.on .bdg{background:#fff;color:#FF3B30}
   .toast{left:calc(50% + 120px)}
 }
+/* ---- Things 3 ---- */
+.tabs{background:rgba(250,250,252,.9);box-shadow:0 8px 28px rgba(0,0,0,.12),inset 0 0 0 .5px rgba(0,0,0,.07)}
+.tab{color:#8A8F98}
+.tab[data-t=start]{--ic:#F2C200}.tab[data-t=woche]{--ic:#2FB3A6}.tab[data-t=kalender]{--ic:#EE4B4B}.tab[data-t=projekte]{--ic:#2A82F6}.tab[data-t=mail]{--ic:#4F95F7}.tab[data-t=pinnwand]{--ic:#C8A86B}.tab[data-t=wetter]{--ic:#5AC8FA}
+.tab svg{color:var(--ic)}
+.tab.on{background:#E9ECF1;color:#1C1C1E;box-shadow:none}
+.tab .bdg{background:#2A82F6;border-color:#FAFAFC}
+@media (min-width:900px){
+  .tabs{background:#F6F7F9;box-shadow:inset -.5px 0 0 #E2E4E8}
+  .tabs::before{content:"Assistent";color:#1C1C1E;font-size:21px;font-weight:800;letter-spacing:-.02em}
+  .tab{color:#1C1C1E;font-weight:500;border-radius:8px;height:38px}
+  .tab svg{color:var(--ic)}
+  .tab:hover{background:#ECEEF2}
+  .tab.on{background:#E1E5EB;color:#1C1C1E}
+  .tab.on svg{color:var(--ic)}
+  .tab.on .bdg,.tab .bdg{background:transparent;color:#8A8F98;border:0;font-weight:500;font-size:13px}
+}
 </style>
 </head>
 <body>
@@ -137,7 +154,7 @@ input[type=file]{display:none}
 
   <button class="done d-btn primary" id="migDone">Fertig</button>
   <p class="tip">Du findest diesen Assistenten jederzeit wieder im Menü jedes Bereichs. Wenn alles da ist, kannst du die alten Apps deinstallieren.</p>
-  <p class="tip" style="margin-top:22px">Assistent · Version 1.21<br>Entwickelt von Thorsten von Plotho-Kettner</p>
+  <p class="tip" style="margin-top:22px">Assistent · Version 1.22<br>Entwickelt von Thorsten von Plotho-Kettner</p>
   <input type="file" id="migFile" accept=".json,.ics,application/json,text/calendar,*/*">
 </section>
 <div class="d-toast toast" id="toast"></div>

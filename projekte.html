@@ -152,6 +152,30 @@ textarea.field{min-height:160px;resize:vertical;line-height:1.45}
   .layer{left:calc(50% - 430px);right:calc(50% - 430px);box-shadow:0 0 0 .5px #DCDCE0}
   .sheet{left:calc(50% - 290px);right:calc(50% - 290px)}
 }
+/* ---- Things 3 ---- */
+.sh{border-bottom:1px solid #EBEBEF;padding-bottom:4px}
+.sh h3{text-transform:none;color:#2A82F6;font-size:15.5px;font-weight:700}
+.sheet h3,.lbl{text-transform:none}
+.sheet h3{font-weight:700}
+.meta .st-active{background:#EEF4FE;color:#2A82F6}
+.welcome .logo{background:#2A82F6}
+.h-big{text-transform:none;color:#1C1C1E;font-weight:800;letter-spacing:-.02em}
+.h-big::before{display:inline-block;content:"";width:.95em;height:.95em;margin-right:.32em;vertical-align:-.1em;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='%232A82F6' stroke-width='2'/%3E%3Cpath fill='%232A82F6' d='M12 5.5A6.5 6.5 0 0 1 18.5 12H12z'/%3E%3C/svg%3E") no-repeat center/contain}
+.h-eyebrow{color:#8A8F98;font-weight:500}
+.seg .n{background:#2A82F6}
+.cap button{background:#2A82F6}
+.ck{border-radius:6px;border:1.6px solid #C3C7CE;background:#fff;box-shadow:none;width:20px;height:20px}
+.tk.done .ck{background:#2A82F6!important;border-color:#2A82F6!important;box-shadow:none}
+.tk{border-bottom:0;padding:8px 0}
+.addrow i{border-radius:6px;border-color:#C3C7CE}
+.addrow input::placeholder{color:#2A82F6}
+.addbtn{color:#2A82F6}
+.ptabs button.on{background:#2A82F6}
+.chips button.on{background:#2A82F6}
+.icons button.on{background:#EEF4FE;box-shadow:inset 0 0 0 2px #2A82F6}
+.in .sort{background:#EEF4FE;color:#2A82F6}
+.addrow input::placeholder{font-weight:500}
+.d-btn.primary{background:#2A82F6}
 </style>
 </head>
 <body>
@@ -212,7 +236,7 @@ const proj=id=>S.projects.find(p=>p.id===id);
 const col=a=>COLORS[(a&&a.color)||'grey']||COLORS.grey;
 const prog=p=>{const t=(p.tasks||[]).length,d=(p.tasks||[]).filter(x=>x.done).length;return{t,d}};
 const touch=p=>{p.updated=Date.now()};
-function ring(d,t,c){const r=8,C=2*Math.PI*r,f=t?d/t:0;return '<svg class="ring" width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="'+r+'" fill="none" stroke="#E5E5EA" stroke-width="2.6"/>'+(f>0?'<circle cx="11" cy="11" r="'+r+'" fill="none" stroke="'+c+'" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="'+(C*f).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 11 11)"/>':'')+'</svg>'}
+const ring=function(d,t,c){const f=t?Math.min(1,d/t):0;let w='';if(f>=1)w='<circle cx="11" cy="11" r="6.2" fill="'+c+'"/>';else if(f>0){const a=f*2*Math.PI,x=11+6.2*Math.sin(a),y=11-6.2*Math.cos(a);w='<path d="M11 11V4.8A6.2 6.2 0 '+(f>.5?1:0)+' 1 '+x.toFixed(2)+' '+y.toFixed(2)+'Z" fill="'+c+'"/>'.replace('0 '+(f>.5?1:0)+' 1','0 '+(f>.5?1:0)+' 1')}return '<svg class="ring" width="22" height="22" viewBox="0 0 22 22" style="flex:none"><circle cx="11" cy="11" r="8.6" fill="none" stroke="'+c+'" stroke-width="1.6"/>'+w+'</svg>'}
 const CHEV='<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
 const PLUS='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
 const CHECK='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';

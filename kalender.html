@@ -244,6 +244,20 @@ h1 em{color:inherit;background:none}
   .editor{left:calc(50% - 340px);right:calc(50% - 340px);top:28px;bottom:28px;border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.22);transform:translateY(calc(100% + 80px))}
   .editor.on{transform:none}
 }
+/* ---- Things 3 ---- */
+.sheet h3,.h-mid{text-transform:none}
+h1{text-transform:none;color:#1C1C1E;font-weight:800;letter-spacing:-.02em}
+h1::before{display:inline-block;content:"";width:.95em;height:.95em;margin-right:.32em;vertical-align:-.1em;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='4.5' width='18' height='16.5' rx='3.5' fill='%23EE4B4B'/%3E%3Crect x='5' y='9' width='14' height='10' rx='1.5' fill='%23fff'/%3E%3Crect x='7' y='2.5' width='2.4' height='4.5' rx='1.2' fill='%23EE4B4B'/%3E%3Crect x='14.6' y='2.5' width='2.4' height='4.5' rx='1.2' fill='%23EE4B4B'/%3E%3C/svg%3E") no-repeat center/contain}
+.eyebrow{color:#8A8F98;font-weight:500}
+.today-btn{background:#EEF4FE;color:#2A82F6}
+.seg button.on{color:#2A82F6}
+.cell.today .num{background:#EE4B4B}
+.dayhead h2{text-transform:none;color:#1C1C1E;font-weight:800;letter-spacing:-.02em}
+.dayhead.today h2{color:#1C1C1E}
+.dayhead.today h2::before{display:inline-block;content:"";width:.95em;height:.95em;margin-right:.32em;vertical-align:-.1em;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F2C200' d='M12 2.6l2.8 5.7 6.3.9-4.55 4.45 1.07 6.25L12 16.95 6.38 19.9l1.07-6.25L2.9 9.2l6.3-.9z'/%3E%3C/svg%3E") no-repeat center/contain}
+.ev{border-bottom:0}
+.fab,.btn.primary{background:#2A82F6;color:#fff;box-shadow:0 8px 20px rgba(42,130,246,.38)}
+.dlg .bts .ok{background:#2A82F6}
 </style>
 </head>
 <body>
@@ -728,7 +742,7 @@ function openMenu(){
     '<button class="setting" id="oIcs"><span>Als .ics exportieren<small>z. B. für Google Kalender am PC</small></span></button>'+
     '<button class="setting" id="oImp"><span>Importieren<small>.json-Backup oder .ics-Datei</small></span></button>'+
     '<div class="label">Assistent</div><button class="setting" id="oMig"><span>Daten aus alten Apps übernehmen<small>Wochenstapel, Mein Kalender, Pinnwand</small></span></button>'+
-    '<div class="foot">Assistent · Version 1.21<br>Entwickelt von Thorsten von Plotho-Kettner</div>';
+    '<div class="foot">Assistent · Version 1.22<br>Entwickelt von Thorsten von Plotho-Kettner</div>';
   openSheet(h);
   const tg=(id,k)=>{const b=$(id);if(b)b.onclick=()=>{state.settings[k]=!state.settings[k];save();b.querySelector('.sw').classList.toggle('on',state.settings[k]);if(k==='tasks'){readPlans().then(render)}else{gInvalidate();render()}if(k==='gsync')openMenu()}};
   tg('oHol','hol');tg('oFer','fer');tg('oKw','kw');tg('oTasks','tasks');tg('oG','gsync');

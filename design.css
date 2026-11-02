@@ -1,50 +1,41 @@
-/* Assistent – gemeinsames Design (Notizen: Weiß / Rot / Gelb / Textmarker) */
-@font-face{font-family:"PJS";src:url(fonts/pjs-400.woff2) format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PJS";src:url(fonts/pjs-700.woff2) format("woff2");font-weight:600 700;font-display:swap}
-@font-face{font-family:"PJS";src:url(fonts/pjs-800.woff2) format("woff2");font-weight:800 900;font-display:swap}
+/* Assistent – gemeinsames Design (Things 3: Weiß / Blau / ruhige Titel) */
 :root{
-  --bg:#FFFFFF; --card:#FFFFFF; --ink:#1C1C1E; --mute:#8E8E93; --line:#E5E5EA; --soft:#F2F2F7; --soft2:#E5E5EA;
-  --accent:#FF3B30; --accent-2:#FF6961; --accent-ink:#FFFFFF; --accent-soft:#FFF0EF;
-  --grad:#FF3B30; --danger:#FF3B30; --ok:#34C759; --warn:#FFCC00;
-  --v:#FF3B30; --v2:#FF6961; --vd:#D70015; --lav:#FFF0EF; --lav2:#FFD9D6; --vgrad:#F2F2F7;
-  --green:#34C759; --yellow:#FFCC00; --blue:#007AFF; --pink:#FF2D55; --orange:#FF9500; --grey:#8E8E93;
-  --shadow:0 1px 3px rgba(0,0,0,.06); --shadow-lift:0 16px 40px rgba(0,0,0,.18); --shadow-btn:0 6px 16px rgba(255,59,48,.30);
-  --hs:0 1px 3px rgba(0,0,0,.06); --hs2:0 8px 20px rgba(255,59,48,.35);
-  --radius:14px; --scrim:rgba(0,0,0,.30);
+  --bg:#FFFFFF; --card:#FFFFFF; --ink:#1C1C1E; --mute:#8A8F98; --line:#EBEBEF; --soft:#F2F3F5; --soft2:#E6E8EC;
+  --accent:#2A82F6; --accent-2:#5A9EF8; --accent-ink:#FFFFFF; --accent-soft:#EEF4FE;
+  --grad:#2A82F6; --danger:#EE4B4B; --ok:#4CB050; --warn:#F2C200;
+  --v:#2A82F6; --v2:#5A9EF8; --vd:#1A66CC; --lav:#EEF4FE; --lav2:#D6E6FD; --vgrad:#F4F7FD;
+  --green:#4CB050; --yellow:#F2C200; --blue:#2A82F6; --pink:#FF2D55; --orange:#F5A623; --grey:#8A8F98;
+  --shadow:0 1px 3px rgba(0,0,0,.06); --shadow-lift:0 16px 40px rgba(0,0,0,.18); --shadow-btn:0 6px 16px rgba(42,130,246,.30);
+  --hs:0 1px 3px rgba(0,0,0,.06); --hs2:0 8px 20px rgba(42,130,246,.38);
+  --radius:12px; --scrim:rgba(0,0,0,.28);
   --font:-apple-system,"SF Pro Text","Segoe UI Variable Text","Segoe UI","Roboto",system-ui,sans-serif;
 }
 html,body{background:var(--bg);color:var(--ink);font-family:var(--font)}
 body{background:var(--bg)}
 button,input,select,textarea{font-family:var(--font)}
-
-/* Überschriften wie in Erinnerungen: rote Großbuchstaben, gelbe Zeile darunter */
-.h-eyebrow{font-size:13.5px;font-weight:600;color:#D99A00}
-.h-big{margin:2px 0 0;font-size:30px;line-height:1.1;font-weight:800;text-transform:uppercase;color:var(--accent)}
+.h-eyebrow{font-size:13.5px;font-weight:500;color:var(--mute)}
+.h-big{margin:2px 0 0;font-size:30px;line-height:1.12;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
 .h-big em,.h-mid em{font-style:normal;color:inherit}
-.h-mid{margin:0;font-size:19px;line-height:1.2;font-weight:800;text-transform:uppercase}
-
-/* Bausteine */
+.h-mid{margin:0;font-size:19px;line-height:1.2;font-weight:700}
 .d-card{background:var(--soft);border-radius:var(--radius);box-shadow:none;border:0}
-.d-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 18px;border-radius:12px;font-weight:700;font-size:15.5px;background:var(--soft);color:var(--ink);border:0}
+.d-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 18px;border-radius:10px;font-weight:600;font-size:15.5px;background:var(--soft);color:var(--ink);border:0}
 .d-btn.primary{background:var(--accent);color:#fff}
 .d-btn.ghost{background:var(--soft)}
-.d-btn.danger{color:var(--danger);background:#FFF0EF}
+.d-btn.danger{color:var(--danger);background:#FDEDED}
 .d-btn:active{opacity:.75}
 .d-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:999px;background:var(--soft);border:0;box-shadow:none;font-weight:600;font-size:14px;white-space:nowrap;color:var(--ink)}
 .d-chip.on{background:var(--accent);color:#fff}
-.d-check{width:22px;height:22px;border-radius:50%;background:var(--accent);display:grid;place-items:center;flex:none}
+.d-check{width:20px;height:20px;border-radius:6px;background:var(--accent);display:grid;place-items:center;flex:none}
 .d-ib{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--ink);flex:none;background:transparent;border:0}
 .d-ib.solid{background:var(--soft);box-shadow:none}
-.d-fab{position:fixed;right:18px;bottom:20px;height:56px;min-width:56px;padding:0 20px;border-radius:28px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:15.5px;box-shadow:var(--hs2);z-index:30;border:0}
+.d-fab{position:fixed;right:18px;bottom:20px;height:56px;min-width:56px;padding:0 20px;border-radius:28px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:15.5px;box-shadow:var(--hs2);z-index:30;border:0}
 .d-fab:active{transform:scale(.96)}
-.d-toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,30px);opacity:0;background:#1C1C1E;color:#fff;padding:12px 16px;border-radius:14px;font-weight:600;font-size:14px;z-index:95;transition:all .25s;pointer-events:none;max-width:92vw;display:flex;gap:14px;align-items:center;box-shadow:var(--shadow-lift)}
+.d-toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,30px);opacity:0;background:#1C1C1E;color:#fff;padding:12px 16px;border-radius:12px;font-weight:500;font-size:14px;z-index:95;transition:all .25s;pointer-events:none;max-width:92vw;display:flex;gap:14px;align-items:center;box-shadow:var(--shadow-lift)}
 .d-toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
-.d-toast button{color:#FFD60A;font-weight:700;background:none;border:0;font-size:14px}
-.d-tag{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:10.5px;padding:2px 7px;border-radius:999px}
-/* Textmarker wie in Notizen */
-.mk1{background:#C9F3EA;color:#0B7F6E}.mk2{background:#FFE2C2;color:#B85C00}.mk3{background:#F2DCFF;color:#9A2FC2}
-/* Am PC: schmale, ruhige Scrollbalken */
+.d-toast button{color:#8CC0FF;font-weight:700;background:none;border:0;font-size:14px}
+.d-tag{display:inline-block;background:var(--accent);color:#fff;font-weight:600;font-size:10.5px;padding:2px 7px;border-radius:999px}
+.mk1,.mk2,.mk3{background:none;color:inherit;font-weight:700}
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:#D1D1D6;border-radius:8px;border:2px solid transparent;background-clip:padding-box}
-::-webkit-scrollbar-thumb:hover{background:#AEAEB2;background-clip:padding-box}
+::-webkit-scrollbar-thumb{background:#D3D6DB;border-radius:8px;border:2px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:#B0B4BB;background-clip:padding-box}
