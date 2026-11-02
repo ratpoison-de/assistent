@@ -137,7 +137,7 @@ input[type=file]{display:none}
 
   <button class="done d-btn primary" id="migDone">Fertig</button>
   <p class="tip">Du findest diesen Assistenten jederzeit wieder im Menü jedes Bereichs. Wenn alles da ist, kannst du die alten Apps deinstallieren.</p>
-  <p class="tip" style="margin-top:22px">Assistent · Version 1.20<br>Entwickelt von Thorsten von Plotho-Kettner</p>
+  <p class="tip" style="margin-top:22px">Assistent · Version 1.21<br>Entwickelt von Thorsten von Plotho-Kettner</p>
   <input type="file" id="migFile" accept=".json,.ics,application/json,text/calendar,*/*">
 </section>
 <div class="d-toast toast" id="toast"></div>
@@ -170,7 +170,8 @@ function showTab(t,payload){
     if(payload&&payload.card)call('pinnwand','openCardById',payload.card);
     if(payload&&(payload.msgid||payload.compose||payload.triage))call('mail','openFromShell',payload);
     if(payload&&payload.newEvent)call('kalender','newEventFrom',payload.newEvent);
-    if(payload&&payload.project)call('projekte','openProject',payload.project);});
+    if(payload&&payload.project)call('projekte','openProject',payload.project);
+    if(payload&&payload.inbox)call('projekte','openInbox');});
 }
 $('tabs').onclick=e=>{const b=e.target.closest('.tab');if(!b)return;if(b.dataset.t===active){try{frame(active).contentWindow.scrollTo({top:0,behavior:'smooth'})}catch(_){}}showTab(b.dataset.t);if(N)try{N.haptic()}catch(_){}};
 

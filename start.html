@@ -306,6 +306,38 @@ body{background:#fff}
 .fl{width:30px;height:30px;display:grid;place-items:center;flex:none;border-radius:50%}
 .slempty{color:#AEAEB2;font-size:13.5px;padding:10px 0 6px}
 #tasks .add{border-top:0;margin-top:4px}
+/* Körbe – nachgebaut als 3D-Ablagen */
+.trays{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,5vw,30px);margin:6px 0 20px;padding:0 4px}
+.tray{display:flex;flex-direction:column;align-items:center;gap:12px;min-width:0}
+.tbox{position:relative;width:100%;max-width:168px;aspect-ratio:1/1;border-radius:22%;display:block;
+  box-shadow:0 14px 28px -10px rgba(0,0,0,.28),0 3px 8px rgba(0,0,0,.08)}
+.tray.blue .tbox{background:linear-gradient(180deg,#9FD3FF 0%,#7EC0FF 45%,#5AA6F7 78%,#4B92EE 100%);box-shadow:0 16px 30px -12px rgba(40,110,220,.55),0 3px 8px rgba(40,110,220,.18),inset 0 2px 0 rgba(255,255,255,.65),inset 0 -3px 6px rgba(20,70,170,.25)}
+.tray.white .tbox{background:linear-gradient(180deg,#FFFFFF 0%,#F4F4F6 48%,#DCDCE1 82%,#C9C9CF 100%);box-shadow:0 16px 30px -12px rgba(0,0,0,.35),0 3px 8px rgba(0,0,0,.08),inset 0 2px 0 #fff,inset 0 -3px 6px rgba(0,0,0,.10)}
+.well{position:absolute;left:6%;right:6%;top:5%;height:62%;border-radius:20% 20% 16% 16%/24% 24% 20% 20%;overflow:hidden}
+.tray.blue .well{background:#123E57;box-shadow:inset 0 3px 8px rgba(0,0,0,.45)}
+.tray.white .well{background:#2E3134;box-shadow:inset 0 3px 8px rgba(0,0,0,.55)}
+.well .back{position:absolute;left:0;right:0;bottom:0;height:62%;border-radius:22% 22% 0 0/40% 40% 0 0}
+.tray.blue .well .back{background:linear-gradient(180deg,#1C5674,#1A5170)}
+.tray.white .well .back{background:linear-gradient(180deg,#3B3E42,#35383C)}
+.front{position:absolute;left:0;right:0;bottom:0;height:36%;border-radius:0 0 22% 22%/0 0 60% 60%;display:grid;place-items:center;z-index:3}
+.tray.blue .front{background:linear-gradient(180deg,rgba(150,205,255,.0),rgba(80,150,240,.0));}
+.front::before{content:"";position:absolute;left:4%;right:4%;top:-3px;height:8px;border-radius:50%;}
+.tray.blue .front::before{display:none}
+.tray.white .front::before{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,0))}
+.ico{display:grid;place-items:center;margin-top:6%}
+.tray.blue .ico{color:#3E86E0;filter:drop-shadow(0 1px 0 rgba(255,255,255,.55)) drop-shadow(0 -1px 0 rgba(20,80,170,.35))}
+.tray.white .ico{color:#A9A9B0;filter:drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 rgba(0,0,0,.12))}
+.ico svg{width:clamp(24px,8vw,34px);height:auto}
+.tcard{position:absolute;left:5%;right:5%;height:40%;background:#fff;border-radius:12px;box-shadow:0 2px 7px rgba(0,0,0,.35);display:flex;align-items:center;gap:7px;padding:0 10px;z-index:2}
+.tcard i{width:clamp(10px,3.2vw,14px);height:clamp(10px,3.2vw,14px);border-radius:4px;border:1.5px solid #8E8E93;flex:none}
+.tcard span{font-size:clamp(10px,3vw,13px);font-weight:700;color:#1C1C1E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tcard.c0{bottom:-2%;transform:rotate(-1.4deg);left:4%;right:5%}
+.tcard.c1{bottom:20%;transform:rotate(1.6deg);left:8%;right:3%}
+.tcard.c2{bottom:38%;transform:rotate(-2.2deg);left:12%;right:7%}
+.tcard.c1 span,.tcard.c2 span{color:#3A3A3C}
+.tl{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:600;color:#8E8E93}
+.tl em{font-style:normal;min-width:26px;height:26px;padding:0 8px;border-radius:13px;background:#EFEFF4;color:#8E8E93;font-size:14px;font-weight:600;display:grid;place-items:center}
+.tray:active .tbox{transform:scale(.97)}
 @media (min-width:900px){
   html{background:#fff}
   .top,.content{max-width:1120px;margin-left:auto;margin-right:auto}
@@ -320,6 +352,7 @@ body{background:#fff}
   .sheet{left:calc(50% - 290px);right:calc(50% - 290px)}
 }
 @media (min-width:1300px){.folders{grid-template-columns:repeat(6,1fr)}}
+@media (min-width:900px){.trays{max-width:440px}}
 </style>
 </head>
 <body>
@@ -336,6 +369,7 @@ body{background:#fff}
   </div>
 </header>
 <main class="content">
+  <div class="trays" id="trays"></div>
   <form class="qa" id="qaF" autocomplete="off"><label class="press"><span class="hash">#</span><input id="qa" placeholder="Schnell eintragen …" enterkeyhint="done"><button type="button" class="when" id="qaWhen">heute</button></label><button class="plus press" id="qaGo" aria-label="Hinzufügen"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></form>
   <div id="alert"></div>
   <div class="folders hidden" id="folders" aria-hidden="true"></div>
@@ -343,7 +377,7 @@ body{background:#fff}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 1.20<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 1.21<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
@@ -602,6 +636,17 @@ function mailHTML(){
   if(m.error)h+='<div class="empty" style="margin-top:8px;font-size:13px">'+esc(m.error)+' – zeige letzten Stand.</div>';
   return h+'</div>';
 }
+/* Zwei Körbe oben: Eingang (Projekte) und Heute (Woche + Projekte) */
+function traysHTML(){
+  const w=D.woche,pj=D.proj;
+  const todayOpen=[...((w&&w.open)||[]).slice().sort((a,b)=>(b.prio?1:0)-(a.prio?1:0)).map(x=>x.text),...(((pj&&pj.today)||[]).filter(x=>!x.done).map(x=>x.text))];
+  const nToday=todayOpen.length,inb=(pj&&pj.inboxTop)||[],nIn=(pj&&pj.inbox)||0;
+  const cards=(list,dark)=>list.slice(0,3).reverse().map((t,i,a)=>{const k=a.length-1-i;return '<div class="tcard c'+k+'"><i></i><span>'+esc(t)+'</span></div>'}).join('');
+  const IN='<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="16" rx="4"/><path d="M3.5 13h4.2l1.6 2.4h5.4l1.6-2.4h4.2"/></svg>';
+  const ST='<svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.75 5.6 6.15.9-4.45 4.35 1.05 6.12L12 16.9l-5.5 2.87 1.05-6.12L3.1 9.3l6.15-.9z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>';
+  const tray=(cls,go,list,icon,label,n)=>'<button class="tray '+cls+'" '+go+' aria-label="'+label+(n?', '+n:'')+'"><span class="tbox"><span class="well"><span class="back"></span>'+cards(list)+'</span><span class="front"><span class="ico">'+icon+'</span></span></span><span class="tl">'+label+(n?'<em>'+n+'</em>':'')+'</span></button>';
+  return tray('blue','data-inbox',inb,IN,'Eingang',nIn)+tray('white','data-go="woche"',todayOpen,ST,'Heute',nToday);
+}
 const closedSec=new Set((()=>{try{return JSON.parse(localStorage.getItem('planer.mydaysec')||'[]')}catch(e){return[]}})());
 /* Heute nachhaltig: jeden Tag eine kleine Idee zum Abhaken */
 const GREEN=['Ernähre dich heute nur mit regionalen Produkten','Kaufe weniger Plastik','Entrümple deinen Keller und verschenke Sachen','Verzichte für einen Tag auf Elektrizität','Gieße deine Pflanzen mit Regenwasser','Produziere so wenig Altglas wie möglich','Lege eine kürzere Strecke zu Fuß oder mit dem Rad zurück','Nimm den Bus für eine längere Strecke','Verzichte auf Eiprodukte','Verzichte 24 Stunden auf dein Smartphone','Ernähre dich einen Tag vegan','Spare so viel Wasser wie möglich','Verzichte eine Woche auf Fleisch','Spende aussortierte Kleidung','Sammle Müll in deiner Nachbarschaft','Nähe alte Textilien zu Einkaufstaschen um','Upcycle einen Gegenstand deiner Wahl','Baue nachwachsendes Gemüse an','Backe dein eigenes Brot','Schau dir eine Doku über Nachhaltigkeit an','Kaufe Obst und Gemüse 2. Wahl','Schreibe ein Gedicht über Nachhaltigkeit','Pflanze einen Baum','Engagiere dich aktiv für den Tierschutz','Spende 10 € an eine wohltätige Organisation','Flicke ein löchriges Kleidungsstück','Unternimm einen Ausflug ins Grüne','Verzichte auf Kosmetik mit Palmöl','Kaufe ein Kleidungsstück aus zweiter Hand','Informiere dich über nachhaltiges Heizen'];
@@ -684,6 +729,7 @@ function render(){
   $('alert').innerHTML=alertHTML();
   $('tasks').innerHTML=tasksHTML(p);
   const ev=p==='abend'||p==='nacht';
+  $('trays').innerHTML=traysHTML();
   $('myday').innerHTML=summaryHTML(p);
   $('green').innerHTML='';
   $('cards').innerHTML=nextHTML(p)+(ev?tomorrowHTML(p)+mailHTML()+calHTML():calHTML()+mailHTML()+tomorrowHTML(p))+projHTML()+pinHTML();
@@ -727,6 +773,7 @@ $('cards').addEventListener('click',e=>{
 $('bCal').onclick=()=>P&&P.showTab('kalender');
 $('bMail').onclick=()=>P&&P.showTab('mail');
 const goClick=e=>{const tr=e.target.closest('[data-triage]');if(tr){P&&P.showTab('mail',{triage:true});return}const go=e.target.closest('[data-go]');if(go)P&&P.showTab(go.dataset.go)};
+$('trays').addEventListener('click',e=>{const ib=e.target.closest('[data-inbox]');if(ib){P&&P.showTab('projekte',{inbox:true});return}goClick(e)});
 $('folders').addEventListener('click',goClick);$('myday').addEventListener('click',goClick);$('alert').addEventListener('click',goClick);
 /* Schnell eintragen */
 let qaDay=0;

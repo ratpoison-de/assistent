@@ -453,10 +453,11 @@ window.briefing=function(){
   const map=p=>{const a=area(p.area),c=col(a),{t:tt,d}=prog(p);return{id:p.id,name:p.name,icon:p.icon||'📁',area:a?a.name:'',color:c[0],tint:c[1],due:p.due||'',overdue:!!(p.due&&p.due<t),done:d,total:tt,status:p.status}};
   const list=act.slice().sort((a,b)=>(a.due||'9999').localeCompare(b.due||'9999')||(b.updated||0)-(a.updated||0));
   const td=[];for(const p of S.projects){if(p.archived)continue;for(const x of p.tasks||[]){if(x.date&&x.date<=t&&(!x.done||x.doneOn===t))td.push({pid:p.id,tid:x.id,text:x.text,project:p.name,icon:p.icon||'📁',done:!!x.done,overdue:x.date<t})}}
-  return{today:td,count:act.length,inbox:S.inbox.length,due:list.filter(p=>p.due&&p.due<=sS).map(map),top:list.slice(0,4).map(map)};
+  return{today:td,inboxTop:S.inbox.slice(-3).reverse().map(x=>x.text),count:act.length,inbox:S.inbox.length,due:list.filter(p=>p.due&&p.due<=sS).map(map),top:list.slice(0,4).map(map)};
 };
 window.openProject=function(id){view='areas';render();openProject(id)};
 window.toggleTask=function(pid,tid){const p=proj(pid);if(!p)return null;const x=p.tasks.find(t=>t.id===tid);if(!x)return null;x.done=!x.done;x.doneOn=x.done?today():undefined;touch(p);save();render();return x.done};
+window.openInbox=function(){if($('layer').classList.contains('on'))closeProject();view='inbox';render()};
 window.capture=function(text){if(!text)return;S.inbox.push({id:uid(),text,created:Date.now()});save();render()};
 window.reloadData=function(){load();render()};
 window.onShow=function(){const r=localStorage.getItem(KEY);if(r&&r!==JSON.stringify(S))load();render()};
