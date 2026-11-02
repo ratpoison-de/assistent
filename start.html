@@ -420,6 +420,14 @@ body{background:#fff}
 .favs .slempty{color:#8A8F98;font-size:15px;padding:8px 2px 4px;line-height:1.4}
 .favs .lzH{margin-top:10px;color:#AEB2B9;font-size:12.5px;text-align:center}
 body.home .foot{display:none}
+/* Favoriten rechts neben Uhr und Begrüßung */
+body.home .r2{align-items:flex-start}
+.r2 .favs{flex:0 0 42%;max-width:220px;margin:6px 0 0;padding:0;border:0;text-align:right;align-self:flex-start}
+.r2 .favs .lzL{display:flex;flex-direction:column;align-items:flex-end;padding:0}
+.r2 .favs .lzA{display:block;max-width:100%;width:auto;text-align:right;padding:5px 2px;font-size:17px;font-weight:600;letter-spacing:-.01em;color:#1C1C1E;border-radius:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:none;border:0}
+.r2 .favs .lzA:active{background:#F2F3F5}
+.r2 .favs .lzAll{display:inline-block;margin-top:6px;padding:4px 2px;color:#2A82F6;font-size:14px;font-weight:600;background:none;border:0}
+.r2 .favs .slempty{color:#8A8F98;font-size:13.5px;line-height:1.35;padding:4px 0}
 .opt .sw{flex:0 0 48px;width:48px;height:28px;border-radius:14px}
 .sw.on{background:#2A82F6}
 .favs .sec-h .fall{color:#2A82F6;font-size:15px;font-weight:600}
@@ -435,6 +443,7 @@ body.home .foot{display:none}
   </div>
   <div class="r2">
     <div class="t"><button class="lclock hidden" id="lclock" aria-label="Wecker öffnen"></button><h1 class="greet" id="greet">Hallo.</h1><div class="sub"><span id="date"></span><span class="d-tag hidden" id="streak">🔥 <span id="streakN">0</span> Tage</span></div></div>
+    <section class="favs hidden" id="favs"></section>
     <svg class="clock hidden" id="clock" viewBox="-50 -50 100 100" aria-label="Uhr" role="img"></svg>
   </div>
 </header>
@@ -447,9 +456,8 @@ body.home .foot{display:none}
   <div class="cards myday hidden" id="myday"></div>
   <div id="green"></div>
   <section class="box" id="tasks"></section>
-  <section class="favs hidden" id="favs"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 2.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.1.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
@@ -928,10 +936,8 @@ function lclock(){const n=new Date();$('lclock').textContent=two(n.getHours())+'
 (function tickL(){lclock();setTimeout(tickL,60500-Date.now()%60000)})();
 function favsHTML(){
   const f=L()?L().favs():[];
-  let h='<div class="sec-h"><div class="t"><h2>Favoriten</h2></div><button class="fall" data-all>Alle Apps ›</button></div>';
-  h+=f.length?'<div class="lzL">'+f.map(x=>'<button class="lzA" data-app="'+esc(x.k)+'">'+esc(x.name)+'</button>').join('')+'</div>'
-    :'<div class="slempty">Öffne „Alle Apps“ und tippe lange auf eine App → „Zu Favoriten“.</div>';
-  return h+'<div class="lzH">Nach oben wischen: alle Apps · nach unten: Mitteilungen'+(L()&&L().lockOn()?' · doppelt tippen: sperren':'')+'</div>';
+  return (f.length?'<div class="lzL">'+f.map(x=>'<button class="lzA" data-app="'+esc(x.k)+'">'+esc(x.name)+'</button>').join('')+'</div>'
+    :'<div class="slempty">Lange auf eine App in „Alle Apps“ tippen → Favorit</div>')+'<button class="lzAll" data-all>Alle Apps ›</button>';
 }
 function launcherUI(){
   const l=L();let on=false;try{on=!!(l&&l.isHome())}catch(e){}
