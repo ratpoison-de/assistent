@@ -154,7 +154,7 @@ input[type=file]{display:none}
 
   <button class="done d-btn primary" id="migDone">Fertig</button>
   <p class="tip">Du findest diesen Assistenten jederzeit wieder im Menü jedes Bereichs. Wenn alles da ist, kannst du die alten Apps deinstallieren.</p>
-  <p class="tip" style="margin-top:22px">Assistent · Version 2.0.1<br>Entwickelt von Thorsten von Plotho-Kettner</p>
+  <p class="tip" style="margin-top:22px">Assistent · Version 2.1<br>Entwickelt von Thorsten von Plotho-Kettner</p>
   <input type="file" id="migFile" accept=".json,.ics,application/json,text/calendar,*/*">
 </section>
 <div class="d-toast toast" id="toast"></div>
@@ -232,6 +232,7 @@ window.handleBack=function(){
 window.onCalPerm=function(ok){refreshStatus();ensure('kalender').then(()=>call('kalender','onCalPerm',ok))};
 window.onResumeApp=function(){for(const t of TABS)if(loaded[t]&&t!==active)call(t,'onResumeApp');call(active,'onShow');refreshStatus()};
 window.showTab=showTab;
+window.activeTab=()=>active;
 window.call=call;
 /* Fokus-Timer entfernt (1.11): alte Daten aufräumen */
 try{['planer.pomo','planer.pomo.cfg','planer.pomo.log'].forEach(k=>localStorage.removeItem(k))}catch(e){}
@@ -283,5 +284,6 @@ if(!N){window.openImport=window.openSync;try{if(!JSON.parse(localStorage.getItem
 (function(){const hb=window.handleBack;window.handleBack=function(){if(window.AssistentSync&&AssistentSync.isOpen()){AssistentSync.close();return true}return hb()}})();
 window.onResumeApp=(function(f){return function(){f();try{AssistentSync.sync('resume')}catch(e){}}})(window.onResumeApp);
 </script>
+<script src="launcher.js"></script>
 </body>
 </html>
