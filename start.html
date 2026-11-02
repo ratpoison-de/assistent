@@ -420,6 +420,9 @@ body{background:#fff}
 .favs .slempty{color:#8A8F98;font-size:15px;padding:8px 2px 4px;line-height:1.4}
 .favs .lzH{margin-top:10px;color:#AEB2B9;font-size:12.5px;text-align:center}
 body.home .foot{display:none}
+/* Startbildschirm: nur Kopf, Hinweise und Körbe – der Rest über die Leiste unten */
+body.home #qaF,body.home #tasks,body.home #cards,body.home #green,body.home #alert,body.home #myday,body.home #folders{display:none!important}
+body.home .content{padding-bottom:110px}
 /* Favoriten rechts neben Uhr und Begrüßung */
 body.home .r2{align-items:flex-start}
 .r2 .favs{flex:0 0 42%;max-width:220px;margin:6px 0 0;padding:0;border:0;text-align:right;align-self:flex-start}
@@ -457,7 +460,7 @@ body.home .r2{align-items:flex-start}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 2.1.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.1.2<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
