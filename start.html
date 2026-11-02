@@ -354,6 +354,23 @@ body{background:#fff}
 @media (min-width:1300px){.folders{grid-template-columns:repeat(6,1fr)}}
 @media (min-width:900px){.trays{max-width:440px}}
 /* ---- Things 3 ---- */
+.top .r1{margin-bottom:-6px}
+.clock{width:64px;height:64px}
+.glance{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 18px}
+.gl{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:#F2F3F5;font-size:14px;font-weight:600;color:#1C1C1E;line-height:1.2}
+.gl .wi{display:grid;place-items:center;width:20px;height:20px}.gl .wi svg{width:20px;height:20px}
+.gl.soft{background:#EEF7F0;color:#1E7B3A}
+.gl.warn{background:#FFF6DA;color:#8A6500}
+.trays{margin:0 0 18px}
+.qa{margin-bottom:6px}
+#tasks{margin-top:16px}
+.evs .ev{border-top:0;padding:6px 0}
+.evs .ev .tm{color:#8A8F98;font-weight:600}
+.evs .ev .tt b{font-weight:500}
+.ban{display:none}
+.tbox{max-width:140px}
+.trays{max-width:380px;margin-left:auto;margin-right:auto}
+@media (min-width:900px){.content{display:block!important;max-width:760px!important}.content>*{grid-column:auto}.top{max-width:760px!important}.trays{margin-left:0}}
 .sheet h3,.h-mid{text-transform:none}
 .sq{background:#F2F3F5}
 .greet{text-transform:none;color:#1C1C1E;font-weight:800;letter-spacing:-.02em;font-size:clamp(26px,7.6vw,32px)}
@@ -398,8 +415,8 @@ body{background:#fff}
   <div class="r1">
     <button class="sq press" id="bMenu" aria-label="Einstellungen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
     <span class="sp"></span>
-    <button class="sq press" id="bCal" aria-label="Kalender"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8.5 3v4M15.5 3v4"/></svg></button>
-    <button class="sq press" id="bMail" aria-label="Mail"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg></button>
+    <button class="sq press hidden" id="bCal" aria-label="Kalender"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8.5 3v4M15.5 3v4"/></svg></button>
+    <button class="sq press hidden" id="bMail" aria-label="Mail"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg></button>
   </div>
   <div class="r2">
     <div class="t"><h1 class="greet" id="greet">Hallo.</h1><div class="sub"><span id="date"></span><span class="d-tag hidden" id="streak">🔥 <span id="streakN">0</span> Tage</span></div></div>
@@ -407,15 +424,16 @@ body{background:#fff}
   </div>
 </header>
 <main class="content">
+  <div class="glance" id="glance"></div>
   <div class="trays" id="trays"></div>
   <form class="qa" id="qaF" autocomplete="off"><label class="press"><span class="hash">#</span><input id="qa" placeholder="Schnell eintragen …" enterkeyhint="done"><button type="button" class="when" id="qaWhen">heute</button></label><button class="plus press" id="qaGo" aria-label="Hinzufügen"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></form>
-  <div id="alert"></div>
+  <div id="alert" class="hidden"></div>
   <div class="folders hidden" id="folders" aria-hidden="true"></div>
-  <div class="cards myday" id="myday"></div>
+  <div class="cards myday hidden" id="myday"></div>
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 1.22<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.0<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
@@ -586,15 +604,16 @@ function tasksHTML(p){
   const open=wk.filter(x=>!x.done).length+pj.filter(x=>!x.done).length+(g.done?0:1);
   const done=wk.filter(x=>x.done).length+pj.filter(x=>x.done).length+(g.done?1:0),total=open+done;
   const subParts=[];if(endH)subParts.push('Bis '+endH+':00 Uhr');subParts.push(open?(open===1?'1 offen':open+' offen'):'alles erledigt');
-  let h='<div class="sec-h"><div class="t"><h2>'+name+'</h2><small>'+subParts.join(' · ')+'</small></div>'+(total?'<div class="gauge">'+gauge(done,total)+'<span>'+done+' von '+total+'</span></div>':'')+'</div><div id="tlist">';
+  let h='<div class="sec-h"><div class="t"><h2>'+(p==='abend'||p==='nacht'?'Mein Abend':'Mein Tag')+'</h2><small>'+subParts.join(' · ')+'</small></div>'+(total?'<div class="gauge">'+gauge(done,total)+'<span>'+done+' von '+total+'</span></div>':'')+'</div><div id="tlist">';
   const FLAG=on=>'<svg width="16" height="16" viewBox="0 0 24 24" fill="'+(on?'#FF9500':'none')+'" stroke="'+(on?'#FF9500':'#C7C7CC')+'" stroke-width="2" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>';
   const wRow=x=>{const sub=['Woche','Heute'];if(x.rep)sub.push('⇄ '+(x.repL||'wiederkehrend'));if(x.carried)sub.push('von gestern');if(x.mail)sub.push('aus E-Mail');
     return '<div class="task'+(x.done?' done':'')+'"><button class="ck" data-tick="'+x.id+'" aria-label="'+(x.done?'Wieder öffnen':'Abhaken')+'">'+(x.done?IC.check:'')+'</button><button class="tx" data-open="'+x.id+'"><b>'+esc(x.text)+'</b><span>'+sub.join(' · ')+'</span></button><button class="fl'+(x.prio?' on':'')+'" data-flag="'+x.id+'" aria-label="Priorität">'+FLAG(x.prio)+'</button></div>'};
   const pRow=x=>'<div class="task'+(x.done?' done':'')+'"><button class="ck" data-ptick="'+x.pid+'|'+x.tid+'" aria-label="Abhaken">'+(x.done?IC.check:'')+'</button><button class="tx" data-proj="'+x.pid+'"><b>'+esc(x.text)+'</b><span>'+esc(x.icon+' '+x.project)+' · '+(x.overdue&&!x.done?'<em class="od">überfällig</em>':'Heute')+'</span></button></div>';
   const gRow='<div class="task gr'+(g.done?' done':'')+'"><button class="ck" data-green="'+g.i+'" aria-label="Abhaken">'+(g.done?IC.check:'')+'</button><div class="tx"><b>'+esc(GREEN[g.i])+'</b><span>🌱 Heute nachhaltig · ⇄ Täglich'+(g.n?' · '+g.n+' von '+GREEN.length+' geschafft':'')+'</span></div>'+(g.done?'':'<button class="fl" data-gskip aria-label="Andere Idee"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C7C7CC" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 4v5h-5"/></svg></button>')+'</div>';
-  const sec=(k,title,deco,col,body,empty)=>{const c=closedSec.has(k);
+  const sec=(k,title,deco,col,body,empty)=>{if(!body&&!empty)return'';const c=closedSec.has(k);
     return '<section class="sl'+(c?' closed':'')+'" style="--k:'+col+'"><button class="slh" data-sec="'+k+'"><b>'+title+'</b><i>'+deco+'</i><span class="sp"></span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="slb">'+(body||'<div class="slempty">'+empty+'</div>')+'</div></section>'};
-  h+=sec('prio','Prioritäten','!!','#E5A400',ord(prio).map(wRow).join(''),'Tippe bei einer Aufgabe auf ⚑, dann steht sie hier ganz oben.');
+  const k=D.kal;if(k&&k.today.length)h+=sec('cal','Termine','','#EE4B4B','<div class="evs" data-go="kalender">'+evList(k.today,true)+'</div>','');
+  h+=sec('prio','Prioritäten','!!','#E5A400',ord(prio).map(wRow).join(''),'');
   h+=sec('rout','Routinen','⇄','#2FB3A6',ord(rout).map(wRow).join('')+gRow,'');
   h+=sec('task','Aufgaben','✓','#2A82F6',ord(rest).map(wRow).join('')+ord(pj).map(pRow).join(''),'Sonst steht heute nichts an.');
   h+='</div><button class="add" id="addRow"><i>+</i>Aufgabe für heute</button>';
@@ -763,14 +782,23 @@ function alertHTML(){
 }
 function render(){
   const p=header();landscape();
-  /* Bereich „Meine Bereiche“ ausgeblendet (1.16) */
-  $('alert').innerHTML=alertHTML();
-  $('tasks').innerHTML=tasksHTML(p);
   const ev=p==='abend'||p==='nacht';
+  $('glance').innerHTML=glanceHTML(p);
   $('trays').innerHTML=traysHTML();
-  $('myday').innerHTML=summaryHTML(p);
-  $('green').innerHTML='';
-  $('cards').innerHTML=nextHTML(p)+(ev?tomorrowHTML(p)+mailHTML()+calHTML():calHTML()+mailHTML()+tomorrowHTML(p))+projHTML()+pinHTML();
+  $('tasks').innerHTML=tasksHTML(p);
+  $('cards').innerHTML=ev?tomorrowHTML(p):'';
+}
+/* Auf einen Blick: Wetter, Termine, Mails, Hinweise als kleine Chips */
+function glanceHTML(p){
+  const w=weather(),k=D.kal,m=D.mail,t=D.woche,ev=p==='abend'||p==='nacht';const c=[];
+  if(w){const d=w.data,cur=d.current,day=d.daily,i=ev?1:0;
+    c.push('<button class="gl" data-go="wetter"><span class="wi">'+(ev?wxIcon(day.weather_code[1]):wxIcon(cur.weather_code,!cur.is_day))+'</span>'+(ev?'Morgen ':Math.round(cur.temperature_2m)+'° · ')+Math.round(day.temperature_2m_min[i])+'–'+Math.round(day.temperature_2m_max[i])+'°</button>')}
+  if(k){const n=k.today.length;c.push('<button class="gl" data-go="kalender">📅 '+(n?plural(n,'Termin','Termine'):'Keine Termine')+'</button>')}
+  if(m&&m.loggedIn&&m.unread)c.push('<button class="gl" data-triage="1">✉️ '+m.unread+' neue Mail'+(m.unread===1?'':'s')+'</button>');
+  if(t){const n=t.open.filter(x=>x.carried).length;if(n)c.push('<button class="gl" data-go="woche">↻ '+n+' von gestern</button>')}
+  if(k&&k.hol)c.push('<span class="gl soft">🎉 '+esc(k.hol)+'</span>');else if(k&&k.fer)c.push('<span class="gl soft">🌴 '+esc(k.fer[2])+'</span>');
+  for(const h of hintsFor(w,p).slice(0,1))c.push('<span class="gl warn">'+esc(h.replace(/ – .*$/,''))+'</span>');
+  return c.join('');
 }
 let loading=false;
 async function load(){
@@ -790,6 +818,7 @@ $('tasks').addEventListener('click',e=>{
     const t=D.woche;if(t){if(wasDone){const i=t.doneList.findIndex(x=>x.id===id);if(i>=0)t.open.unshift(t.doneList.splice(i,1)[0])}else{const i=t.open.findIndex(x=>x.id===id);if(i>=0)t.doneList.push(t.open.splice(i,1)[0])}}
     if(!wasDone){const fin=t&&!t.open.length;try{P.playNote&&P.playNote(fin)}catch(_){}burst(tick,fin?'Alles erledigt! 🎉':'Erledigt ✓')}
     setTimeout(render,450);return}
+  const gg=e.target.closest('[data-go]');if(gg&&!e.target.closest('[data-sec]')){P&&P.showTab(gg.dataset.go);return}
   const sc=e.target.closest('[data-sec]');if(sc){const k=sc.dataset.sec;closedSec.has(k)?closedSec.delete(k):closedSec.add(k);try{localStorage.setItem('planer.mydaysec',JSON.stringify([...closedSec]))}catch(_){}sc.parentElement.classList.toggle('closed');return}
   const fl=e.target.closest('[data-flag]');if(fl){let r=null;try{r=P.call('woche','togglePrio',fl.dataset.flag)}catch(_){}try{P.Native&&P.Native.haptic()}catch(_){}
     const t=D.woche;if(t&&r!=null)[...t.open,...(t.doneList||[])].forEach(x=>{if(x.id===fl.dataset.flag)x.prio=r});render();return}
@@ -811,6 +840,7 @@ $('cards').addEventListener('click',e=>{
 $('bCal').onclick=()=>P&&P.showTab('kalender');
 $('bMail').onclick=()=>P&&P.showTab('mail');
 const goClick=e=>{const tr=e.target.closest('[data-triage]');if(tr){P&&P.showTab('mail',{triage:true});return}const go=e.target.closest('[data-go]');if(go)P&&P.showTab(go.dataset.go)};
+$('glance').addEventListener('click',goClick);
 $('trays').addEventListener('click',e=>{const ib=e.target.closest('[data-inbox]');if(ib){P&&P.showTab('projekte',{inbox:true});return}goClick(e)});
 $('folders').addEventListener('click',goClick);$('myday').addEventListener('click',goClick);$('alert').addEventListener('click',goClick);
 /* Schnell eintragen */
