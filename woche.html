@@ -201,6 +201,7 @@ h1 em{color:inherit;background:none}
 .tag.mail{background:#FFF3C4;color:#9A6B00}
 .addbtn{color:#FF3B30}
 .setting{background:#F2F2F7;border:0;box-shadow:none;border-radius:12px}
+.tag.prio{background:none;color:#FF9500;font-size:15px;padding:0 2px}
 @media (min-width:900px){
   html{background:#fff}
   body{max-width:860px;margin:0 auto}
@@ -363,6 +364,7 @@ function taskHTML(t,bucket){
   if(t.carried&&!t.done) tags.push('<span class="tag carry">übernommen</span>');
   if(t.repeat&&t.repeat!=='none') tags.push('<span class="tag" title="'+REP[t.repeat]+'">↻</span>');
   if(t.mail) tags.push('<span class="tag mail">✉</span>');
+  if(t.prio) tags.push('<span class="tag prio" title="Priorität">⚑</span>');
   return '<li class="task'+(t.done?' done':'')+'" data-id="'+t.id+'">'
     +'<button class="check" aria-label="Abhaken">'+CHECK+'</button>'
     +'<span class="txt">'+esc(t.text)+'</span>'
@@ -529,6 +531,7 @@ function openTask(id){
     '<textarea id="stext" rows="2" enterkeyhint="done">'+esc(t.text)+'</textarea>'
     +'<div class="label">Verschieben</div><div class="chips">'+chips+'</div>'
     +'<div class="label">Wiederholen</div><div class="seg">'+seg+'</div>'
+    +'<div class="label">Priorität</div><div class="chips"><button class="chip'+(t.prio?' on':'')+'" id="sprio">⚑ Wichtig – kommt in „Prioritäten“</button></div>'
     +(t.mail&&t.mail.msgid?'<button class="btn mail" id="smail">✉ E-Mail öffnen'+(t.mail.from?' · '+esc(t.mail.from):'')+'</button>':'')
     +'<div class="row"><button class="btn danger" id="sdel">Löschen</button><button class="btn primary" id="sok">Fertig</button></div>',
     ()=>{const x=find(id);if(x&&!x.text.trim()){state.tasks=state.tasks.filter(y=>y!==x);save()}}
@@ -543,6 +546,7 @@ function openTask(id){
     t.repeat=b.dataset.rep;save();
     sheet.querySelectorAll('[data-rep]').forEach(x=>x.classList.toggle('on',x===b));
   });
+  $('#sprio').onclick=()=>{t.prio=!t.prio;save();$('#sprio').classList.toggle('on',t.prio);render()};
   $('#sdel').onclick=()=>{closeSheet();remove(id)};
   const sm=$('#smail');if(sm)sm.onclick=()=>{closeSheet();try{parent.showTab('mail',{msgid:t.mail.msgid})}catch(e){}};
   $('#sok').onclick=closeSheet;
@@ -559,7 +563,7 @@ function openSettings(){
     +'<button class="setting" id="optImport"><span>Sicherung einfügen<small>Ersetzt alle Aufgaben durch die Zwischenablage</small></span></button>'
     +'<div class="label">Assistent</div>'
     +'<button class="setting" id="optMigrate"><span>Daten aus alten Apps übernehmen<small>Wochenstapel, Mein Kalender, Pinnwand</small></span></button>'
-    +'<div class="foot">Assistent · Version 1.19 · alles bleibt auf diesem Gerät<br>Entwickelt von Thorsten von Plotho-Kettner</div>'
+    +'<div class="foot">Assistent · Version 1.20 · alles bleibt auf diesem Gerät<br>Entwickelt von Thorsten von Plotho-Kettner</div>'
   );
   $('#optMigrate').onclick=()=>{closeSheet();try{parent.openImport()}catch(e){}};
   $('#optHide').onclick=()=>{state.settings.hideDone=!state.settings.hideDone;save();$('#optHide .switch').classList.toggle('on',state.settings.hideDone);render()};
@@ -617,9 +621,9 @@ window.briefing=function(){
   load();normalize();const t=today,tm=addDays(t,1);
   const td=state.tasks.filter(x=>x.date===t);
   const open=td.filter(x=>!x.done).sort((a,b)=>a.order-b.order);
-  return {open:open.map(x=>({id:x.id,text:x.text,carried:!!x.carried,mail:!!(x.mail&&x.mail.msgid),rep:!!(x.repeat&&x.repeat!=='none')})),
+  return {open:open.map(x=>({id:x.id,text:x.text,carried:!!x.carried,mail:!!(x.mail&&x.mail.msgid),rep:!!(x.repeat&&x.repeat!=='none'),repL:REP[x.repeat]||'',prio:!!x.prio})),
     done:td.filter(x=>x.done).length,
-    doneList:td.filter(x=>x.done).sort((a,b)=>(a.doneAt||0)-(b.doneAt||0)).map(x=>({id:x.id,text:x.text,mail:!!(x.mail&&x.mail.msgid),rep:!!(x.repeat&&x.repeat!=='none')})),
+    doneList:td.filter(x=>x.done).sort((a,b)=>(a.doneAt||0)-(b.doneAt||0)).map(x=>({id:x.id,text:x.text,mail:!!(x.mail&&x.mail.msgid),rep:!!(x.repeat&&x.repeat!=='none'),repL:REP[x.repeat]||'',prio:!!x.prio})),
     tomorrow:state.tasks.filter(x=>x.date===tm&&!x.done).map(x=>x.text),
     week:state.tasks.filter(x=>!x.done&&x.date&&x.date>t&&x.date<=addDays(t,6)).length,
     someday:state.tasks.filter(x=>!x.date&&!x.done).length};
@@ -627,6 +631,7 @@ window.briefing=function(){
 window.toggleTask=function(id){if(!find(id))return false;toggle(id);render();return true};
 window.removeExternalTask=function(msgid){const n=state.tasks.length;state.tasks=state.tasks.filter(t=>!(t.mail&&t.mail.msgid===msgid&&!t.done));save();render();return n!==state.tasks.length};
 window.reloadData=function(){load();normalize();render()};
+window.togglePrio=function(id){const t=find(id);if(!t)return null;t.prio=!t.prio;save();render();return t.prio};
 window.onShow=function(){const r=localStorage.getItem('wochenstapel');if(r&&r!==JSON.stringify(state)){load();normalize()}render()};
 window.openTaskById=function(id){if(find(id))openTask(id)};
 

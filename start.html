@@ -287,6 +287,25 @@ body{background:#fff}
 .green .gt b{display:block;font-size:14.5px;font-weight:500;color:#1C1C1E;line-height:1.3}
 .green.done .gt b{color:#8E8E93;text-decoration:line-through}
 .green .gsk{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#8FBF9C;flex:none}
+/* Mein Tag: drei Listen wie in Erinnerungen */
+.sl{margin-top:6px}
+.slh{display:flex;align-items:center;gap:6px;width:100%;padding:12px 0 4px;color:var(--k);border-bottom:.5px solid #DCDCE0}
+.slh b{font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.01em}
+.slh i{font-style:normal;font-weight:800;font-size:14px}
+.slh .sp{flex:1}
+.slh .chev{color:#AEAEB2;transition:transform .2s}
+.sl.closed .chev{transform:rotate(-90deg)}
+.sl.closed .slb{display:none}
+.slb .task{padding:10px 0}
+.slb .task .tx b{font-size:15.5px;font-weight:500}
+.slb .task .tx span{font-size:12.5px}
+.slb .task .tx span .od{font-style:normal;color:#FF3B30;font-weight:600}
+.slb .task:last-child{border-bottom:0}
+.slb .ck{width:22px;height:22px}
+.task.done .ck{background:var(--k,#FF3B30)!important;border-color:var(--k,#FF3B30)!important}
+.fl{width:30px;height:30px;display:grid;place-items:center;flex:none;border-radius:50%}
+.slempty{color:#AEAEB2;font-size:13.5px;padding:10px 0 6px}
+#tasks .add{border-top:0;margin-top:4px}
 @media (min-width:900px){
   html{background:#fff}
   .top,.content{max-width:1120px;margin-left:auto;margin-right:auto}
@@ -324,7 +343,7 @@ body{background:#fff}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 1.19<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 1.20<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
@@ -486,14 +505,27 @@ function tasksHTML(p){
   const t=D.woche,[name,,endH]=PHASE[p];
   if(t===undefined)return '<div class="sec-h"><div class="t"><h2>'+name+'</h2><small>Lade Aufgaben …</small></div></div><div class="skel" style="width:70%"></div><div class="skel" style="width:50%"></div>';
   if(!t)return '';
-  const open=t.open.length,done=(t.doneList||[]).length,total=open+done;
-  const subParts=[];if(endH)subParts.push('Bis '+endH+':00 Uhr');subParts.push(open?(open===1?'1 offen':open+' offen'):(total?'alles erledigt':'nichts geplant'));
+  /* Mein Tag in drei Listen: Prioritäten · Routinen · Aufgaben */
+  const wk=[...(t.doneList||[]).map(x=>Object.assign({done:true},x)),...t.open.map(x=>Object.assign({done:false},x))];
+  const pj=((D.proj&&D.proj.today)||[]);
+  const g=greenToday();
+  const prio=wk.filter(x=>x.prio),rout=wk.filter(x=>!x.prio&&x.rep),rest=wk.filter(x=>!x.prio&&!x.rep);
+  const ord=l=>l.filter(x=>!x.done).concat(l.filter(x=>x.done));
+  const open=wk.filter(x=>!x.done).length+pj.filter(x=>!x.done).length+(g.done?0:1);
+  const done=wk.filter(x=>x.done).length+pj.filter(x=>x.done).length+(g.done?1:0),total=open+done;
+  const subParts=[];if(endH)subParts.push('Bis '+endH+':00 Uhr');subParts.push(open?(open===1?'1 offen':open+' offen'):'alles erledigt');
   let h='<div class="sec-h"><div class="t"><h2>'+name+'</h2><small>'+subParts.join(' · ')+'</small></div>'+(total?'<div class="gauge">'+gauge(done,total)+'<span>'+done+' von '+total+'</span></div>':'')+'</div><div id="tlist">';
-  const row=(x,isDone)=>{const sub=[];if(x.carried)sub.push('von gestern übernommen');if(x.mail)sub.push('aus einer E-Mail');if(x.rep)sub.push('wiederkehrend');
-    return '<div class="task'+(isDone?' done':'')+'"><button class="ck" data-tick="'+x.id+'" aria-label="'+(isDone?'Wieder öffnen':'Abhaken')+'">'+(isDone?IC.check:'')+'</button><button class="tx" data-open="'+x.id+'"><b>'+esc(x.text)+'</b>'+(sub.length?'<span>'+sub.join(' · ')+'</span>':'')+'</button></div>'};
-  h+=(t.doneList||[]).map(x=>row(x,true)).join('')+t.open.map(x=>row(x,false)).join('');
+  const FLAG=on=>'<svg width="16" height="16" viewBox="0 0 24 24" fill="'+(on?'#FF9500':'none')+'" stroke="'+(on?'#FF9500':'#C7C7CC')+'" stroke-width="2" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>';
+  const wRow=x=>{const sub=['Woche','Heute'];if(x.rep)sub.push('⇄ '+(x.repL||'wiederkehrend'));if(x.carried)sub.push('von gestern');if(x.mail)sub.push('aus E-Mail');
+    return '<div class="task'+(x.done?' done':'')+'"><button class="ck" data-tick="'+x.id+'" aria-label="'+(x.done?'Wieder öffnen':'Abhaken')+'">'+(x.done?IC.check:'')+'</button><button class="tx" data-open="'+x.id+'"><b>'+esc(x.text)+'</b><span>'+sub.join(' · ')+'</span></button><button class="fl'+(x.prio?' on':'')+'" data-flag="'+x.id+'" aria-label="Priorität">'+FLAG(x.prio)+'</button></div>'};
+  const pRow=x=>'<div class="task'+(x.done?' done':'')+'"><button class="ck" data-ptick="'+x.pid+'|'+x.tid+'" aria-label="Abhaken">'+(x.done?IC.check:'')+'</button><button class="tx" data-proj="'+x.pid+'"><b>'+esc(x.text)+'</b><span>'+esc(x.icon+' '+x.project)+' · '+(x.overdue&&!x.done?'<em class="od">überfällig</em>':'Heute')+'</span></button></div>';
+  const gRow='<div class="task gr'+(g.done?' done':'')+'"><button class="ck" data-green="'+g.i+'" aria-label="Abhaken">'+(g.done?IC.check:'')+'</button><div class="tx"><b>'+esc(GREEN[g.i])+'</b><span>🌱 Heute nachhaltig · ⇄ Täglich'+(g.n?' · '+g.n+' von '+GREEN.length+' geschafft':'')+'</span></div>'+(g.done?'':'<button class="fl" data-gskip aria-label="Andere Idee"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C7C7CC" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 4v5h-5"/></svg></button>')+'</div>';
+  const sec=(k,title,deco,col,body,empty)=>{const c=closedSec.has(k);
+    return '<section class="sl'+(c?' closed':'')+'" style="--k:'+col+'"><button class="slh" data-sec="'+k+'"><b>'+title+'</b><i>'+deco+'</i><span class="sp"></span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="slb">'+(body||'<div class="slempty">'+empty+'</div>')+'</div></section>'};
+  h+=sec('prio','Prioritäten','!!','#FF3B30',ord(prio).map(wRow).join(''),'Tippe bei einer Aufgabe auf ⚑, dann steht sie hier ganz oben.');
+  h+=sec('rout','Routinen','⇄','#AF52DE',ord(rout).map(wRow).join('')+gRow,'');
+  h+=sec('task','Aufgaben','✓','#007AFF',ord(rest).map(wRow).join('')+ord(pj).map(pRow).join(''),'Sonst steht heute nichts an.');
   h+='</div><button class="add" id="addRow"><i>+</i>Aufgabe für heute</button>';
-  if(!total)h+='<div class="note">Für heute steht noch nichts an.'+(t.week?' Diese Woche: '+plural(t.week,'Aufgabe','Aufgaben')+'.':'')+'</div>';
   return h;
 }
 
@@ -570,17 +602,19 @@ function mailHTML(){
   if(m.error)h+='<div class="empty" style="margin-top:8px;font-size:13px">'+esc(m.error)+' – zeige letzten Stand.</div>';
   return h+'</div>';
 }
+const closedSec=new Set((()=>{try{return JSON.parse(localStorage.getItem('planer.mydaysec')||'[]')}catch(e){return[]}})());
 /* Heute nachhaltig: jeden Tag eine kleine Idee zum Abhaken */
 const GREEN=['Ernähre dich heute nur mit regionalen Produkten','Kaufe weniger Plastik','Entrümple deinen Keller und verschenke Sachen','Verzichte für einen Tag auf Elektrizität','Gieße deine Pflanzen mit Regenwasser','Produziere so wenig Altglas wie möglich','Lege eine kürzere Strecke zu Fuß oder mit dem Rad zurück','Nimm den Bus für eine längere Strecke','Verzichte auf Eiprodukte','Verzichte 24 Stunden auf dein Smartphone','Ernähre dich einen Tag vegan','Spare so viel Wasser wie möglich','Verzichte eine Woche auf Fleisch','Spende aussortierte Kleidung','Sammle Müll in deiner Nachbarschaft','Nähe alte Textilien zu Einkaufstaschen um','Upcycle einen Gegenstand deiner Wahl','Baue nachwachsendes Gemüse an','Backe dein eigenes Brot','Schau dir eine Doku über Nachhaltigkeit an','Kaufe Obst und Gemüse 2. Wahl','Schreibe ein Gedicht über Nachhaltigkeit','Pflanze einen Baum','Engagiere dich aktiv für den Tierschutz','Spende 10 € an eine wohltätige Organisation','Flicke ein löchriges Kleidungsstück','Unternimm einen Ausflug ins Grüne','Verzichte auf Kosmetik mit Palmöl','Kaufe ein Kleidungsstück aus zweiter Hand','Informiere dich über nachhaltiges Heizen'];
 function greenState(){try{return Object.assign({done:{},skip:{}},JSON.parse(localStorage.getItem('planer.green')||'{}'))}catch(e){return{done:{},skip:{}}}}
 function greenToday(){
   const g=greenState(),t=ymd(new Date());
   const doneToday=Object.keys(g.done).find(k=>g.done[k]===t);
-  if(doneToday!=null)return{i:+doneToday,done:true,g};
+  const n=Object.keys(g.done).length;
+  if(doneToday!=null)return{i:+doneToday,done:true,g,n};
   let cand=GREEN.map((_,i)=>i).filter(i=>!g.done[i]);
   if(!cand.length)cand=GREEN.map((_,i)=>i);       /* alle geschafft: neue Runde */
   const day=Math.floor(new Date(t+'T12:00:00').getTime()/864e5);
-  return{i:cand[(day*7+(g.skip[t]||0))%cand.length],done:false,g};
+  return{i:cand[(day*7+(g.skip[t]||0))%cand.length],done:false,g,n};
 }
 function greenHTML(){
   const x=greenToday(),n=Object.keys(x.g.done).length;
@@ -594,7 +628,7 @@ document.addEventListener('click',e=>{
   else{const i=ck.dataset.green;if(g.done[i]===t)delete g.done[i];else{g.done[i]=t;try{P.playNote&&P.playNote(false)}catch(_){}try{P.Native&&P.Native.haptic()}catch(_){}}}
   for(const k of Object.keys(g.skip))if(k!==t)delete g.skip[k];
   try{localStorage.setItem('planer.green',JSON.stringify(g))}catch(_){}
-  $('green').innerHTML=greenHTML();
+  render();
 });
 function projHTML(){
   const b=D.proj;if(!b||(!b.count&&!b.inbox))return'';
@@ -651,7 +685,7 @@ function render(){
   $('tasks').innerHTML=tasksHTML(p);
   const ev=p==='abend'||p==='nacht';
   $('myday').innerHTML=summaryHTML(p);
-  $('green').innerHTML=greenHTML();
+  $('green').innerHTML='';
   $('cards').innerHTML=nextHTML(p)+(ev?tomorrowHTML(p)+mailHTML()+calHTML():calHTML()+mailHTML()+tomorrowHTML(p))+projHTML()+pinHTML();
 }
 let loading=false;
@@ -672,6 +706,14 @@ $('tasks').addEventListener('click',e=>{
     const t=D.woche;if(t){if(wasDone){const i=t.doneList.findIndex(x=>x.id===id);if(i>=0)t.open.unshift(t.doneList.splice(i,1)[0])}else{const i=t.open.findIndex(x=>x.id===id);if(i>=0)t.doneList.push(t.open.splice(i,1)[0])}}
     if(!wasDone){const fin=t&&!t.open.length;try{P.playNote&&P.playNote(fin)}catch(_){}burst(tick,fin?'Alles erledigt! 🎉':'Erledigt ✓')}
     setTimeout(render,450);return}
+  const sc=e.target.closest('[data-sec]');if(sc){const k=sc.dataset.sec;closedSec.has(k)?closedSec.delete(k):closedSec.add(k);try{localStorage.setItem('planer.mydaysec',JSON.stringify([...closedSec]))}catch(_){}sc.parentElement.classList.toggle('closed');return}
+  const fl=e.target.closest('[data-flag]');if(fl){let r=null;try{r=P.call('woche','togglePrio',fl.dataset.flag)}catch(_){}try{P.Native&&P.Native.haptic()}catch(_){}
+    const t=D.woche;if(t&&r!=null)[...t.open,...(t.doneList||[])].forEach(x=>{if(x.id===fl.dataset.flag)x.prio=r});render();return}
+  const pt=e.target.closest('[data-ptick]');if(pt){const [pid,tid]=pt.dataset.ptick.split('|');const row=pt.closest('.task'),was=row.classList.contains('done');
+    row.classList.toggle('done',!was);row.classList.add('pop');pt.innerHTML=was?'':IC.check;try{P.Native&&P.Native.haptic()}catch(_){}
+    try{P.call('projekte','toggleTask',pid,tid)}catch(_){}const it=D.proj&&D.proj.today.find(x=>x.pid===pid&&x.tid===tid);if(it)it.done=!was;
+    if(!was){try{P.playNote&&P.playNote(false)}catch(_){}burst(pt,'Erledigt ✓')}setTimeout(render,450);return}
+  const pj=e.target.closest('[data-proj]');if(pj){P&&P.showTab('projekte',{project:pj.dataset.proj});return}
   const op=e.target.closest('[data-open]');if(op){P&&P.showTab('woche',{task:op.dataset.open});return}
   if(e.target.closest('#addRow'))openAdd();
 });
