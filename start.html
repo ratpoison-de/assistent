@@ -433,6 +433,36 @@ body.home .foot{display:none}
 .tray.rose .ico{color:#E5584A;filter:drop-shadow(0 1px 0 rgba(255,255,255,.5)) drop-shadow(0 -1px 0 rgba(150,30,20,.35))}
 .tbox{max-width:132px}
 body.home .trays{margin-top:2px}
+.tray.termin .tbox{background:linear-gradient(180deg,#B8F0C8 0%,#8EE0A8 45%,#5CC982 78%,#43B56B 100%);box-shadow:0 16px 30px -12px rgba(40,160,80,.5),0 3px 8px rgba(40,160,80,.16),inset 0 2px 0 rgba(255,255,255,.6),inset 0 -3px 6px rgba(20,110,50,.22)}
+.tray.termin .well{background:#163F28;box-shadow:inset 0 3px 8px rgba(0,0,0,.45)}
+.tray.termin .well .back{background:linear-gradient(180deg,#22573A,#1F5236)}
+.tray.termin .front::before{display:none}
+.tray.termin .ico{color:#3AAE63;filter:drop-shadow(0 1px 0 rgba(255,255,255,.5)) drop-shadow(0 -1px 0 rgba(20,100,40,.35))}
+.tray.termin .tcard i{border:0;background:#43B56B;border-radius:3px;width:4px;height:14px}
+/* Wetter-Grafik */
+.glance{display:block;margin:2px 0 var(--wg,16px)}
+.wxc{position:relative;display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:14px;width:100%;padding:12px 14px 10px;border-radius:20px;border:0;text-align:left;color:#1C1C1E;overflow:hidden}
+.wxc.sun{background:linear-gradient(135deg,#FFF6D9 0%,#FFE7B0 100%)}
+.wxc.cloud{background:linear-gradient(135deg,#EEF2F7 0%,#DCE4EE 100%)}
+.wxc.rain{background:linear-gradient(135deg,#E3F1FB 0%,#C9E2F5 100%)}
+.wxc.night{background:linear-gradient(135deg,#2A3350 0%,#1B2238 100%);color:#fff}
+.wxc.empty{background:#F2F3F5;grid-template-columns:auto 1fr}
+.wxl{display:flex;align-items:center;gap:8px}
+.wxe{font-size:var(--we,40px);line-height:1}
+.wxt{display:flex;flex-direction:column}
+.wxt b{font-size:var(--wt,34px);font-weight:800;letter-spacing:-.03em;line-height:1}
+.wxt small{font-size:12.5px;font-weight:600;opacity:.7;margin-top:3px;white-space:nowrap}
+.wxr{position:relative;display:block;height:var(--wgh,62px);min-width:0}
+.wxg{display:block;width:100%;height:100%}
+.wxtl,.wxh{position:absolute;inset:0;pointer-events:none}
+.wxh span,.wxtl span{position:absolute;transform:translateX(-50%);font-size:10px;font-weight:600;opacity:.6;white-space:nowrap}
+.wxh span{bottom:0}
+.wxh span:first-child,.wxtl span:first-child{transform:none}
+.wxh span:last-child,.wxtl span:last-child{transform:translateX(-100%)}
+.wxtl span{font-size:11px;opacity:.85}
+.wxtl span:first-child{transform:none}
+.wxx{grid-column:1/-1;margin-top:6px;font-size:12.5px;font-weight:600;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wxc.night .wxg polyline{stroke:#FFD36B}
 .tray.rose .tcard i{border:0;background:#2A82F6;border-radius:50%;width:8px;height:8px}
 /* Startbildschirm: nur Kopf, Hinweise und Körbe – der Rest über die Leiste unten */
 body.home #qaF,body.home #tasks,body.home #cards,body.home #green,body.home #alert,body.home #myday,body.home #folders{display:none!important}
@@ -480,7 +510,7 @@ body.home .r2{align-items:flex-start}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 2.2.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.3<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
@@ -753,9 +783,12 @@ function traysHTML(){
   if(m&&m.loggedIn)for(const x of [...(m.vip||[]),...(m.latest||[]),...((m.vip||[]).length+(m.latest||[]).length?[]:(m.recent||[]))]){if(seen.has(x.msgid))continue;seen.add(x.msgid);ml.push(x.from+' · '+x.subject)}
   const nM=m&&m.loggedIn?m.unread||0:0;
   const ENV='<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="3.5"/><path d="m4 7.5 8 6 8-6"/></svg>';
-  /* Hinweise (Wetter, Termine …) rechts neben dem Mail-Korb, ohne den Mail-Hinweis */
-  const side=glanceHTML(window.__phase||'tag').replace(/<button class="gl" data-triage[^]*?<\/button>/,'');
-  return tray('rose','data-triage="1"',ml,ENV,'Mail',nM)+'<div class="tside">'+side+'</div>'+
+  /* Termine: heute noch anstehende, abends die von morgen */
+  const k=D.kal,evn=/abend|nacht/.test(window.__phase||''),nm=nowMin();
+  const evs=k?(evn?k.tomorrow:k.today.filter(e=>e.allDay||!e.tStart||toMin(e.tEnd||e.tStart)>=nm)):[];
+  const el=evs.map(e=>(e.allDay||!e.tStart?'':e.tStart+' ')+e.title);
+  const CAL='<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3.5"/><path d="M3.5 10h17M8.5 3v4M15.5 3v4"/></svg>';
+  return tray('rose','data-triage="1"',ml,ENV,'Mail',nM)+tray('termin','data-go="kalender"',el,CAL,evn?'Morgen':'Termine',evs.length)+
     tray('blue','data-inbox',inb,IN,'Eingang',nIn)+tray('white','data-go="woche"',todayOpen,ST,'Heute',nToday);
 }
 const closedSec=new Set((()=>{try{return JSON.parse(localStorage.getItem('planer.mydaysec')||'[]')}catch(e){return[]}})());
@@ -837,7 +870,7 @@ function alertHTML(){
 /* Startbildschirm: alles ohne Scrollen auf eine Seite bringen */
 function fit(){
   const r=document.documentElement;
-  const vars=['--tb','--ck','--cg','--rg','--tg','--fv','--fp','--gr'];
+  const vars=['--wgh','--wg','--wt','--we','--tb','--ck','--cg','--rg','--tg','--fv','--fp','--gr'];
   let hm=false;try{hm=homeMode}catch(e){}
   if(!hm){vars.forEach(v=>r.style.removeProperty(v));return}
   for(let i=0;i<=14;i++){
@@ -845,7 +878,7 @@ function fit(){
     r.style.setProperty('--tb',Math.round(132-50*k)+'px');r.style.setProperty('--ck',Math.round(68-22*k)+'px');
     r.style.setProperty('--cg',Math.round(12-8*k)+'px');r.style.setProperty('--rg',Math.round(16-12*k)+'px');
     r.style.setProperty('--tg',Math.round(12-8*k)+'px');r.style.setProperty('--fv',(17-3*k).toFixed(1)+'px');
-    r.style.setProperty('--fp',(5-3*k).toFixed(1)+'px');r.style.setProperty('--gr',Math.round(30-6*k)+'px');
+    r.style.setProperty('--fp',(5-3*k).toFixed(1)+'px');r.style.setProperty('--wgh',Math.round(62-16*k)+'px');r.style.setProperty('--wg',Math.round(16-10*k)+'px');r.style.setProperty('--wt',Math.round(34-8*k)+'px');r.style.setProperty('--we',Math.round(40-10*k)+'px');r.style.setProperty('--gr',Math.round(30-6*k)+'px');
     if(r.scrollHeight<=innerHeight+1)break;
   }
 }
@@ -854,14 +887,42 @@ function render(){
   const p=header();landscape();
   const ev=p==='abend'||p==='nacht';
   /* Kaltstart: bis die Daten da sind, den zuletzt gezeigten Stand anzeigen */
-  window.__phase=p;$('glance').classList.add('hidden');
+  window.__phase=p;
+  $('glance').innerHTML=wxCardHTML(p);
   if(D.woche===undefined&&!D.kal){let sn=null;try{sn=JSON.parse(localStorage.getItem('planer.homesnap')||'null')}catch(_){}
-    if(sn&&sn.d===ymd(new Date())){$('glance').innerHTML=sn.g;$('trays').innerHTML=sn.t}else{$('glance').innerHTML=glanceHTML(p);$('trays').innerHTML=traysHTML()}}
-  else{$('glance').innerHTML=glanceHTML(p);$('trays').innerHTML=traysHTML();
-    if(D.woche&&D.kal)try{localStorage.setItem('planer.homesnap',JSON.stringify({d:ymd(new Date()),g:$('glance').innerHTML,t:$('trays').innerHTML}))}catch(_){}}
+    if(sn&&sn.d===ymd(new Date())&&sn.v===2){$('trays').innerHTML=sn.t}else{$('trays').innerHTML=traysHTML()}}
+  else{$('trays').innerHTML=traysHTML();
+    if(D.woche&&D.kal)try{localStorage.setItem('planer.homesnap',JSON.stringify({v:2,d:ymd(new Date()),t:$('trays').innerHTML}))}catch(_){}}
   $('tasks').innerHTML=tasksHTML(p);
   $('cards').innerHTML=ev?tomorrowHTML(p):'';
   fit();
+}
+/* Wetter als Grafik: Lage, Temperatur und Verlauf der nächsten Stunden */
+const WXE=c=>c===0||c===1?'☀️':c===2?'⛅':c===3?'☁️':c===45||c===48?'🌫️':c>=51&&c<=67?'🌧️':c>=71&&c<=77?'🌨️':c>=80&&c<=82?'🌦️':c>=95?'⛈️':'🌥️';
+function wxCardHTML(p){
+  const w=weather(),k=D.kal;
+  const extra=[];
+  if(k&&k.hol)extra.push('🎉 '+esc(k.hol));else if(k&&k.fer)extra.push('🌴 '+esc(k.fer[2]));
+  if(!w)return '<button class="wxc empty" data-go="wetter"><span class="wxe">🌤️</span><span class="wxt"><b>Wetter</b><small>Tippen, um den Ort freizugeben</small></span></button>';
+  const d=w.data,cur=d.current,hr=d.hourly,day=d.daily;
+  const night=!cur.is_day,code=cur.weather_code;
+  let from=hr.time.findIndex(t=>t.slice(0,13)===cur.time.slice(0,13));if(from<0)from=0;
+  const N=12,T=hr.temperature_2m.slice(from,from+N+1),R=hr.precipitation_probability.slice(from,from+N+1),H=hr.time.slice(from,from+N+1);
+  const W=200,Hh=62,top=14,bot=18,mn=Math.min(...T),mx=Math.max(...T),sp=Math.max(3,mx-mn);
+  const X=i=>(i/(T.length-1||1))*W,Y=v=>top+(1-(v-mn)/sp)*(Hh-top-bot);
+  const pts=T.map((v,i)=>X(i).toFixed(1)+','+Y(v).toFixed(1));
+  let svg='<svg class="wxg" viewBox="-6 0 '+(W+12)+' '+Hh+'" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="wxf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F5A623" stop-opacity=".32"/><stop offset="1" stop-color="#F5A623" stop-opacity="0"/></linearGradient></defs>';
+  R.forEach((r,i)=>{if(r>=10){const h=(r/100)*(Hh-bot-4);svg+='<rect x="'+(X(i)-3).toFixed(1)+'" y="'+(Hh-bot-h).toFixed(1)+'" width="6" height="'+h.toFixed(1)+'" rx="2" fill="#5AC8FA" opacity="'+(.35+r/200).toFixed(2)+'"/>'}});
+  svg+='<path d="M0,'+(Hh-bot)+' L'+pts.join(' L')+' L'+W+','+(Hh-bot)+'Z" fill="url(#wxf)"/><polyline points="'+pts.join(' ')+'" fill="none" stroke="#F5A623" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>';
+  svg+='</svg>';
+  const lab=H.map((t,i)=>i%6===0?'<span style="left:'+(X(i)/W*100).toFixed(1)+'%">'+(i===0?'jetzt':t.slice(11,13)+':00')+'</span>':'').join('');
+  const tl=T.map((v,i)=>i%6===0?'<span style="left:'+(X(i)/W*100).toFixed(1)+'%;top:'+(Y(v)/Hh*100-26).toFixed(1)+'%">'+Math.round(v)+'°</span>':'').join('');
+  const hint=hintsFor(w,p).slice(0,1).map(h=>esc(h.replace(/ – .*$/,'')));
+  const sub=[wtxt(code),Math.round(day.temperature_2m_min[0])+'–'+Math.round(day.temperature_2m_max[0])+'°'].join(' · ');
+  const sky=night?'night':code<=1?'sun':code<=3||code===45||code===48?'cloud':'rain';
+  return '<button class="wxc '+sky+'" data-go="wetter"><span class="wxl"><span class="wxe">'+(night&&code<=1?'🌙':WXE(code))+'</span><span class="wxt"><b>'+Math.round(cur.temperature_2m)+'°</b><small>'+esc(sub)+'</small></span></span>'+
+    '<span class="wxr"><span class="wxtl">'+tl+'</span>'+svg+'<span class="wxh">'+lab+'</span></span>'+
+    ((hint.length||extra.length)?'<span class="wxx">'+[...hint,...extra].join(' · ')+'</span>':'')+'</button>';
 }
 /* Auf einen Blick: Wetter, Termine, Mails, Hinweise als kleine Chips */
 function glanceHTML(p){
