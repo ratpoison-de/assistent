@@ -221,7 +221,9 @@ if(ON){
     return false;
   };
   const rs=window.onResumeApp;
-  window.onResumeApp=function(){if(rs)rs();reload()};
-  setTimeout(reload,300);
+  window.onResumeApp=function(){if(rs)rs();notifyStart()};
+  /* Sofort beim Zurückkehren: nur Uhr und Favoriten auffrischen, der Rest kommt kurz danach */
+  window.onResumeFast=function(){notifyStart()};
+  reload();
 }
 })();

@@ -460,7 +460,7 @@ body.home .r2{align-items:flex-start}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 2.1.2<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.1.3<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
@@ -810,8 +810,11 @@ function alertHTML(){
 function render(){
   const p=header();landscape();
   const ev=p==='abend'||p==='nacht';
-  $('glance').innerHTML=glanceHTML(p);
-  $('trays').innerHTML=traysHTML();
+  /* Kaltstart: bis die Daten da sind, den zuletzt gezeigten Stand anzeigen */
+  if(D.woche===undefined&&!D.kal){let sn=null;try{sn=JSON.parse(localStorage.getItem('planer.homesnap')||'null')}catch(_){}
+    if(sn&&sn.d===ymd(new Date())){$('glance').innerHTML=sn.g;$('trays').innerHTML=sn.t}else{$('glance').innerHTML=glanceHTML(p);$('trays').innerHTML=traysHTML()}}
+  else{$('glance').innerHTML=glanceHTML(p);$('trays').innerHTML=traysHTML();
+    if(D.woche&&D.kal)try{localStorage.setItem('planer.homesnap',JSON.stringify({d:ymd(new Date()),g:$('glance').innerHTML,t:$('trays').innerHTML}))}catch(_){}}
   $('tasks').innerHTML=tasksHTML(p);
   $('cards').innerHTML=ev?tomorrowHTML(p):'';
 }

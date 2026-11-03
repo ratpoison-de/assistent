@@ -154,7 +154,7 @@ input[type=file]{display:none}
 
   <button class="done d-btn primary" id="migDone">Fertig</button>
   <p class="tip">Du findest diesen Assistenten jederzeit wieder im Menü jedes Bereichs. Wenn alles da ist, kannst du die alten Apps deinstallieren.</p>
-  <p class="tip" style="margin-top:22px">Assistent · Version 2.1.2<br>Entwickelt von Thorsten von Plotho-Kettner</p>
+  <p class="tip" style="margin-top:22px">Assistent · Version 2.1.3<br>Entwickelt von Thorsten von Plotho-Kettner</p>
   <input type="file" id="migFile" accept=".json,.ics,application/json,text/calendar,*/*">
 </section>
 <div class="d-toast toast" id="toast"></div>
@@ -271,7 +271,8 @@ window.__geoCb=function(ok,p){call('wetter','geoCb',ok,p)};
 window.weatherUpdated=function(){for(const t of ['start','woche','kalender'])if(loaded[t])call(t,'onWeather')};
 
 showTab(active);
-setTimeout(()=>{for(const t of TABS)ensure(t)},700);
+/* Restliche Bereiche erst laden, wenn der Startbildschirm steht */
+setTimeout(()=>{for(const t of TABS)ensure(t)},2200);
 /* Wetter im Hintergrund aktuell halten, sobald der Standort einmal erlaubt ist */
 setTimeout(()=>{let ok=false;try{ok=N&&N.locPerm&&N.locPerm()==='granted'}catch(e){}if(ok)ensure('wetter').then(()=>call('wetter','refreshWeather'))},2500);
 let onb=null;try{onb=localStorage.getItem('planer.onboarded')}catch(e){}
