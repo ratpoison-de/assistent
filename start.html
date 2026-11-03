@@ -420,6 +420,20 @@ body{background:#fff}
 .favs .slempty{color:#8A8F98;font-size:15px;padding:8px 2px 4px;line-height:1.4}
 .favs .lzH{margin-top:10px;color:#AEB2B9;font-size:12.5px;text-align:center}
 body.home .foot{display:none}
+/* Drei Körbe: Mail oben links, daneben die Hinweise; darunter Eingang und Heute */
+.trays{grid-template-columns:1fr 1fr;row-gap:16px;align-items:center}
+.tside{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:8px;min-width:0;align-self:center;padding-bottom:30px}
+.tside .gl{max-width:100%;white-space:normal;text-align:left;font-size:13.5px;padding:6px 11px}
+.tside .gl.warn{font-size:13px}
+.glance.hidden{display:none}
+.tray.rose .tbox{background:linear-gradient(180deg,#FFC2B8 0%,#FF9F92 45%,#F7796B 78%,#EE5F51 100%);box-shadow:0 16px 30px -12px rgba(220,70,50,.5),0 3px 8px rgba(220,70,50,.16),inset 0 2px 0 rgba(255,255,255,.6),inset 0 -3px 6px rgba(170,40,25,.22)}
+.tray.rose .well{background:#5A1F1A;box-shadow:inset 0 3px 8px rgba(0,0,0,.45)}
+.tray.rose .well .back{background:linear-gradient(180deg,#76302A,#6E2B25)}
+.tray.rose .front::before{display:none}
+.tray.rose .ico{color:#E5584A;filter:drop-shadow(0 1px 0 rgba(255,255,255,.5)) drop-shadow(0 -1px 0 rgba(150,30,20,.35))}
+.tbox{max-width:132px}
+body.home .trays{margin-top:2px}
+.tray.rose .tcard i{border:0;background:#2A82F6;border-radius:50%;width:8px;height:8px}
 /* Startbildschirm: nur Kopf, Hinweise und Körbe – der Rest über die Leiste unten */
 body.home #qaF,body.home #tasks,body.home #cards,body.home #green,body.home #alert,body.home #myday,body.home #folders{display:none!important}
 body.home .content{padding-bottom:110px}
@@ -460,7 +474,7 @@ body.home .r2{align-items:flex-start}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 2.1.3<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.2<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
@@ -729,7 +743,14 @@ function traysHTML(){
   const IN='<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="16" rx="4"/><path d="M3.5 13h4.2l1.6 2.4h5.4l1.6-2.4h4.2"/></svg>';
   const ST='<svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.75 5.6 6.15.9-4.45 4.35 1.05 6.12L12 16.9l-5.5 2.87 1.05-6.12L3.1 9.3l6.15-.9z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>';
   const tray=(cls,go,list,icon,label,n)=>'<button class="tray '+cls+'" '+go+' aria-label="'+label+(n?', '+n:'')+'"><span class="tbox"><span class="well"><span class="back"></span>'+cards(list)+'</span><span class="front"><span class="ico">'+icon+'</span></span></span><span class="tl">'+label+(n?'<em>'+n+'</em>':'')+'</span></button>';
-  return tray('blue','data-inbox',inb,IN,'Eingang',nIn)+tray('white','data-go="woche"',todayOpen,ST,'Heute',nToday);
+  const m=D.mail,seen=new Set(),ml=[];
+  if(m&&m.loggedIn)for(const x of [...(m.vip||[]),...(m.latest||[])]){if(seen.has(x.msgid))continue;seen.add(x.msgid);ml.push(x.from+' · '+x.subject)}
+  const nM=m&&m.loggedIn?m.unread||0:0;
+  const ENV='<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="3.5"/><path d="m4 7.5 8 6 8-6"/></svg>';
+  /* Hinweise (Wetter, Termine …) rechts neben dem Mail-Korb, ohne den Mail-Hinweis */
+  const side=glanceHTML(window.__phase||'tag').replace(/<button class="gl" data-triage[^]*?<\/button>/,'');
+  return tray('rose','data-triage="1"',ml,ENV,'Mail',nM)+'<div class="tside">'+side+'</div>'+
+    tray('blue','data-inbox',inb,IN,'Eingang',nIn)+tray('white','data-go="woche"',todayOpen,ST,'Heute',nToday);
 }
 const closedSec=new Set((()=>{try{return JSON.parse(localStorage.getItem('planer.mydaysec')||'[]')}catch(e){return[]}})());
 /* Heute nachhaltig: jeden Tag eine kleine Idee zum Abhaken */
@@ -811,6 +832,7 @@ function render(){
   const p=header();landscape();
   const ev=p==='abend'||p==='nacht';
   /* Kaltstart: bis die Daten da sind, den zuletzt gezeigten Stand anzeigen */
+  window.__phase=p;$('glance').classList.add('hidden');
   if(D.woche===undefined&&!D.kal){let sn=null;try{sn=JSON.parse(localStorage.getItem('planer.homesnap')||'null')}catch(_){}
     if(sn&&sn.d===ymd(new Date())){$('glance').innerHTML=sn.g;$('trays').innerHTML=sn.t}else{$('glance').innerHTML=glanceHTML(p);$('trays').innerHTML=traysHTML()}}
   else{$('glance').innerHTML=glanceHTML(p);$('trays').innerHTML=traysHTML();
