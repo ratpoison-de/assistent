@@ -384,6 +384,8 @@ function taskHTML(t,bucket){
   if(t.repeat&&t.repeat!=='none') tags.push('<span class="tag" title="'+REP[t.repeat]+'">↻</span>');
   if(t.mail) tags.push('<span class="tag mail">✉</span>');
   if(t.prio) tags.push('<span class="tag prio" title="Priorität">⚑</span>');
+  if(t.size) tags.push('<span class="tag" title="Größe">'+t.size+'</span>');
+  if(t.steps&&t.steps.length) tags.push('<span class="tag" title="Schritte">'+t.steps.filter(x=>x.done).length+'/'+t.steps.length+'</span>');
   return '<li class="task'+(t.done?' done':'')+'" data-id="'+t.id+'">'
     +'<button class="check" aria-label="Abhaken">'+CHECK+'</button>'
     +'<span class="txt">'+esc(t.text)+'</span>'
@@ -640,9 +642,10 @@ window.briefing=function(){
   load();normalize();const t=today,tm=addDays(t,1);
   const td=state.tasks.filter(x=>x.date===t);
   const open=td.filter(x=>!x.done).sort((a,b)=>a.order-b.order);
-  return {open:open.map(x=>({id:x.id,text:x.text,carried:!!x.carried,mail:!!(x.mail&&x.mail.msgid),rep:!!(x.repeat&&x.repeat!=='none'),repL:REP[x.repeat]||'',prio:!!x.prio})),
+  const ks=x=>({size:x.size||'',steps:(x.steps||[]).map(s=>({id:s.id,text:s.text,done:!!s.done}))});
+  return {open:open.map(x=>Object.assign({id:x.id,text:x.text,carried:!!x.carried,mail:!!(x.mail&&x.mail.msgid),rep:!!(x.repeat&&x.repeat!=='none'),repL:REP[x.repeat]||'',prio:!!x.prio},ks(x))),
     done:td.filter(x=>x.done).length,
-    doneList:td.filter(x=>x.done).sort((a,b)=>(a.doneAt||0)-(b.doneAt||0)).map(x=>({id:x.id,text:x.text,mail:!!(x.mail&&x.mail.msgid),rep:!!(x.repeat&&x.repeat!=='none'),repL:REP[x.repeat]||'',prio:!!x.prio})),
+    doneList:td.filter(x=>x.done).sort((a,b)=>(a.doneAt||0)-(b.doneAt||0)).map(x=>Object.assign({id:x.id,text:x.text,mail:!!(x.mail&&x.mail.msgid),rep:!!(x.repeat&&x.repeat!=='none'),repL:REP[x.repeat]||'',prio:!!x.prio},ks(x))),
     tomorrow:state.tasks.filter(x=>x.date===tm&&!x.done).map(x=>x.text),
     week:state.tasks.filter(x=>!x.done&&x.date&&x.date>t&&x.date<=addDays(t,6)).length,
     someday:state.tasks.filter(x=>!x.date&&!x.done).length};
@@ -650,6 +653,17 @@ window.briefing=function(){
 window.toggleTask=function(id){if(!find(id))return false;toggle(id);render();return true};
 window.removeExternalTask=function(msgid){const n=state.tasks.length;state.tasks=state.tasks.filter(t=>!(t.mail&&t.mail.msgid===msgid&&!t.done));save();render();return n!==state.tasks.length};
 window.reloadData=function(){load();normalize();render()};
+/* Kleine Dinge: Größe S/M/L, Schritte, mehrere Aufgaben auf einmal */
+window.setSize=function(id,size){const t=find(id);if(!t)return false;t.size=size||'';save();render();return true};
+window.setSteps=function(id,steps){const t=find(id);if(!t)return false;t.steps=(steps||[]).map(x=>({id:x.id||uid(),text:String(x.text||'').slice(0,200),done:!!x.done}));if(t.steps.length&&!t.size)t.size='L';save();render();return true};
+window.toggleStep=function(id,sid){const t=find(id);if(!t||!t.steps)return null;const st=t.steps.find(x=>x.id===sid);if(!st)return null;st.done=!st.done;st.doneAt=st.done?Date.now():null;
+  if(st.done){try{const k='planer.doneDays';const d=JSON.parse(localStorage.getItem(k)||'[]');const td=todayKey();if(!d.includes(td)){d.push(td);localStorage.setItem(k,JSON.stringify(d.slice(-120)))}}catch(e){}}
+  const all=t.steps.every(x=>x.done);if(all&&!t.done)toggle(id);else if(!all&&t.done)toggle(id);save();render();return {step:st.done,task:t.done}};
+window.completeTask=function(id){const t=find(id);if(!t)return false;if(!t.done)toggle(id);save();render();return true};
+window.completeStep=function(id,sid){const t=find(id);if(!t||!t.steps)return false;const st=t.steps.find(x=>x.id===sid);if(!st)return false;if(!st.done)window.toggleStep(id,sid);return true};
+window.addTasks=function(list){let n=0;const bucket=bucketOf({date:today});for(const o of list||[]){if(!o||!o.text)continue;
+  state.tasks.push({id:uid(),text:String(o.text).slice(0,300),date:o.date||today,order:maxOrder(bucket)+1,done:false,repeat:'none',size:o.size||'',steps:(o.steps||[]).map(x=>({id:uid(),text:x,done:false}))});n++}
+  state.tasks=state.tasks.filter(t=>!t.demo);save();render();return n};
 window.togglePrio=function(id){const t=find(id);if(!t)return null;t.prio=!t.prio;save();render();return t.prio};
 window.onShow=function(){const r=localStorage.getItem('wochenstapel');if(r&&r!==JSON.stringify(state)){load();normalize()}render()};
 window.openTaskById=function(id){if(find(id))openTask(id)};
