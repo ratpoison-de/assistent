@@ -436,7 +436,13 @@ body.home .trays{margin-top:2px}
 .tray.rose .tcard i{border:0;background:#2A82F6;border-radius:50%;width:8px;height:8px}
 /* Startbildschirm: nur Kopf, Hinweise und Körbe – der Rest über die Leiste unten */
 body.home #qaF,body.home #tasks,body.home #cards,body.home #green,body.home #alert,body.home #myday,body.home #folders{display:none!important}
-body.home .content{padding-bottom:110px}
+body.home .content{padding-bottom:12px}
+body.home .lclock{font-size:var(--ck,68px);margin-bottom:var(--cg,12px)}
+body.home .tbox{max-width:var(--tb,132px)}
+body.home .trays{row-gap:var(--rg,16px);margin-bottom:0}
+body.home .tray{gap:var(--tg,12px)}
+body.home .r2 .favs .lzA{font-size:var(--fv,17px);padding:var(--fp,5px) 2px}
+body.home .greet{font-size:var(--gr,30px)}
 /* Favoriten rechts neben Uhr und Begrüßung */
 body.home .r2{align-items:flex-start}
 .r2 .favs{flex:0 0 42%;max-width:220px;margin:6px 0 0;padding:0;border:0;text-align:right;align-self:flex-start}
@@ -474,7 +480,7 @@ body.home .r2{align-items:flex-start}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 2.2<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.2.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
@@ -611,7 +617,7 @@ function streak(){
   const set=new Set(d);const c=new Date();if(!set.has(ymd(c)))c.setDate(c.getDate()-1);
   let n=0;while(set.has(ymd(c))){n++;c.setDate(c.getDate()-1)}return n;
 }
-let D={};
+let D={};try{const mb=JSON.parse(localStorage.getItem('planer.mailbrief')||'null');if(mb)D.mail=mb}catch(_){}
 
 /* ================= Kopf ================= */
 function header(){
@@ -744,7 +750,7 @@ function traysHTML(){
   const ST='<svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.75 5.6 6.15.9-4.45 4.35 1.05 6.12L12 16.9l-5.5 2.87 1.05-6.12L3.1 9.3l6.15-.9z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>';
   const tray=(cls,go,list,icon,label,n)=>'<button class="tray '+cls+'" '+go+' aria-label="'+label+(n?', '+n:'')+'"><span class="tbox"><span class="well"><span class="back"></span>'+cards(list)+'</span><span class="front"><span class="ico">'+icon+'</span></span></span><span class="tl">'+label+(n?'<em>'+n+'</em>':'')+'</span></button>';
   const m=D.mail,seen=new Set(),ml=[];
-  if(m&&m.loggedIn)for(const x of [...(m.vip||[]),...(m.latest||[])]){if(seen.has(x.msgid))continue;seen.add(x.msgid);ml.push(x.from+' · '+x.subject)}
+  if(m&&m.loggedIn)for(const x of [...(m.vip||[]),...(m.latest||[]),...((m.vip||[]).length+(m.latest||[]).length?[]:(m.recent||[]))]){if(seen.has(x.msgid))continue;seen.add(x.msgid);ml.push(x.from+' · '+x.subject)}
   const nM=m&&m.loggedIn?m.unread||0:0;
   const ENV='<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="3.5"/><path d="m4 7.5 8 6 8-6"/></svg>';
   /* Hinweise (Wetter, Termine …) rechts neben dem Mail-Korb, ohne den Mail-Hinweis */
@@ -828,6 +834,22 @@ function alertHTML(){
   if(!big)return'';
   return '<button class="alert press" '+act+'><span class="bell"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#151518" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></span><span class="tx"><b>'+esc(big)+'</b><small>'+esc(small)+'</small></span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#151518" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>';
 }
+/* Startbildschirm: alles ohne Scrollen auf eine Seite bringen */
+function fit(){
+  const r=document.documentElement;
+  const vars=['--tb','--ck','--cg','--rg','--tg','--fv','--fp','--gr'];
+  let hm=false;try{hm=homeMode}catch(e){}
+  if(!hm){vars.forEach(v=>r.style.removeProperty(v));return}
+  for(let i=0;i<=14;i++){
+    const k=i/14;
+    r.style.setProperty('--tb',Math.round(132-50*k)+'px');r.style.setProperty('--ck',Math.round(68-22*k)+'px');
+    r.style.setProperty('--cg',Math.round(12-8*k)+'px');r.style.setProperty('--rg',Math.round(16-12*k)+'px');
+    r.style.setProperty('--tg',Math.round(12-8*k)+'px');r.style.setProperty('--fv',(17-3*k).toFixed(1)+'px');
+    r.style.setProperty('--fp',(5-3*k).toFixed(1)+'px');r.style.setProperty('--gr',Math.round(30-6*k)+'px');
+    if(r.scrollHeight<=innerHeight+1)break;
+  }
+}
+addEventListener('resize',()=>fit());
 function render(){
   const p=header();landscape();
   const ev=p==='abend'||p==='nacht';
@@ -839,6 +861,7 @@ function render(){
     if(D.woche&&D.kal)try{localStorage.setItem('planer.homesnap',JSON.stringify({d:ymd(new Date()),g:$('glance').innerHTML,t:$('trays').innerHTML}))}catch(_){}}
   $('tasks').innerHTML=tasksHTML(p);
   $('cards').innerHTML=ev?tomorrowHTML(p):'';
+  fit();
 }
 /* Auf einen Blick: Wetter, Termine, Mails, Hinweise als kleine Chips */
 function glanceHTML(p){
@@ -855,7 +878,7 @@ function glanceHTML(p){
 let loading=false;
 async function load(){
   if(loading)return;loading=true;render();
-  await Promise.all([['woche','woche',4000],['kal','kalender',9000],['pin','pinnwand',5000],['proj','projekte',4000],['mail','mail',12000]].map(async([k,tab,to])=>{D[k]=await from(tab,to);render()}));
+  await Promise.all([['woche','woche',4000],['kal','kalender',9000],['pin','pinnwand',5000],['proj','projekte',4000],['mail','mail',30000]].map(async([k,tab,to])=>{const r=await from(tab,to);if(k==='mail'){if(r&&r.loggedIn)try{localStorage.setItem('planer.mailbrief',JSON.stringify(r))}catch(_){}D.mail=r||D.mail||null}else D[k]=r;render()}));
   loading=false;
 }
 
@@ -972,6 +995,7 @@ function launcherUI(){
   homeMode=on;document.body.classList.toggle('home',on);
   $('lclock').classList.toggle('hidden',!on);$('favs').classList.toggle('hidden',!on);
   if(on){lclock();$('favs').innerHTML=favsHTML()}
+  fit();
 }
 window.onLauncher=launcherUI;
 $('lclock').onclick=()=>{L()&&L().openClock()};

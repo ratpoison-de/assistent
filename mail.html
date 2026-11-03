@@ -891,11 +891,11 @@ window.briefing=async function(){
   const withTimeout=(p,ms)=>Promise.race([p,new Promise((_,r)=>setTimeout(()=>r({code:'offline'}),ms))]);
   let list=null,err=null,unread=null;
   if(cur.role==='inbox'&&filter==='all'&&items.length&&Date.now()-lastBrief<90000)list=items;
-  else{try{const r=await withTimeout(api('list',{folder:'INBOX',offset:0,count:30}),8000);list=r.items;learn(list);if(cur.role==='inbox'&&filter==='all'){items=r.items;more=r.more;cacheSave();render()}lastBrief=Date.now()}catch(e){err=errText(e);list=cacheLoad()||[]}}
+  else{try{const r=await withTimeout(api('list',{folder:'INBOX',offset:0,count:30}),20000);list=r.items;learn(list);if(cur.role==='inbox'&&filter==='all'){items=r.items;more=r.more;cacheSave();render()}else{try{localStorage.setItem(CACHE,JSON.stringify({items:list.slice(0,60),t:Date.now()}))}catch(_){}}lastBrief=Date.now()}catch(e){err=errText(e);list=(items.length?items:cacheLoad())||[]}}
   try{unread=await withTimeout(api('unread'),5000);badge(unread)}catch(e){}
   const un=list.filter(i=>!i.seen);
   const map=i=>({from:nameOf(i.from),subject:i.subject||'(ohne Betreff)',vip:isVip(i.from&&i.from.addr),date:i.date,msgid:i.msgid,attach:!!i.attach});
-  return {loggedIn:true,user:cfg.user,unread:unread==null?un.length:unread,vip:un.filter(i=>isVip(i.from&&i.from.addr)).map(map),latest:un.slice(0,4).map(map),error:err};
+  return {loggedIn:true,user:cfg.user,unread:unread==null?un.length:unread,vip:un.filter(i=>isVip(i.from&&i.from.addr)).map(map),latest:un.slice(0,4).map(map),recent:list.slice(0,3).map(map),error:err};
 };
 setInterval(()=>{if(status&&status.loggedIn&&!document.hidden)updateBadge()},180000);
 window.ready=init();
