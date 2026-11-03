@@ -551,6 +551,52 @@ body.home.mdopen #tasks{display:block!important;position:fixed;inset:0;z-index:6
 .wxc.rain{background:linear-gradient(135deg,#F1F8FE 0%,#E0EEFA 100%)}
 .wxc.night{background:linear-gradient(135deg,#F3F2FC 0%,#E4E6F7 100%);color:#1C1C1E}
 .wxc.night .wxg polyline{stroke:#8E8CE6}
+
+/* ================= Design „Sky“: Himmelblau, Serifen-Titel, weiße Karten ================= */
+@font-face{font-family:"Assistent Serif";src:url(fonts/serif-400.woff2) format("woff2");font-weight:400;font-display:swap}
+:root{--sky:#2AA7EE;--sky2:#5FC1F6;--vio:#6E7BFF;--bgs:#F1F2F5;--serif:"Assistent Serif","Instrument Serif",Georgia,"Times New Roman",serif}
+html,body{background:var(--bgs)}
+body{background:linear-gradient(180deg,#86CEFA 0,#BFE4FB 170px,#E6F2FB 320px,var(--bgs) 470px) no-repeat,var(--bgs)}
+.sq{background:#fff!important;box-shadow:0 2px 8px rgba(30,90,150,.10)}
+.greet{font-family:var(--serif);font-weight:400!important;letter-spacing:-.01em;color:var(--sky)!important;line-height:1.05}
+.greet .hi{font-weight:400!important;color:#1C1C1E!important}
+body.home .greet{font-size:calc(var(--gr,30px) * 1.25)}
+body:not(.home) .greet{font-size:clamp(32px,9.5vw,42px)}
+.lclock{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
+body.home .lclock{font-size:calc(var(--ck,68px) * 1.12)}
+.sub{color:#5E6672}
+.sub .d-tag{background:#fff;color:#1C1C1E}
+.r2 .favs .lzA{font-weight:500;color:#1C1C1E}
+.r2 .favs .lzAll,.favs .sec-h .fall{color:var(--sky)}
+/* Wetter: weiße Karte, himmelblaue Kurve */
+.wxc,.wxc.sun,.wxc.cloud,.wxc.rain,.wxc.night{background:#fff!important;color:#1C1C1E!important;box-shadow:0 10px 28px -12px rgba(30,90,150,.25),0 1px 2px rgba(0,0,0,.04)}
+.wxt b{font-family:var(--serif);font-weight:400;letter-spacing:-.01em;font-size:calc(var(--wt,34px) * 1.15)}
+.wxg polyline,.wxc.night .wxg polyline{stroke:var(--sky)!important}
+.wxg stop{stop-color:var(--sky)!important}
+.wxg rect{fill:#B9DFFA!important;opacity:.9!important}
+.wxx{display:inline-flex;align-self:start;justify-self:start;background:#E8F5FE;color:#1683C9;opacity:1;padding:4px 10px;border-radius:999px;font-size:12px;margin-top:8px}
+/* Als Nächstes: wie eine Termin-Karte */
+.nx{background:#fff!important;border-radius:22px;box-shadow:0 10px 28px -12px rgba(30,90,150,.28),0 1px 2px rgba(0,0,0,.04);padding:12px 10px 12px 16px}
+.nx small{display:inline-flex;align-self:flex-start;align-items:center;gap:5px;background:linear-gradient(180deg,#5CC4F7,#2AA7EE);color:#fff!important;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:600}
+.nx b{font-family:var(--serif);font-weight:400!important;font-size:21px!important;letter-spacing:-.005em;margin-top:5px!important}
+body.home .nxh .nx b{font-size:19px!important}
+.nx.run small{background:linear-gradient(180deg,#5FD6A0,#2EB57A)}
+.nxs,.nx.run .nxs{background:linear-gradient(135deg,#4CC2F7 0%,#4F96FB 55%,#7B7CFF 100%)!important;color:#fff!important;box-shadow:0 8px 18px -6px rgba(80,120,255,.55)!important;border-radius:999px}
+/* Mein Tag, Energie, Karten */
+.sec-h h2,.h-mid{font-family:var(--serif);font-weight:400!important;letter-spacing:-.005em}
+.sec-h h2{font-size:28px!important}
+.h-mid{font-size:26px!important}
+.en{background:#fff;box-shadow:0 10px 28px -14px rgba(30,90,150,.25)}
+.en>b{font-family:var(--serif);font-weight:400;font-size:21px}
+.enb button{background:#F4F8FC;box-shadow:none}
+.enb button:active{background:#E3F2FD}
+body.home.mdopen #tasks{background:linear-gradient(180deg,#9AD6FB 0,#D4EEFC 160px,var(--bgs) 340px) no-repeat,var(--bgs)}
+.mdx{background:#fff}
+.box{background:transparent}
+.d-btn.primary,#kdGo,#spGo,#nGo{background:linear-gradient(135deg,#4CC2F7 0%,#4F96FB 55%,#7B7CFF 100%)!important;color:#fff!important;border-radius:999px!important;box-shadow:0 10px 22px -8px rgba(80,120,255,.55)}
+.sheet{background:#fff}
+.tl{color:#6B7380}
+.tl em{background:#fff}
 </style>
 </head>
 <body>
@@ -578,7 +624,7 @@ body.home.mdopen #tasks{display:block!important;position:fixed;inset:0;z-index:6
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 2.4<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.5<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
@@ -1247,6 +1293,7 @@ function openSplit(id){
   $('spAll').onclick=()=>{for(const t of sug)if(!steps.some(s=>s.text===t))steps.push({text:t,done:false});draw()};
   $('spGo').onclick=()=>{try{P.call('woche','setSteps',id,steps)}catch(_){}closeSheet();toast(steps.length?steps.length+' kleine Schritte – einer nach dem anderen':'Schritte entfernt');D.woche=undefined;load()};
 }
+window.openDump=()=>openDump();
 function openDump(){
   let day=0;const over={};
   openSheet('<div class="h-mid" style="margin:0 4px 4px">Kopf leeren</div><p class="kdp">Schreib einfach alles auf, was dir durch den Kopf geht – eine Sache pro Zeile. Ich schätze die Größe; antippen ändert sie.</p>'+

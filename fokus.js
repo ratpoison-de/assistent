@@ -98,7 +98,7 @@ function build(){
   el=document.createElement('section');el.className='fk';el.id='fk';
   el.innerHTML='<div class="top"><button class="x" id="fkX" aria-label="Ausblenden"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></button><span class="eb" id="fkE">Fokus</span></div>'+
     '<h2 class="tt" id="fkT"></h2><div class="sb" id="fkS"></div>'+
-    '<div class="ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="#EEF1F5" stroke-width="9"/><circle class="p" id="fkP" cx="60" cy="60" r="52" fill="none" stroke="#2A82F6" stroke-width="9" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="0"/></svg><div class="tm"><b id="fkM">10:00</b><small id="fkR"></small></div></div>'+
+    '<div class="ring"><svg viewBox="0 0 120 120"><defs><linearGradient id="fkGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4CC2F7"/><stop offset=".6" stop-color="#4F96FB"/><stop offset="1" stop-color="#7B7CFF"/></linearGradient></defs><circle cx="60" cy="60" r="52" fill="none" stroke="#FFFFFF" stroke-width="9"/><circle class="p" id="fkP" cx="60" cy="60" r="52" fill="none" stroke="#2A82F6" stroke-width="9" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="0"/></svg><div class="tm"><b id="fkM">10:00</b><small id="fkR"></small></div></div>'+
     '<div class="bt" id="fkB"></div><button class="cn" id="fkC">Abbrechen</button>';
   document.body.appendChild(el);
   $('fkX').onclick=hide;

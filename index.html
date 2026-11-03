@@ -105,6 +105,35 @@ input[type=file]{display:none}
   .tab.on svg{color:var(--ic)}
   .tab.on .bdg,.tab .bdg{background:transparent;color:#8A8F98;border:0;font-weight:500;font-size:13px}
 }
+/* ---- Design „Sky“ ---- */
+@font-face{font-family:"Assistent Serif";src:url(fonts/serif-400.woff2) format("woff2");font-weight:400;font-display:swap}
+html body{background:#F1F2F5}
+.frames iframe{background:#F1F2F5}
+html body .tabs{background:rgba(255,255,255,.96);box-shadow:0 10px 30px -8px rgba(30,70,120,.22),inset 0 0 0 .5px rgba(0,0,0,.05);gap:0;padding:6px}
+html body .tab{color:#4A505A;flex:1 1 0;width:auto;min-width:0;max-width:44px}
+html body .tab svg{color:#4A505A}
+html body .tab.on{flex:0 0 auto;max-width:none;width:auto;padding:0 13px 0 9px;background:#EEF0F3;color:#1C1C1E;font-size:14.5px;font-weight:500;flex-direction:row;gap:6px;letter-spacing:0}
+html body .tab.on svg{color:#1C1C1E;width:20px;height:20px}
+html body .tab .bdg{background:var(--sky,#2AA7EE);border-color:#fff}
+.magic{position:fixed;right:12px;bottom:calc(10px + var(--sb));width:58px;height:58px;border-radius:50%;border:0;z-index:11;color:#fff;display:grid;place-items:center;
+  background:radial-gradient(circle at 35% 30%,#9CA9FF 0%,#6E7BFF 45%,#5A58F0 100%);box-shadow:0 12px 26px -8px rgba(90,88,240,.7),inset 0 2px 3px rgba(255,255,255,.5)}
+.magic:active{transform:scale(.95)}
+@media (max-width:899px){html body .tabs{left:12px;right:84px;transform:none;width:auto;max-width:none;justify-content:space-between}}
+@media (min-width:900px){.magic{display:none}
+  html body .tab,html body .tab.on{width:100%;padding:0 12px;font-size:15px;flex-direction:row;justify-content:flex-start;gap:12px}
+  html body .tabs{background:#F6F7F9;box-shadow:inset -.5px 0 0 #E2E4E8;padding:88px 12px 24px}}
+html body .ldr{background:linear-gradient(180deg,#9AD6FB 0,#D4EEFC 150px,#F7F8FA 320px) no-repeat,#F7F8FA}
+html body .ldr .lt{font-family:"Assistent Serif",Georgia,serif;font-weight:400;font-size:36px;letter-spacing:-.01em}
+html body .ldr .ls{background:#fff;box-shadow:0 6px 18px -10px rgba(30,90,150,.35)}
+html body .ldr .lx,html body .fk .x{background:#fff;box-shadow:0 2px 8px rgba(30,90,150,.12)}
+html body .fk{background:linear-gradient(180deg,#86CEFA 0,#C6E8FB 200px,#EEF4F9 420px,#F1F2F5 100%)}
+html body .fk .tt{font-family:"Assistent Serif",Georgia,serif;font-weight:400;font-size:32px;letter-spacing:-.01em}
+html body .fk .eb{display:inline-flex;align-items:center;background:linear-gradient(180deg,#5CC4F7,#2AA7EE);color:#fff;padding:5px 12px;border-radius:999px;font-size:13px}
+html body .fk .ring b{font-family:"Assistent Serif",Georgia,serif;font-weight:400;letter-spacing:-.02em;font-size:min(18vw,74px)}
+html body .fk .ring circle.p{stroke:url(#fkGrad)}
+html body .fk .bt .d-btn{background:#fff;border-radius:999px;box-shadow:0 4px 14px -8px rgba(30,90,150,.35)}
+html body .fk .bt .d-btn.primary{background:linear-gradient(135deg,#4CC2F7 0%,#4F96FB 55%,#7B7CFF 100%);color:#fff;box-shadow:0 12px 24px -8px rgba(80,120,255,.55)}
+html body .lsh{border-radius:26px 26px 0 0}
 </style>
 </head>
 <body>
@@ -126,6 +155,7 @@ input[type=file]{display:none}
   <button class="tab" data-t="pinnwand"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7.5" height="9" rx="2"/><rect x="13" y="3.5" width="7.5" height="6" rx="2"/><rect x="3.5" y="14.5" width="7.5" height="6" rx="2"/><rect x="13" y="11.5" width="7.5" height="9" rx="2"/></svg></span>Pinnwand</button>
   <button class="tab" data-t="wetter"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6.1 11 3.5 3.5 0 0 0 7 18z"/><path d="M15.5 3.5v1M20 5.5l-.7.7M21.5 10h-1"/></svg></span>Wetter</button>
 </nav>
+<button class="magic" id="magic" aria-label="Kopf leeren"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3.5l1.6 4.6 4.6 1.6-4.6 1.6L12 16l-1.6-4.7L5.8 9.7l4.6-1.6z"/><path d="M18.5 14.5l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"/></svg></button>
 
 <section class="mig" id="mig">
   <div class="h-eyebrow">Assistent</div>
@@ -154,7 +184,7 @@ input[type=file]{display:none}
 
   <button class="done d-btn primary" id="migDone">Fertig</button>
   <p class="tip">Du findest diesen Assistenten jederzeit wieder im Menü jedes Bereichs. Wenn alles da ist, kannst du die alten Apps deinstallieren.</p>
-  <p class="tip" style="margin-top:22px">Assistent · Version 2.4<br>Entwickelt von Thorsten von Plotho-Kettner</p>
+  <p class="tip" style="margin-top:22px">Assistent · Version 2.5<br>Entwickelt von Thorsten von Plotho-Kettner</p>
   <input type="file" id="migFile" accept=".json,.ics,application/json,text/calendar,*/*">
 </section>
 <div class="d-toast toast" id="toast"></div>
@@ -265,6 +295,7 @@ window.playNote=function(final,preview){
   }catch(e){}
 };
 window.ensure=ensure;
+$('magic').onclick=()=>{if(N)try{N.haptic()}catch(_){}showTab('start');ensure('start').then(()=>call('start','openDump'))};
 window.setBadge=function(t,n){const b=$('bdg-'+t);if(!b)return;n=+n||0;b.textContent=n>99?'99+':String(n);b.classList.toggle('on',n>0)};
 window.__mailCb=function(id,ok,p){call('mail','mailCb',id,ok,p)};
 window.__geoCb=function(ok,p){call('wetter','geoCb',ok,p)};
