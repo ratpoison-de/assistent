@@ -545,6 +545,8 @@ body.home .nxh .nx b{font-size:15.5px}
 /* Startbildschirm: „Mein Tag“ als Ebene über dem Heute-Korb */
 body.home.mdopen #tasks{display:block!important;position:fixed;inset:0;z-index:60;background:#fff;overflow-y:auto;padding:22px 18px 40px;margin:0;border:0;border-radius:0}
 .mdx{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:#F2F3F5;color:#8A8F98;border:0;margin:0 0 10px auto}
+/* Wetter: nur Symbol, Temperatur und Lage */
+.wxc{display:inline-grid;width:auto;max-width:100%;grid-template-columns:auto;padding:12px 20px 12px 16px}
 /* Wetter in hellen Farben */
 .wxc.sun{background:linear-gradient(135deg,#FFFBEA 0%,#FFF1C9 100%)}
 .wxc.cloud{background:linear-gradient(135deg,#F7F9FC 0%,#EAEFF6 100%)}
@@ -624,7 +626,7 @@ body.home.mdopen #tasks{background:linear-gradient(180deg,#9AD6FB 0,#D4EEFC 160p
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 2.5<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.5.2<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
@@ -720,7 +722,7 @@ function landscapeOld(){
   try{P&&P.updateBar&&P.updateBar()}catch(e){}
 }
 function landscape(){try{P&&P.updateBar&&P.updateBar()}catch(e){}}
-window.skyTop=function(){return{color:'#FFFFFF',dark:false}};
+window.skyTop=function(){return{color:document.body.classList.contains('mdopen')?'#9AD6FB':'#86CEFA',dark:false}};
 
 /* ================= Uhr ================= */
 (function buildClock(){
@@ -1040,7 +1042,7 @@ function wxCardHTML(p){
   const sub=[wtxt(code),Math.round(day.temperature_2m_min[0])+'–'+Math.round(day.temperature_2m_max[0])+'°'].join(' · ');
   const sky=night?'night':code<=1?'sun':code<=3||code===45||code===48?'cloud':'rain';
   return '<button class="wxc '+sky+'" data-go="wetter"><span class="wxl"><span class="wxe">'+(night&&code<=1?'🌙':WXE(code))+'</span><span class="wxt"><b>'+Math.round(cur.temperature_2m)+'°</b><small>'+esc(sub)+'</small></span></span>'+
-    '<span class="wxr"><span class="wxtl">'+tl+'</span>'+svg+'<span class="wxh">'+lab+'</span></span>'+
+
     ((hint.length||extra.length)?'<span class="wxx">'+[...hint,...extra].join(' · ')+'</span>':'')+'</button>';
 }
 /* Auf einen Blick: Wetter, Termine, Mails, Hinweise als kleine Chips */
@@ -1097,7 +1099,7 @@ $('bMail').onclick=()=>P&&P.showTab('mail');
 const goClick=e=>{const tr=e.target.closest('[data-triage]');if(tr){P&&P.showTab('mail',{triage:true});return}const go=e.target.closest('[data-go]');if(go)P&&P.showTab(go.dataset.go)};
 $('glance').addEventListener('click',goClick);
 $('trays').addEventListener('click',e=>{const ib=e.target.closest('[data-inbox]');if(ib){P&&P.showTab('projekte',{inbox:true});return}
-  if(homeMode&&e.target.closest('[data-myday]')){document.body.classList.add('mdopen');$('tasks').scrollTop=0;return}goClick(e)});
+  if(homeMode&&e.target.closest('[data-myday]')){document.body.classList.add('mdopen');try{P.updateBar()}catch(_){}$('tasks').scrollTop=0;return}goClick(e)});
 $('folders').addEventListener('click',goClick);$('myday').addEventListener('click',goClick);$('alert').addEventListener('click',goClick);
 /* Schnell eintragen */
 let qaDay=0;
@@ -1161,7 +1163,7 @@ window.onShow=function(){startClock();launcherUI();if(Date.now()-lastLoad>15000)
 window.onHide=function(){ticking=false};
 window.onResumeApp=function(){lastLoad=0;window.onShow()};
 window.onWeather=function(){render()};
-window.handleBack=function(){if(sheet.classList.contains('on')){closeSheet();return true}if(document.body.classList.contains('mdopen')){document.body.classList.remove('mdopen');return true}return false};
+window.handleBack=function(){if(sheet.classList.contains('on')){closeSheet();return true}if(document.body.classList.contains('mdopen')){document.body.classList.remove('mdopen');try{P.updateBar()}catch(_){}return true}return false};
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&ticking)startClock()});
 setInterval(()=>{if(!document.hidden)render()},60000);
 /* ================= Kleine Dinge: Energie, Größen, Schritte, Fokus ================= */
@@ -1274,7 +1276,7 @@ document.addEventListener('click',e=>{
     if(s){s.done=!s.done;if(s.done){try{P.playNote&&P.playNote(false)}catch(_){}burst(st,'Ein Schritt weniger ✓')}}
     try{P.Native&&P.Native.haptic()}catch(_){}if(r&&r.task!==undefined){D.woche=undefined;load()}else render();return}
   if(e.target.closest('[data-dump]')){openDump();return}
-  if(e.target.closest('[data-mdclose]')){document.body.classList.remove('mdopen');return}
+  if(e.target.closest('[data-mdclose]')){document.body.classList.remove('mdopen');try{P.updateBar()}catch(_){}return}
 });
 function openSplit(id){
   const x=D.woche&&[...D.woche.open,...(D.woche.doneList||[])].find(t=>t.id===id);if(!x)return;

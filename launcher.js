@@ -127,7 +127,7 @@ function openDrawer(){
   if(!apps.length)reload();
   $('ldrQ').value='';showHidden=false;renderList();$('ldrL').scrollTop=0;
   drawer.classList.add('on');haptic();
-  try{N.setBars('#FFFFFF',true)}catch(e){}
+  try{N.setBars('#9AD6FB',true)}catch(e){}
   try{if(cfg.kb!==false)setTimeout(()=>$('ldrQ').focus(),280)}catch(e){}
 }
 function closeDrawer(){
