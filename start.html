@@ -538,7 +538,7 @@ body.home .nxh .nx b{font-size:15.5px}
 .spa{display:flex;gap:8px;margin-bottom:4px}.spa .field{flex:1;margin:0}.spa .d-btn{width:48px;padding:0;font-size:22px}
 .chips.sg{flex-wrap:wrap;gap:6px}.chips.sg .d-chip{font-size:13.5px;padding:6px 11px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.sheet.tall{max-height:88vh;overflow-y:auto}
+.sheet.tall{max-height:86vh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-bottom:28px}
 .nudt{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-4px 0 10px;padding:10px 16px;background:#F2F2F7;border-radius:14px;font-weight:600}
 .nudt input{font:inherit;font-size:16px;border:0;background:#fff;border-radius:10px;padding:6px 10px}
 .nudt.hidden{display:none}
@@ -651,10 +651,10 @@ body.epon{overflow:hidden}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 2.8<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.8.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
-  <div class="ept"><span class="epl">Assistent<svg width="26" height="20" viewBox="0 0 26 20" aria-hidden="true"><path d="M5 15a8 8 0 0 1 16 0" fill="none" stroke="#111" stroke-width="2.2"/><path d="M1 15h24M4 18.5h18" stroke="#111" stroke-width="2.2" stroke-linecap="round"/><path d="M13 1.5v3M4.2 5.2l2 2M21.8 5.2l-2 2" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg></span><button class="epb" id="epB" aria-label="Akku"></button></div>
+  <div class="ept"><span class="epl">Assistent<svg width="26" height="20" viewBox="0 0 26 20" aria-hidden="true"><path d="M5 15a8 8 0 0 1 16 0" fill="none" stroke="#111" stroke-width="2.2"/><path d="M1 15h24M4 18.5h18" stroke="#111" stroke-width="2.2" stroke-linecap="round"/><path d="M13 1.5v3M4.2 5.2l2 2M21.8 5.2l-2 2" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg></span></div>
   <div class="eph"><h1 id="epG">Hallo.</h1><span class="eptmp" id="epT"></span></div>
   <div class="epd" id="epD"></div>
   <button class="epw" id="epW" aria-label="Wecker öffnen"></button>
@@ -1166,12 +1166,12 @@ function syncLine(){
 $('bMenu').onclick=()=>{
   let snd=true;try{snd=localStorage.getItem('planer.sound')!=='0'}catch(e){}
   openSheet('<div class="h-mid" style="margin:0 4px 6px">Dein Assistent</div>'+
+    (P&&P.Native&&P.Native.kbState?(()=>{const st=P.Native.kbState();return '<button class="opt" id="oKbd"><span><b>E-Paper-Tastatur (Test)</b><small>'+(st==='active'?'Aktiv · antippen, um die Tastatur zu wechseln':st==='enabled'?'Eingeschaltet · antippen und „Assistent-Tastatur“ wählen':'Schwarz-weiße QWERTZ-Tastatur · antippen zum Einschalten')+'</small></span></button>'})():'')+
     '<div class="lbl">So spreche ich dich an</div><input class="field" id="oName" value="'+esc(NAME)+'" maxlength="30">'+
     '<button class="opt" id="oSnd"><span><b>Töne beim Abhaken</b><small>Jede erledigte Aufgabe spielt den nächsten Ton</small></span><span class="sw'+(snd?' on':'')+'"></span></button>'+
     '<button class="opt" id="oRef"><span><b>Briefing aktualisieren</b><small>Holt Termine, Aufgaben, Mails und Wetter neu</small></span></button>'+
     '<button class="opt" id="oSync"><span><b>Synchronisation</b><small>'+syncLine()+'</small></span></button>'+
     '<button class="opt" id="oTheme"><span><b>E-Paper-Design</b><small>Schwarz-weiß mit Schreibmaschinenschrift – aus: Himmel-Design</small></span><span class="sw'+(document.documentElement.classList.contains('epaper')?' on':'')+'"></span></button>'+
-    (P&&P.Native&&P.Native.kbState?(()=>{const st=P.Native.kbState();return '<button class="opt" id="oKbd"><span><b>E-Paper-Tastatur (Test)</b><small>'+(st==='active'?'Aktiv · antippen, um die Tastatur zu wechseln':st==='enabled'?'Eingeschaltet · antippen und „Assistent-Tastatur“ wählen':'Schwarz-weiße QWERTZ-Tastatur · antippen zum Einschalten')+'</small></span></button>'})():'')+
     (homeMode?'<button class="opt" id="oEp"><span><b>Ruhiger Startbildschirm</b><small>Schwarz-weiß wie E-Paper: Uhrzeit, Wetter, nächster Termin und nächste Aufgabe</small></span><span class="sw'+(EP_ON()?' on':'')+'"></span></button>':'')+
     (L()?'<button class="opt" id="oHome"><span><b>Als Startbildschirm verwenden</b><small>'+(homeMode?'Aktiv – die Home-Taste führt zu Mein Tag und deinen Apps':'Mein Tag und deine Apps direkt auf dem Startbildschirm – tippen zum Festlegen')+'</small></span>'+(homeMode?'<span class="sw on"></span>':'')+'</button>':'')+
     (homeMode?'<button class="opt" id="oLock"><span><b>Doppeltippen sperrt das Handy</b><small>'+(L().lockOn()?'Eingeschaltet · in den Bedienungshilfen änderbar':'Einmal in den Bedienungshilfen einschalten')+'</small></span><span class="sw'+(L().lockOn()?' on':'')+'"></span></button>'+
@@ -1179,6 +1179,7 @@ $('bMenu').onclick=()=>{
     (P&&P.Native&&P.Native.nudge?'<button class="opt" id="oNud"><span><b>Sanfter Anstoß</b><small>Einmal am Tag ein kleiner Vorschlag – nur, wenn bis dahin noch nichts erledigt ist</small></span><span class="sw'+(nudgeCfg().on?' on':'')+'"></span></button><div class="nudt'+(nudgeCfg().on?'':' hidden')+'" id="oNudT"><span>Uhrzeit</span><input type="time" id="oNudI" value="'+nudgeCfg().time+'"></div>':'')+
     (window.ASSISTENT_PLATFORM==='android'?'<button class="opt" id="oMig"><span><b>Daten aus alten Apps übernehmen</b><small>Wochenstapel, Mein Kalender, Pinnwand</small></span></button>':''),
     ()=>{const f=$('oName');if(f){const v=f.value.trim();if(v&&v!==NAME){NAME=v;try{localStorage.setItem('planer.name',v)}catch(e){}header()}}});
+  sheet.classList.add('tall');sheet.scrollTop=0;
   $('oSnd').onclick=()=>{snd=!snd;try{localStorage.setItem('planer.sound',snd?'1':'0')}catch(e){}$('oSnd').querySelector('.sw').classList.toggle('on',snd);if(snd)try{P.playNote&&P.playNote(false,true)}catch(e){}};
   $('oRef').onclick=()=>{closeSheet();try{P.call('wetter','refreshWeather')}catch(e){}D={};load()};
   if($('oNud')){const sv=c=>{try{localStorage.setItem('planer.nudge',JSON.stringify(c))}catch(_){}nudgeSync()};
@@ -1456,7 +1457,6 @@ function epRender(){
   $('epT').textContent=cur?Math.round(cur.temperature_2m)+'°':'';
   $('epD').textContent=n.getDate()+'. '+MON[n.getMonth()]+' '+n.getFullYear();
   $('epW').textContent=two(n.getHours())+':'+two(n.getMinutes());
-  $('epB').innerHTML=batSVG(epBattery());
   const ev=epNextEvent();
   $('epE').innerHTML=ev?'<b>'+esc(ev.e.title)+'</b><span>'+ev.day+' · '+(ev.e.allDay||!ev.e.tStart?'ganztägig':ev.e.tStart+(ev.e.tEnd?'–'+ev.e.tEnd:''))+(ev.e.loc?' · '+esc(ev.e.loc):'')+'</span>':'<b>Keine Termine</b><span>Heute und morgen ist der Kalender frei</span>';
   let nx=null;try{nx=dayPlan().now[0]}catch(_){}
