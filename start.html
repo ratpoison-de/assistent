@@ -612,7 +612,7 @@ body.epon{overflow:hidden}
 .eph h1{margin:0;font-size:clamp(26px,8vw,36px);line-height:1.12;font-weight:700;letter-spacing:-.02em}
 .eptmp{font-size:clamp(30px,9vw,40px);font-weight:700;line-height:1;white-space:nowrap}
 .epd{margin-top:10px;font-size:16px}
-.epw{margin-top:6px;font-size:clamp(20px,6.2vw,26px)!important}
+.epw{margin-top:4px;font-size:clamp(40px,13vw,56px)!important;font-weight:700;letter-spacing:-.03em;line-height:1.05;font-variant-numeric:tabular-nums}
 .epc{flex:1;min-height:80px;width:100%;margin:14px 0 10px;display:block}
 .epe{display:flex;flex-direction:column;gap:4px;background:#111!important;color:#fff!important;border-radius:10px;padding:14px 18px!important;width:100%}
 .epe b{font-size:19px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -651,7 +651,7 @@ body.epon{overflow:hidden}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 2.7<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.7.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
   <div class="ept"><span class="epl">Assistent<svg width="26" height="20" viewBox="0 0 26 20" aria-hidden="true"><path d="M5 15a8 8 0 0 1 16 0" fill="none" stroke="#111" stroke-width="2.2"/><path d="M1 15h24M4 18.5h18" stroke="#111" stroke-width="2.2" stroke-linecap="round"/><path d="M13 1.5v3M4.2 5.2l2 2M21.8 5.2l-2 2" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg></span><button class="epb" id="epB" aria-label="Akku"></button></div>
@@ -1453,7 +1453,7 @@ function epRender(){
   $('epG').innerHTML=esc(GREET[p])+',<br>'+esc(NAME)+'.';
   $('epT').textContent=cur?Math.round(cur.temperature_2m)+'°':'';
   $('epD').textContent=n.getDate()+'. '+MON[n.getMonth()]+' '+n.getFullYear();
-  $('epW').textContent=wordsTime(n);
+  $('epW').textContent=two(n.getHours())+':'+two(n.getMinutes());
   $('epB').innerHTML=batSVG(epBattery());
   const ev=epNextEvent();
   $('epE').innerHTML=ev?'<b>'+esc(ev.e.title)+'</b><span>'+ev.day+' · '+(ev.e.allDay||!ev.e.tStart?'ganztägig':ev.e.tStart+(ev.e.tEnd?'–'+ev.e.tEnd:''))+(ev.e.loc?' · '+esc(ev.e.loc):'')+'</span>':'<b>Keine Termine</b><span>Heute und morgen ist der Kalender frei</span>';
@@ -1466,11 +1466,11 @@ function epRender(){
 }
 function epShow(){
   if(!isHM()||!EP_ON()){epHide();return}
-  epVisible=true;try{P.Native&&P.Native.setFullscreen&&P.Native.setFullscreen(true)}catch(_){}document.body.classList.add('epon');try{P.setEpaper&&P.setEpaper(true)}catch(_){}epRender();
+  epVisible=true;document.body.classList.add('epon');try{P.setEpaper&&P.setEpaper(true)}catch(_){}epRender();
 }
 function epHide(){
   if(!epVisible&&!document.body.classList.contains('epon'))return false;
-  epVisible=false;try{P.Native&&P.Native.setFullscreen&&P.Native.setFullscreen(false)}catch(_){}document.body.classList.remove('epon');try{P.setEpaper&&P.setEpaper(false)}catch(_){}return true;
+  epVisible=false;document.body.classList.remove('epon');try{P.setEpaper&&P.setEpaper(false)}catch(_){}return true;
 }
 window.epShow=epShow;window.epHide=epHide;window.epIsOn=()=>epVisible;window.wordsTime=wordsTime;window.epRender=epRender;
 $('ep').addEventListener('click',e=>{
