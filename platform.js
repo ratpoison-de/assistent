@@ -4,6 +4,15 @@
   var par=null;try{par=window.parent&&window.parent!==window?window.parent:null}catch(e){}
   var plat=(par&&par.ASSISTENT_PLATFORM)||(window.Native||(par&&par.Native)?'android':(window.AssistentDesktop?'windows':'web'));
   window.ASSISTENT_PLATFORM=plat;
+  /* Design: E-Paper (Standard) oder Himmel */
+  try{
+    var th=null,ls0=window.localStorage;th=ls0.getItem('planer.theme');if(th==null)th=ls0.getItem('assistent:planer.theme');
+    if(th!=='sky'){
+      document.documentElement.classList.add('epaper');
+      var add=function(){if(document.getElementById('epcss'))return;var l=document.createElement('link');l.id='epcss';l.rel='stylesheet';l.href='epaper.css';document.head.appendChild(l)};
+      if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add);else add();
+    }
+  }catch(e){}
   if(plat!=='web')return;
   /* Auf github.io teilen sich alle Projektseiten eines Kontos denselben Speicher.
      Damit sich die Web-App nicht mit anderen Apps (z. B. Wochenstapel) vermischt,

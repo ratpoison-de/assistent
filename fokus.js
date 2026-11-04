@@ -133,7 +133,7 @@ function loop(){
     refreshStart();
   },1000);
 }
-function show(){if(!el)build();try{cur=ENG.state()}catch(e){cur=null}if(!cur)return false;paint();el.classList.add('on');try{N&&N.setBars('#86CEFA',true)}catch(_){}loop();return true}
+function show(){if(!el)build();try{cur=ENG.state()}catch(e){cur=null}if(!cur)return false;paint();el.classList.add('on');try{N&&N.setBars(document.documentElement.classList.contains('epaper')?'#FFFFFF':'#86CEFA',true)}catch(_){}loop();return true}
 function hide(){if(!el||!el.classList.contains('on'))return false;el.classList.remove('on');try{window.updateBar&&updateBar()}catch(_){}return true}
 
 window.Fokus={

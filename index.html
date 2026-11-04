@@ -200,7 +200,7 @@ html body.ep .lsh .o svg{color:#111}
 
   <button class="done d-btn primary" id="migDone">Fertig</button>
   <p class="tip">Du findest diesen Assistenten jederzeit wieder im Menü jedes Bereichs. Wenn alles da ist, kannst du die alten Apps deinstallieren.</p>
-  <p class="tip" style="margin-top:22px">Assistent · Version 2.6<br>Entwickelt von Thorsten von Plotho-Kettner</p>
+  <p class="tip" style="margin-top:22px">Assistent · Version 2.7<br>Entwickelt von Thorsten von Plotho-Kettner</p>
   <input type="file" id="migFile" accept=".json,.ics,application/json,text/calendar,*/*">
 </section>
 <div class="d-toast toast" id="toast"></div>
@@ -287,7 +287,7 @@ if(N&&N.pomoClear)try{N.pomoClear()}catch(e){}
 function syncBar(){
   if(!N||!N.setBars)return;
   let c='#FFFFFF',dark=false;
-  let nav='#F1F2F5';
+  let nav=document.documentElement.classList.contains('epaper')?'#FFFFFF':'#F1F2F5';if(document.documentElement.classList.contains('epaper'))c='#FFFFFF';
   if(active==='start'){const s=call('start','skyTop');if(s){c=s.color;dark=s.dark;if(s.nav)nav=s.nav}}
   try{N.setBars(c,!dark)}catch(e){}
   try{N.setNav&&N.setNav(nav)}catch(e){}

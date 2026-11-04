@@ -1,0 +1,83 @@
+/* Assistent – E-Paper-Design: schwarz-weiß, Schreibmaschinenschrift, klare Linien.
+   Wird von platform.js als letztes Stylesheet in jede Seite geladen (html.epaper). */
+@font-face{font-family:"Assistent Mono";src:url(fonts/mono-400.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Assistent Mono";src:url(fonts/mono-700.woff2) format("woff2");font-weight:700;font-display:swap}
+html.epaper{
+  --bg:#FFFFFF;--card:#FFFFFF;--ink:#111111;--mute:#555555;--line:#111111;--soft:#FFFFFF;--soft2:#F2F2F2;
+  --accent:#111111;--accent-2:#333333;--accent-ink:#FFFFFF;--accent-soft:#EDEDED;--grad:#111111;
+  --danger:#111111;--ok:#111111;--warn:#111111;--v:#111;--v2:#333;--vd:#000;--lav:#EDEDED;--lav2:#DDD;--vgrad:#FFF;
+  --green:#111;--yellow:#111;--blue:#111;--pink:#111;--orange:#111;--grey:#555;
+  --shadow:none;--shadow-lift:none;--shadow-btn:none;--hs:none;--hs2:none;--sky:#111;--vio:#111;--bgs:#FFFFFF;
+  --font:"Assistent Mono",ui-monospace,Menlo,Consolas,monospace;--serif:"Assistent Mono",ui-monospace,monospace;
+  filter:grayscale(1);
+}
+html.epaper,html.epaper body{background:#FFFFFF!important;color:#111}
+html.epaper body,html.epaper body *{font-family:"Assistent Mono",ui-monospace,Menlo,Consolas,monospace!important;box-shadow:none!important;text-shadow:none!important;letter-spacing:0}
+html.epaper h1,html.epaper h2,html.epaper h3,html.epaper b,html.epaper strong{font-weight:700!important}
+html.epaper .h-big,html.epaper .greet,html.epaper .sec-h h2,html.epaper .h-mid{letter-spacing:-.02em!important}
+html.epaper .h-big em,html.epaper .greet{color:#111!important}
+/* Flächen: weiß mit schwarzer Linie statt farbiger Hintergründe */
+html.epaper .d-card,html.epaper .card,html.epaper .opt,html.epaper .en,html.epaper .nx,html.epaper .wxc,html.epaper .field,html.epaper .qa label,html.epaper .setting,html.epaper .ls{
+  background:#FFFFFF!important;border:1.5px solid #111!important;border-radius:10px!important}
+html.epaper .sheet,html.epaper .lsh,html.epaper .editor,html.epaper .layer{background:#FFFFFF!important;border-top:2px solid #111!important}
+html.epaper .scrim,html.epaper .lsc{background:rgba(255,255,255,.7)!important}
+html.epaper .d-btn{background:#FFFFFF!important;color:#111!important;border:1.5px solid #111!important;border-radius:10px!important}
+html.epaper .d-btn.primary,html.epaper .nxs,html.epaper .plus,html.epaper .d-fab,html.epaper .fab,html.epaper #kdGo,html.epaper #spGo,html.epaper #nGo{
+  background:#111!important;color:#FFFFFF!important;border:1.5px solid #111!important;border-radius:10px!important}
+html.epaper .d-chip,html.epaper .chip,html.epaper .gl,html.epaper .when,html.epaper .tag,html.epaper .d-tag,html.epaper .pill,html.epaper .tl em{
+  background:#FFFFFF!important;color:#111!important;border:1.2px solid #111!important}
+html.epaper .tab .pill{background:none!important;border:0!important}
+html.epaper .d-chip.on,html.epaper .chip.on,html.epaper .chip.active,html.epaper .on>.d-chip{background:#111!important;color:#FFFFFF!important}
+html.epaper .sw{background:#FFFFFF!important;border:1.5px solid #111!important}
+html.epaper .sw::after{background:#111!important;top:2px!important;left:2px!important}
+html.epaper .sw.on{background:#111!important}
+html.epaper .sw.on::after{background:#FFFFFF!important}
+html.epaper .ck,html.epaper .check,html.epaper .tcard i{border:1.6px solid #111!important;background:#FFFFFF!important;border-radius:4px!important}
+html.epaper .done .ck,html.epaper .task.done .ck,html.epaper .done .check{background:#111!important;border-color:#111!important}
+html.epaper .d-toast,html.epaper .toast{background:#111!important;color:#FFF!important;border-radius:8px!important}
+html.epaper svg [fill^="url("]{fill:#DDDDDD}
+/* Startseite (Assistent): kein Himmel, Körbe als Strichzeichnung */
+html.epaper body{background-image:none!important}
+html.epaper .sq{background:#FFFFFF!important;border:1.5px solid #111!important}
+html.epaper .lclock{color:#111!important}
+html.epaper .greet .hi{color:#111!important;font-weight:400!important}
+html.epaper .r2 .favs .lzAll,html.epaper .favs .sec-h .fall,html.epaper .spb,html.epaper .enl button,html.epaper .par button,html.epaper .add{color:#111!important;text-decoration:underline;text-underline-offset:3px}
+html.epaper .tbox{background:#FFFFFF!important;border:2px solid #111!important;border-radius:22%!important}
+html.epaper .well{background:#111!important;left:8%!important;right:8%!important}
+html.epaper .well .back{background:#3A3A3A!important}
+html.epaper .front{background:transparent!important}
+html.epaper .front::before{display:none!important}
+html.epaper .ico{color:#111!important;filter:none!important}
+html.epaper .tcard{background:#FFFFFF!important;border:1.2px solid #111!important;border-radius:6px!important}
+html.epaper .tl{color:#111!important}
+html.epaper .wxx{background:#FFFFFF!important;color:#111!important;border:1.2px solid #111}
+html.epaper .nx small,html.epaper .fk .eb{background:#111!important;color:#FFF!important}
+html.epaper .szc{background:#FFFFFF!important;color:#111!important;border:1.5px solid #111!important}
+html.epaper .szc.sL{background:#111!important;color:#FFF!important}
+html.epaper .szc.sM{background:repeating-linear-gradient(135deg,#111 0 2px,#FFF 2px 5px)!important;color:#111!important}
+html.epaper .slh{color:#111!important;border-bottom:1.5px solid #111!important}
+html.epaper .sl{--k:#111!important}
+html.epaper body.home.mdopen #tasks{background:#FFFFFF!important}
+html.epaper .mdx{background:#FFF!important;border:1.5px solid #111!important}
+html.epaper .gauge path[stroke="#2A82F6"],html.epaper .gauge circle{stroke:#111!important}
+/* Hülle: Leiste unten, Zauberknopf, App-Liste, Fokus */
+html.epaper .frames iframe{background:#FFFFFF!important}
+html.epaper body .tabs{background:#FFFFFF!important;border:2px solid #111!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html.epaper body .tab,html.epaper body .tab svg{color:#111!important}
+html.epaper body .tab.on{background:#111!important;color:#FFF!important}
+html.epaper body .tab.on svg{color:#FFF!important}
+html.epaper body .tab .bdg{background:#111!important;color:#FFF!important;border:2px solid #FFF!important}
+html.epaper body .tab.on .bdg{background:#FFF!important;color:#111!important;border-color:#111!important}
+html.epaper .magic{background:#111!important;color:#FFF!important}
+html.epaper body .ldr,html.epaper body .fk{background:#FFFFFF!important}
+html.epaper body .ldr .ls,html.epaper body .ldr .lx,html.epaper body .fk .x{background:#FFF!important;border:2px solid #111!important;color:#111!important}
+html.epaper body .ldr .lt svg rect{fill:#111}
+html.epaper body .ldr .la .fv{color:#111!important}
+html.epaper body .fk .ring circle.p{stroke:#111!important}
+html.epaper body .fk .ring circle:not(.p){stroke:#E4E4E4!important}
+html.epaper body .fk .bt .d-btn{background:#FFF!important;border:1.5px solid #111!important}
+html.epaper body .fk .bt .d-btn.primary{background:#111!important;color:#FFF!important}
+@media (min-width:900px){
+  html.epaper body .tabs{background:#FFFFFF!important;border:0!important;border-right:2px solid #111!important}
+  html.epaper body .tabs::before{color:#111!important}
+}
