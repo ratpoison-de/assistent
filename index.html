@@ -134,6 +134,22 @@ html body .fk .ring circle.p{stroke:url(#fkGrad)}
 html body .fk .bt .d-btn{background:#fff;border-radius:999px;box-shadow:0 4px 14px -8px rgba(30,90,150,.35)}
 html body .fk .bt .d-btn.primary{background:linear-gradient(135deg,#4CC2F7 0%,#4F96FB 55%,#7B7CFF 100%);color:#fff;box-shadow:0 12px 24px -8px rgba(80,120,255,.55)}
 html body .lsh{border-radius:26px 26px 0 0}
+/* Ruhiger Startbildschirm: Leiste ausblenden, App-Liste schwarz-weiß */
+body.ep .tabs,body.ep .magic{display:none!important}
+body.ep .frames{bottom:0}
+@font-face{font-family:"Assistent Mono";src:url(fonts/mono-400.woff2) format("woff2");font-weight:400}
+@font-face{font-family:"Assistent Mono";src:url(fonts/mono-700.woff2) format("woff2");font-weight:700}
+html body.ep .ldr{background:#fff;font-family:"Assistent Mono",ui-monospace,monospace}
+html body.ep .ldr .lt{font-family:"Assistent Mono",ui-monospace,monospace;font-weight:700;font-size:30px}
+html body.ep .ldr .lt svg rect{fill:#111}
+html body.ep .ldr .ls{background:#fff;box-shadow:none;border:2px solid #111;border-radius:10px;color:#111}
+html body.ep .ldr .ls input{font-family:inherit}
+html body.ep .ldr .la{font-family:"Assistent Mono",ui-monospace,monospace;font-size:18px}
+html body.ep .ldr .la .fv{color:#111}
+html body.ep .ldr .lg,html body.ep .ldr .lm{color:#111}
+html body.ep .ldr .lx{background:#fff;box-shadow:none;border:2px solid #111;color:#111}
+html body.ep .lsh{font-family:"Assistent Mono",ui-monospace,monospace}
+html body.ep .lsh .o svg{color:#111}
 </style>
 </head>
 <body>
@@ -184,7 +200,7 @@ html body .lsh{border-radius:26px 26px 0 0}
 
   <button class="done d-btn primary" id="migDone">Fertig</button>
   <p class="tip">Du findest diesen Assistenten jederzeit wieder im Menü jedes Bereichs. Wenn alles da ist, kannst du die alten Apps deinstallieren.</p>
-  <p class="tip" style="margin-top:22px">Assistent · Version 2.5.2<br>Entwickelt von Thorsten von Plotho-Kettner</p>
+  <p class="tip" style="margin-top:22px">Assistent · Version 2.6<br>Entwickelt von Thorsten von Plotho-Kettner</p>
   <input type="file" id="migFile" accept=".json,.ics,application/json,text/calendar,*/*">
 </section>
 <div class="d-toast toast" id="toast"></div>
@@ -271,11 +287,13 @@ if(N&&N.pomoClear)try{N.pomoClear()}catch(e){}
 function syncBar(){
   if(!N||!N.setBars)return;
   let c='#FFFFFF',dark=false;
-  if(active==='start'){const s=call('start','skyTop');if(s){c=s.color;dark=s.dark}}
+  let nav='#F1F2F5';
+  if(active==='start'){const s=call('start','skyTop');if(s){c=s.color;dark=s.dark;if(s.nav)nav=s.nav}}
   try{N.setBars(c,!dark)}catch(e){}
-  try{N.setNav&&N.setNav('#F1F2F5')}catch(e){}
+  try{N.setNav&&N.setNav(nav)}catch(e){}
 }
 window.updateBar=function(){if(active==='start')syncBar()};
+window.setEpaper=function(on){document.body.classList.toggle('ep',!!on);syncBar()};
 /* Jede erledigte Aufgabe spielt den nächsten Ton */
 let AC=null;
 const NOTES=[392,440,523.25,587.33,659.25,783.99,880,1046.5];

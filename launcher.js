@@ -127,7 +127,7 @@ function openDrawer(){
   if(!apps.length)reload();
   $('ldrQ').value='';showHidden=false;renderList();$('ldrL').scrollTop=0;
   drawer.classList.add('on');haptic();
-  try{N.setBars('#9AD6FB',true)}catch(e){}
+  try{N.setBars(document.body.classList.contains('ep')?'#FFFFFF':'#9AD6FB',true)}catch(e){}
   try{if(cfg.kb!==false)setTimeout(()=>$('ldrQ').focus(),280)}catch(e){}
 }
 function closeDrawer(){
@@ -209,6 +209,7 @@ window.launcherHome=function(){
   try{const m=$('mig');if(m&&m.classList.contains('on'))m.classList.remove('on')}catch(e){}
   try{window.call&&call(window.activeTab?activeTab():'start','handleBack')}catch(e){}
   if(window.showTab)showTab('start');
+  try{const w=$('f-start').contentWindow;w.epShow&&w.epShow()}catch(e){}
   try{$('f-start').contentWindow.scrollTo({top:0,behavior:'smooth'})}catch(e){}
 };
 if(ON){

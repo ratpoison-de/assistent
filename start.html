@@ -599,6 +599,31 @@ body.home.mdopen #tasks{background:linear-gradient(180deg,#9AD6FB 0,#D4EEFC 160p
 .sheet{background:#fff}
 .tl{color:#6B7380}
 .tl em{background:#fff}
+/* ================= E-Paper ================= */
+@font-face{font-family:"Assistent Mono";src:url(fonts/mono-400.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Assistent Mono";src:url(fonts/mono-700.woff2) format("woff2");font-weight:700;font-display:swap}
+.ep{display:none}
+body.epon .ep{display:flex;position:fixed;inset:0;z-index:70;flex-direction:column;background:#fff;color:#111;padding:20px 26px calc(14px + env(safe-area-inset-bottom,0px));font-family:"Assistent Mono",ui-monospace,Menlo,monospace;overflow:hidden}
+body.epon{overflow:hidden}
+.ep button{font-family:inherit;color:#111;background:none;border:0;padding:0;text-align:left}
+.ept{display:flex;align-items:center;justify-content:space-between}
+.epl{display:inline-flex;align-items:center;gap:6px;font-family:var(--font);font-weight:700;font-size:20px;letter-spacing:-.02em}
+.eph{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-top:6vh}
+.eph h1{margin:0;font-size:clamp(26px,8vw,36px);line-height:1.12;font-weight:700;letter-spacing:-.02em}
+.eptmp{font-size:clamp(30px,9vw,40px);font-weight:700;line-height:1;white-space:nowrap}
+.epd{margin-top:10px;font-size:16px}
+.epw{margin-top:6px;font-size:clamp(20px,6.2vw,26px)!important}
+.epc{flex:1;min-height:80px;width:100%;margin:14px 0 10px;display:block}
+.epe{display:flex;flex-direction:column;gap:4px;background:#111!important;color:#fff!important;border-radius:10px;padding:14px 18px!important;width:100%}
+.epe b{font-size:19px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.epe span{font-size:13.5px;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.epa{display:flex;flex-direction:column;gap:3px;width:100%;margin-top:10px;border:2px solid #111!important;border-radius:10px;padding:11px 16px!important}
+.epa small{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase}
+.epa b{font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.epa span{font-size:12.5px;opacity:.75}
+.epa.hidden{display:none}
+.epf{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.epf button{display:inline-flex;align-items:center;gap:8px;font-size:17px;padding:8px 2px!important}
 </style>
 </head>
 <body>
@@ -626,8 +651,18 @@ body.home.mdopen #tasks{background:linear-gradient(180deg,#9AD6FB 0,#D4EEFC 160p
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 2.5.2<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.6<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
+<section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
+  <div class="ept"><span class="epl">Assistent<svg width="26" height="20" viewBox="0 0 26 20" aria-hidden="true"><path d="M5 15a8 8 0 0 1 16 0" fill="none" stroke="#111" stroke-width="2.2"/><path d="M1 15h24M4 18.5h18" stroke="#111" stroke-width="2.2" stroke-linecap="round"/><path d="M13 1.5v3M4.2 5.2l2 2M21.8 5.2l-2 2" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg></span><button class="epb" id="epB" aria-label="Akku"></button></div>
+  <div class="eph"><h1 id="epG">Hallo.</h1><span class="eptmp" id="epT"></span></div>
+  <div class="epd" id="epD"></div>
+  <button class="epw" id="epW" aria-label="Wecker öffnen"></button>
+  <canvas class="epc" id="epC" aria-hidden="true"></canvas>
+  <button class="epe" id="epE"></button>
+  <button class="epa" id="epA"></button>
+  <div class="epf"><button data-epapps><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><rect x="3.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="2.5"/></svg>Apps</button><button data-epassist>Assistent<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button></div>
+</section>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
 <div class="d-toast" id="toast"><span id="toastMsg"></span></div>
@@ -722,7 +757,7 @@ function landscapeOld(){
   try{P&&P.updateBar&&P.updateBar()}catch(e){}
 }
 function landscape(){try{P&&P.updateBar&&P.updateBar()}catch(e){}}
-window.skyTop=function(){return{color:document.body.classList.contains('mdopen')?'#9AD6FB':'#86CEFA',dark:false}};
+window.skyTop=function(){let ep=false;try{ep=epVisible}catch(_){}if(ep)return{color:'#FFFFFF',dark:false,nav:'#FFFFFF'};return{color:document.body.classList.contains('mdopen')?'#9AD6FB':'#86CEFA',dark:false}};
 
 /* ================= Uhr ================= */
 (function buildClock(){
@@ -1014,7 +1049,7 @@ function render(){
   else{$('trays').innerHTML=traysHTML();
     if(D.woche&&D.kal)try{localStorage.setItem('planer.homesnap',JSON.stringify({v:2,d:ymd(new Date()),t:$('trays').innerHTML}))}catch(_){}}
   $('tasks').innerHTML=tasksHTML(p);
-  $('nxh').innerHTML=nxHTML();nudgeSync();
+  $('nxh').innerHTML=nxHTML();nudgeSync();try{if(epVisible)epRender()}catch(_){}
   $('cards').innerHTML=ev?tomorrowHTML(p):'';
   fit();
 }
@@ -1135,6 +1170,7 @@ $('bMenu').onclick=()=>{
     '<button class="opt" id="oSnd"><span><b>Töne beim Abhaken</b><small>Jede erledigte Aufgabe spielt den nächsten Ton</small></span><span class="sw'+(snd?' on':'')+'"></span></button>'+
     '<button class="opt" id="oRef"><span><b>Briefing aktualisieren</b><small>Holt Termine, Aufgaben, Mails und Wetter neu</small></span></button>'+
     '<button class="opt" id="oSync"><span><b>Synchronisation</b><small>'+syncLine()+'</small></span></button>'+
+    (homeMode?'<button class="opt" id="oEp"><span><b>Ruhiger Startbildschirm</b><small>Schwarz-weiß wie E-Paper: Uhrzeit in Worten, Wetter, nächster Termin und nächste Aufgabe</small></span><span class="sw'+(EP_ON()?' on':'')+'"></span></button>':'')+
     (L()?'<button class="opt" id="oHome"><span><b>Als Startbildschirm verwenden</b><small>'+(homeMode?'Aktiv – die Home-Taste führt zu Mein Tag und deinen Apps':'Mein Tag und deine Apps direkt auf dem Startbildschirm – tippen zum Festlegen')+'</small></span>'+(homeMode?'<span class="sw on"></span>':'')+'</button>':'')+
     (homeMode?'<button class="opt" id="oLock"><span><b>Doppeltippen sperrt das Handy</b><small>'+(L().lockOn()?'Eingeschaltet · in den Bedienungshilfen änderbar':'Einmal in den Bedienungshilfen einschalten')+'</small></span><span class="sw'+(L().lockOn()?' on':'')+'"></span></button>'+
       '<button class="opt" id="oKb"><span><b>Tastatur bei „Alle Apps“ öffnen</b><small>Sofort lostippen, um eine App zu suchen</small></span><span class="sw'+(L().opt('kb')!==false?' on':'')+'"></span></button>':'')+
@@ -1146,6 +1182,7 @@ $('bMenu').onclick=()=>{
   if($('oNud')){const sv=c=>{try{localStorage.setItem('planer.nudge',JSON.stringify(c))}catch(_){}nudgeSync()};
     $('oNud').onclick=()=>{const c=nudgeCfg();c.on=!c.on;sv(c);$('oNud').querySelector('.sw').classList.toggle('on',c.on);$('oNudT').classList.toggle('hidden',!c.on);if(c.on)try{P.Native.askNotif()}catch(_){}};
     $('oNudI').onchange=()=>{const c=nudgeCfg();c.time=$('oNudI').value||'10:00';sv(c)};}
+  if($('oEp'))$('oEp').onclick=()=>{const v=!EP_ON();try{localStorage.setItem('planer.epaper',v?'1':'0')}catch(_){}$('oEp').querySelector('.sw').classList.toggle('on',v)};
   if($('oHome'))$('oHome').onclick=()=>{closeSheet();L().homeSettings()};
   if($('oLock'))$('oLock').onclick=()=>{closeSheet();L().setOpt('lockAsk',true);L().lockSettings()};
   if($('oKb'))$('oKb').onclick=()=>{const v=L().opt('kb')===false;L().setOpt('kb',v);$('oKb').querySelector('.sw').classList.toggle('on',v)};
@@ -1163,7 +1200,7 @@ window.onShow=function(){startClock();launcherUI();if(Date.now()-lastLoad>15000)
 window.onHide=function(){ticking=false};
 window.onResumeApp=function(){lastLoad=0;window.onShow()};
 window.onWeather=function(){render()};
-window.handleBack=function(){if(sheet.classList.contains('on')){closeSheet();return true}if(document.body.classList.contains('mdopen')){document.body.classList.remove('mdopen');try{P.updateBar()}catch(_){}return true}return false};
+window.handleBack=function(){if(sheet.classList.contains('on')){closeSheet();return true}if(epVisible)return false;if(document.body.classList.contains('mdopen')){document.body.classList.remove('mdopen');try{P.updateBar()}catch(_){}return true}if(isHM()&&EP_ON()&&!epVisible){epShow();return true}return false};
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&ticking)startClock()});
 setInterval(()=>{if(!document.hidden)render()},60000);
 /* ================= Kleine Dinge: Energie, Größen, Schritte, Fokus ================= */
@@ -1329,11 +1366,125 @@ function nudgeSync(){
   if(j!==lastNudge){lastNudge=j;try{P.Native.nudge(j)}catch(_){}}
 }
 
+/* ================= Ruhiger Startbildschirm im E-Paper-Stil ================= */
+const EP_ON=()=>{try{return localStorage.getItem('planer.epaper')!=='0'}catch(_){return true}};
+let epVisible=false,epKey='';
+const MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const HN=['zwölf','eins','zwei','drei','vier','fünf','sechs','sieben','acht','neun','zehn','elf'];
+function wordsTime(d){
+  let h=d.getHours(),m=Math.round((d.getMinutes()+d.getSeconds()/60)/5)*5;if(m===60){m=0;h++}
+  const H=x=>HN[x%12],nx=H(h+1);
+  switch(m){case 0:return (h%12===1?'ein':H(h))+' Uhr';case 5:return 'fünf nach '+H(h);case 10:return 'zehn nach '+H(h);case 15:return 'Viertel nach '+H(h);
+    case 20:return 'zwanzig nach '+H(h);case 25:return 'fünf vor halb '+nx;case 30:return 'halb '+nx;case 35:return 'fünf nach halb '+nx;
+    case 40:return 'zwanzig vor '+nx;case 45:return 'Viertel vor '+nx;case 50:return 'zehn vor '+nx;default:return 'fünf vor '+nx}
+}
+function epNextEvent(){
+  const k=D.kal;if(!k)return null;const nm=nowMin();
+  const up=k.today.filter(e=>!e.allDay&&e.tStart&&toMin(e.tEnd||e.tStart)>=nm);
+  if(up.length)return{e:up[0],day:'Heute'};
+  const ad=k.today.filter(e=>e.allDay||!e.tStart);if(ad.length&&nm<18*60)return{e:ad[0],day:'Heute'};
+  if(k.tomorrow.length){const t=k.tomorrow.find(e=>!e.allDay&&e.tStart)||k.tomorrow[0];return{e:t,day:'Morgen'}}
+  return null;
+}
+function epBattery(){
+  try{if(P&&P.Native&&P.Native.battery){const b=JSON.parse(P.Native.battery());return b}}catch(_){}
+  return window.__bat||null;
+}
+try{if(!(P&&P.Native&&P.Native.battery)&&navigator.getBattery)navigator.getBattery().then(b=>{const u=()=>{window.__bat={level:Math.round(b.level*100),charging:b.charging};if(epVisible)epRender()};u();b.onlevelchange=u;b.onchargingchange=u})}catch(_){}
+function batSVG(b){
+  const lv=b?Math.max(0,Math.min(100,b.level)):100,w=Math.round(16*lv/100);
+  return '<svg width="30" height="16" viewBox="0 0 30 16" aria-label="Akku '+lv+'%"><rect x="1" y="1.5" width="24" height="13" rx="3" fill="none" stroke="#111" stroke-width="2"/><rect x="26.5" y="5.5" width="2.5" height="5" rx="1" fill="#111"/>'+
+    '<rect x="4" y="4.5" width="'+w+'" height="7" rx="1" fill="#111"/>'+(b&&b.charging?'<path d="M13.5 3.5 9.5 9h3.5l-1.5 4 4.5-6h-3.5z" fill="#fff" stroke="#111" stroke-width=".8" stroke-linejoin="round"/>':'')+'</svg>';
+}
+/* Wetter als gepunktete Zeichnung (Stippling), passend zur aktuellen Lage */
+function rnd(seed){let s=seed>>>0;return()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296}}
+function epScene(canvas,code,night){
+  const dpr=Math.min(2,window.devicePixelRatio||1),W=Math.max(10,Math.floor(canvas.clientWidth*dpr)),H=Math.max(10,Math.floor(canvas.clientHeight*dpr));
+  const key=[W,H,code,night].join('|');if(canvas.__k===key)return;canvas.__k=key;canvas.width=W;canvas.height=H;
+  const o=document.createElement('canvas');o.width=W;o.height=H;const g=o.getContext('2d');
+  g.fillStyle='#000';g.fillRect(0,0,W,H); /* Rot-Kanal = Dunkelheit (0 = hell) */
+  const R=rnd(code*97+(night?7:3)),S=Math.min(W,H);
+  const dark=(a)=>'rgba(255,255,255,'+a+')';
+  const kind=code===0||code===1?'clear':code===2?'part':code===3?'over':code===45||code===48?'fog':code>=95?'storm':code>=71&&code<=77||code===85||code===86?'snow':code>=51?'rain':'part';
+  const sunX=W*.40,sunY=H*.36,sunR=S*.17;
+  function body(){
+    /* dunkler Hof um Sonne bzw. Mond */
+    const hg=g.createRadialGradient(sunX,sunY,sunR*.95,sunX,sunY,sunR*1.9);hg.addColorStop(0,dark(.85));hg.addColorStop(.35,dark(.42));hg.addColorStop(1,dark(0));
+    g.fillStyle=hg;g.beginPath();g.arc(sunX,sunY,sunR*1.9,0,7);g.fill();
+    g.globalCompositeOperation='source-over';g.fillStyle='#000';g.beginPath();g.arc(sunX,sunY,sunR,0,7);g.fill();
+    g.strokeStyle=dark(.9);g.lineWidth=Math.max(2,S*.006);g.beginPath();g.arc(sunX,sunY,sunR,0,7);g.stroke();
+    if(night){g.fillStyle=dark(.55);g.beginPath();g.arc(sunX+sunR*.42,sunY-sunR*.18,sunR*.86,0,7);g.fill();g.fillStyle='#000';g.beginPath();g.arc(sunX+sunR*.5,sunY-sunR*.22,sunR*.8,0,7);g.fill();
+      for(let i=0;i<26;i++){const x=R()*W,y=R()*H*.55,r=R()*S*.006+1;g.fillStyle=dark(.95);g.beginPath();g.arc(x,y,r,0,7);g.fill()}}
+  }
+  function cloud(cx,cy,sc,shade){
+    const parts=[[0,0,1],[-.9,.25,.72],[.95,.2,.78],[-.45,-.45,.7],[.4,-.55,.82],[1.7,.42,.55],[-1.65,.5,.5]];
+    /* Grundform hell, Unterseite und rechte Seite dunkel schattiert */
+    g.fillStyle='#000';for(const [dx,dy,r] of parts){g.beginPath();g.arc(cx+dx*sc,cy+dy*sc,r*sc,0,7);g.fill()}
+    for(const [dx,dy,r] of parts){const x=cx+dx*sc,y=cy+dy*sc,rr=r*sc;
+      const cg=g.createRadialGradient(x-rr*.35,y-rr*.45,rr*.1,x,y,rr*1.05);cg.addColorStop(0,dark(.03));cg.addColorStop(.55,dark(.22*shade));cg.addColorStop(1,dark(.78*shade));
+      g.fillStyle=cg;g.beginPath();g.arc(x,y,rr,0,7);g.fill()}
+    g.fillStyle=dark(.65*shade);g.beginPath();g.ellipse(cx,cy+sc*.72,sc*2.1,sc*.32,0,0,7);g.fill();
+    g.strokeStyle=dark(.35);g.lineWidth=Math.max(1.5,S*.004);
+    for(const [dx,dy,r] of parts){g.beginPath();g.arc(cx+dx*sc,cy+dy*sc,r*sc,Math.PI*1.05,Math.PI*1.95);g.stroke()}
+  }
+  if(kind==='clear'){
+    /* Sonne mit Strahlenkranz */
+    body();if(!night){g.strokeStyle=dark(.5);g.lineWidth=Math.max(2,S*.008);for(let i=0;i<24;i++){const a=i/24*Math.PI*2,r1=sunR*1.35,r2=sunR*(1.6+.25*(i%2));g.beginPath();g.moveTo(sunX+Math.cos(a)*r1,sunY+Math.sin(a)*r1);g.lineTo(sunX+Math.cos(a)*r2,sunY+Math.sin(a)*r2);g.stroke()}}
+    cloud(W*.78,H*.78,S*.09,.7);
+  }else if(kind==='part'){body();cloud(W*.62,H*.66,S*.16,1);cloud(W*.22,H*.74,S*.09,.8)}
+  else if(kind==='over'||kind==='rain'||kind==='snow'||kind==='storm'){
+    cloud(W*.34,H*.36,S*.14,.9);cloud(W*.62,H*.46,S*.18,1.1);
+    if(kind==='rain'){g.strokeStyle=dark(.75);g.lineWidth=Math.max(1.5,S*.005);for(let i=0;i<70;i++){const x=W*(.1+R()*.85),y=H*(.62+R()*.32),l=S*(.03+R()*.03);g.beginPath();g.moveTo(x,y);g.lineTo(x-l*.35,y+l);g.stroke()}}
+    if(kind==='snow'){for(let i=0;i<60;i++){const x=W*(.08+R()*.86),y=H*(.62+R()*.34),r=S*(.006+R()*.008);g.fillStyle=dark(.85);g.beginPath();g.arc(x,y,r,0,7);g.fill()}}
+    if(kind==='storm'){g.fillStyle='#000';g.strokeStyle=dark(.95);g.lineWidth=Math.max(2,S*.007);const x=W*.55,y=H*.64,s=S*.09;g.beginPath();g.moveTo(x,y);g.lineTo(x-s*.55,y+s*1.1);g.lineTo(x-s*.1,y+s*1.05);g.lineTo(x-s*.45,y+s*2);g.lineTo(x+s*.45,y+s*.75);g.lineTo(x,y+s*.8);g.lineTo(x+s*.3,y);g.closePath();g.fill();g.stroke()}
+  }else if(kind==='fog'){body();for(let i=0;i<6;i++){const y=H*(.45+i*.09);g.fillStyle=dark(.25+.08*(i%2));g.fillRect(W*(.06+R()*.08),y,W*(.75+R()*.12),S*.025)}}
+  /* Punkte verteilen: je dunkler die Stelle, desto mehr Punkte */
+  const src=g.getImageData(0,0,W,H).data,out=canvas.getContext('2d').createImageData(W,H),d=out.data,cell=dpr>1.5?2:1,R2=rnd(4242);
+  for(let y=0;y<H;y+=cell)for(let x=0;x<W;x+=cell){const i=(y*W+x)*4,v=src[i]/255;const on=v>0.02&&R2()<Math.pow(v,1.15)*.92;
+    for(let yy=0;yy<cell&&y+yy<H;yy++)for(let xx=0;xx<cell&&x+xx<W;xx++){const j=((y+yy)*W+x+xx)*4;d[j]=d[j+1]=d[j+2]=on?17:255;d[j+3]=on?255:0}}
+  canvas.getContext('2d').putImageData(out,0,0);
+}
+function epRender(){
+  const el=$('ep');if(!el)return;
+  const n=new Date(),p=part(n.getHours()),w=weather();
+  const cur=w&&w.data&&w.data.current;
+  $('epG').innerHTML=esc(GREET[p])+',<br>'+esc(NAME)+'.';
+  $('epT').textContent=cur?Math.round(cur.temperature_2m)+'°':'';
+  $('epD').textContent=n.getDate()+'. '+MON[n.getMonth()]+' '+n.getFullYear();
+  $('epW').textContent=wordsTime(n);
+  $('epB').innerHTML=batSVG(epBattery());
+  const ev=epNextEvent();
+  $('epE').innerHTML=ev?'<b>'+esc(ev.e.title)+'</b><span>'+ev.day+' · '+(ev.e.allDay||!ev.e.tStart?'ganztägig':ev.e.tStart+(ev.e.tEnd?'–'+ev.e.tEnd:''))+(ev.e.loc?' · '+esc(ev.e.loc):'')+'</span>':'<b>Keine Termine</b><span>Heute und morgen ist der Kalender frei</span>';
+  let nx=null;try{nx=dayPlan().now[0]}catch(_){}
+  const f=fState();
+  $('epA').innerHTML=f?'<small>Fokus läuft</small><b>'+esc(f.title)+'</b>':nx?'<small>Nächste Aufgabe</small><b>'+esc(nx.text)+'</b><span>'+(nx.kind==='s'?'S':nx.size)+' · '+estLabel(nx.kind==='s'?'S':nx.size)+' · antippen zum Starten</span>':'<small>Nächste Aufgabe</small><b>Nichts offen</b><span>Gönn dir eine Pause</span>';
+  $('epA').classList.toggle('hidden',!f&&!nx&&!D.woche);
+  const code=cur?cur.weather_code:2,night=cur?!cur.is_day:false;
+  requestAnimationFrame(()=>epScene($('epC'),code,night));
+}
+function epShow(){
+  if(!isHM()||!EP_ON()){epHide();return}
+  epVisible=true;document.body.classList.add('epon');try{P.setEpaper&&P.setEpaper(true)}catch(_){}epRender();
+}
+function epHide(){
+  if(!epVisible&&!document.body.classList.contains('epon'))return false;
+  epVisible=false;document.body.classList.remove('epon');try{P.setEpaper&&P.setEpaper(false)}catch(_){}return true;
+}
+window.epShow=epShow;window.epHide=epHide;window.epIsOn=()=>epVisible;window.wordsTime=wordsTime;window.epRender=epRender;
+$('ep').addEventListener('click',e=>{
+  if(e.target.closest('[data-epapps]')){try{P.Launcher.openDrawer()}catch(_){}return}
+  if(e.target.closest('[data-epassist]')){epHide();try{P.Native&&P.Native.haptic()}catch(_){}return}
+  if(e.target.closest('#epE')){epHide();try{P.showTab('kalender')}catch(_){}return}
+  if(e.target.closest('#epA')){if(fState()){try{P.Fokus.open()}catch(_){}}else startNext();return}
+  if(e.target.closest('#epB')||e.target.closest('#epW')){try{P.Launcher.openClock()}catch(_){}return}
+});
+addEventListener('resize',()=>{if(epVisible)epRender()});
+
 /* ================= Startbildschirm (Launcher) ================= */
 function L(){try{return P&&P.Launcher&&P.Launcher.on?P.Launcher:null}catch(e){return null}}
 let homeMode=false;
 const two=n=>String(n).padStart(2,'0');
-function lclock(){const n=new Date();$('lclock').textContent=two(n.getHours())+':'+two(n.getMinutes())}
+function lclock(){const n=new Date();$('lclock').textContent=two(n.getHours())+':'+two(n.getMinutes());if(epVisible)epRender()}
 (function tickL(){lclock();setTimeout(tickL,60500-Date.now()%60000)})();
 function favsHTML(){
   const f=L()?L().favs():[];
@@ -1342,7 +1493,8 @@ function favsHTML(){
 }
 function launcherUI(){
   const l=L();let on=false;try{on=!!(l&&l.isHome())}catch(e){}
-  homeMode=on;document.body.classList.toggle('home',on);
+  const first=on&&!homeMode&&!window.__epInit;homeMode=on;document.body.classList.toggle('home',on);
+  if(first){window.__epInit=1;setTimeout(epShow,0)}if(!on)epHide();
   $('lclock').classList.toggle('hidden',!on);$('favs').classList.toggle('hidden',!on);
   if(on){lclock();$('favs').innerHTML=favsHTML()}
   fit();
