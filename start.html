@@ -611,6 +611,20 @@ body.epon{overflow:hidden}
 .ept{display:flex;align-items:center;justify-content:space-between}
 .epl{display:inline-flex;align-items:center;gap:6px;font-family:var(--font);font-weight:700;font-size:20px;letter-spacing:-.02em}
 .eph{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-top:6vh}
+.epr{display:inline-flex;align-items:center;gap:14px}
+.epr .eptmp{font-size:22px}
+.epset{display:grid;place-items:center;width:36px;height:36px;border:1.5px solid #111!important;border-radius:50%!important}
+.epm{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-top:4vh}
+.epml{flex:1;min-width:0}
+.epml h1{margin:0;font-size:clamp(24px,7.4vw,34px);line-height:1.12;font-weight:700;letter-spacing:-.02em}
+.epfav{flex:0 0 auto;max-width:48%;display:flex;flex-direction:column;align-items:flex-end;padding-top:4px}
+.epfav .lzA{display:block;max-width:100%;text-align:right;font-size:15.5px;padding:4px 0!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#111}
+.epfav .lzAll{margin-top:6px;font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:3px;padding:4px 0!important}
+.epfav .slempty{font-size:12.5px;color:#555;text-align:right;line-height:1.35}
+body.epon .scrim{z-index:79}
+.epf[hidden]{display:none!important}
+.epfav .lzL{display:flex;flex-direction:column;align-items:flex-end;width:100%}
+.epfav .lzA,.epfav .lzAll{text-align:right!important;align-self:flex-end}
 .eph h1{margin:0;font-size:clamp(26px,8vw,36px);line-height:1.12;font-weight:700;letter-spacing:-.02em}
 .eptmp{font-size:clamp(30px,9vw,40px);font-weight:700;line-height:1;white-space:nowrap}
 .epd{margin-top:10px;font-size:16px}
@@ -653,18 +667,16 @@ body.epon{overflow:hidden}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 2.8.2<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.9<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
   <canvas class="eps" id="epS" aria-hidden="true"></canvas>
-  <div class="ept"><span class="epl">Assistent<svg width="26" height="20" viewBox="0 0 26 20" aria-hidden="true"><path d="M5 15a8 8 0 0 1 16 0" fill="none" stroke="#111" stroke-width="2.2"/><path d="M1 15h24M4 18.5h18" stroke="#111" stroke-width="2.2" stroke-linecap="round"/><path d="M13 1.5v3M4.2 5.2l2 2M21.8 5.2l-2 2" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg></span></div>
-  <div class="eph"><h1 id="epG">Hallo.</h1><span class="eptmp" id="epT"></span></div>
-  <div class="epd" id="epD"></div>
-  <button class="epw" id="epW" aria-label="Wecker öffnen"></button>
+  <div class="ept"><span class="epl">Assistent<svg width="26" height="20" viewBox="0 0 26 20" aria-hidden="true"><path d="M5 15a8 8 0 0 1 16 0" fill="none" stroke="#111" stroke-width="2.2"/><path d="M1 15h24M4 18.5h18" stroke="#111" stroke-width="2.2" stroke-linecap="round"/><path d="M13 1.5v3M4.2 5.2l2 2M21.8 5.2l-2 2" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg></span><span class="epr"><span class="eptmp" id="epT"></span><button class="epset" id="epSet" aria-label="Einstellungen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></span></div>
+  <div class="epm"><div class="epml"><h1 id="epG">Hallo.</h1><div class="epd" id="epD"></div><button class="epw" id="epW" aria-label="Wecker öffnen"></button></div><div class="epfav" id="epF"></div></div>
   <canvas class="epc" id="epC" aria-hidden="true"></canvas>
   <button class="epe" id="epE"></button>
   <button class="epa" id="epA"></button>
-  <div class="epf"><button data-epapps><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><rect x="3.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="2.5"/></svg>Apps</button><button data-epassist>Assistent<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button></div>
+  <div class="epf" hidden><button data-epapps><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><rect x="3.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="2.5"/></svg>Apps</button><button data-epassist>Assistent<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button></div>
 </section>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"></div>
@@ -1482,6 +1494,7 @@ function epRender(){
   $('epG').innerHTML=esc(GREET[p])+',<br>'+esc(NAME)+'.';
   $('epT').textContent=cur?Math.round(cur.temperature_2m)+'°':'';
   $('epD').textContent=n.getDate()+'. '+MON[n.getMonth()]+' '+n.getFullYear();
+  try{$('epF').innerHTML=favsHTML()}catch(_){}
   $('epW').textContent=two(n.getHours())+':'+two(n.getMinutes());
   const ev=epNextEvent();
   $('epE').innerHTML=ev?'<b>'+esc(ev.e.title)+'</b><span>'+ev.day+' · '+(ev.e.allDay||!ev.e.tStart?'ganztägig':ev.e.tStart+(ev.e.tEnd?'–'+ev.e.tEnd:''))+(ev.e.loc?' · '+esc(ev.e.loc):'')+'</span>':'<b>Keine Termine</b><span>Heute und morgen ist der Kalender frei</span>';
@@ -1500,8 +1513,17 @@ function epHide(){
   if(!epVisible&&!document.body.classList.contains('epon'))return false;
   epVisible=false;document.body.classList.remove('epon');try{P.setEpaper&&P.setEpaper(false)}catch(_){}return true;
 }
+let epLp=false,epT=null,epX=0,epY=0;
+$('epF').addEventListener('touchstart',e=>{const b=e.target.closest('[data-app]');epLp=false;if(!b)return;epX=e.touches[0].clientX;epY=e.touches[0].clientY;epT=setTimeout(()=>{epLp=true;try{P.Native.haptic()}catch(_){}L().menu(b.dataset.app)},480)},{passive:true});
+$('epF').addEventListener('touchmove',e=>{if(epT&&(Math.abs(e.touches[0].clientX-epX)>10||Math.abs(e.touches[0].clientY-epY)>10)){clearTimeout(epT);epT=null}},{passive:true});
+$('epF').addEventListener('touchend',()=>{clearTimeout(epT);epT=null},{passive:true});
+$('epF').addEventListener('contextmenu',e=>{const b=e.target.closest('[data-app]');if(b){e.preventDefault();if(!epLp)L().menu(b.dataset.app)}});
 window.epShow=epShow;window.epHide=epHide;window.epIsOn=()=>epVisible;window.wordsTime=wordsTime;window.epRender=epRender;
 $('ep').addEventListener('click',e=>{
+  if(epLp){epLp=false;return}
+  const fa=e.target.closest('#epF [data-app]');if(fa){try{L().launch(fa.dataset.app)}catch(_){}return}
+  if(e.target.closest('#epF [data-all]')){try{L().openDrawer()}catch(_){}return}
+  if(e.target.closest('#epSet')){$('bMenu').click();return}
   if(e.target.closest('[data-epapps]')){try{P.Launcher.openDrawer()}catch(_){}return}
   if(e.target.closest('[data-epassist]')){epHide();try{P.Native&&P.Native.haptic()}catch(_){}return}
   if(e.target.closest('#epE')){epHide();try{P.showTab('kalender')}catch(_){}return}
@@ -1524,7 +1546,7 @@ function favsHTML(){
 function launcherUI(){
   const l=L();let on=false;try{on=!!(l&&l.isHome())}catch(e){}
   const first=on&&!homeMode&&!window.__epInit;homeMode=on;document.body.classList.toggle('home',on);
-  if(first){window.__epInit=1;setTimeout(epShow,0)}if(!on)epHide();
+  if(on&&EP_ON())setTimeout(epShow,0);if(!on)epHide();
   $('lclock').classList.toggle('hidden',!on);$('favs').classList.toggle('hidden',!on);
   if(on){lclock();$('favs').innerHTML=favsHTML()}
   fit();
