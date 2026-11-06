@@ -603,6 +603,8 @@ body.home.mdopen #tasks{background:linear-gradient(180deg,#9AD6FB 0,#D4EEFC 160p
 @font-face{font-family:"Assistent Mono";src:url(fonts/mono-400.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Assistent Mono";src:url(fonts/mono-700.woff2) format("woff2");font-weight:700;font-display:swap}
 .ep{display:none}
+.eps{position:absolute;left:0;right:0;top:0;height:34%;width:100%;pointer-events:none;z-index:0}
+.ep>*:not(.eps){position:relative;z-index:1}
 body.epon .ep{display:flex;position:fixed;inset:0;z-index:70;flex-direction:column;background:#fff;color:#111;padding:20px 26px calc(14px + env(safe-area-inset-bottom,0px));font-family:"Assistent Mono",ui-monospace,Menlo,monospace;overflow:hidden}
 body.epon{overflow:hidden}
 .ep button{font-family:inherit;color:#111;background:none;border:0;padding:0;text-align:left}
@@ -651,9 +653,10 @@ body.epon{overflow:hidden}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 2.8.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.8.2<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
+  <canvas class="eps" id="epS" aria-hidden="true"></canvas>
   <div class="ept"><span class="epl">Assistent<svg width="26" height="20" viewBox="0 0 26 20" aria-hidden="true"><path d="M5 15a8 8 0 0 1 16 0" fill="none" stroke="#111" stroke-width="2.2"/><path d="M1 15h24M4 18.5h18" stroke="#111" stroke-width="2.2" stroke-linecap="round"/><path d="M13 1.5v3M4.2 5.2l2 2M21.8 5.2l-2 2" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg></span></div>
   <div class="eph"><h1 id="epG">Hallo.</h1><span class="eptmp" id="epT"></span></div>
   <div class="epd" id="epD"></div>
@@ -1449,6 +1452,29 @@ function epScene(canvas,code,night){
     for(let yy=0;yy<cell&&y+yy<H;yy++)for(let xx=0;xx<cell&&x+xx<W;xx++){const j=((y+yy)*W+x+xx)*4;d[j]=d[j+1]=d[j+2]=on?17:255;d[j+3]=on?255:0}}
   canvas.getContext('2d').putImageData(out,0,0);
 }
+/* Dezente Himmels-Punkte im oberen Bereich (sehr hell, hinter dem Text) */
+function epSky(canvas,code,night){
+  const dpr=Math.min(2,window.devicePixelRatio||1),W=Math.max(10,Math.floor(canvas.clientWidth*dpr)),H=Math.max(10,Math.floor(canvas.clientHeight*dpr));
+  const key=[W,H,code,night].join('|');if(canvas.__k===key)return;canvas.__k=key;canvas.width=W;canvas.height=H;
+  const o=document.createElement('canvas');o.width=W;o.height=H;const g=o.getContext('2d');g.fillStyle='#000';g.fillRect(0,0,W,H);
+  const R=rnd(code*31+(night?11:5)),S=Math.min(W,H),a=v=>'rgba(255,255,255,'+v+')';
+  const rain=code>=51&&code<=67||code>=80&&code<=82,snow=code>=71&&code<=77||code===85||code===86,clear=code<=1;
+  function puff(cx,cy,sc,k){for(const [dx,dy,r] of [[0,0,1],[-.9,.2,.7],[.9,.18,.75],[-.4,-.45,.68],[.45,-.5,.78]]){const x=cx+dx*sc,y=cy+dy*sc,rr=r*sc;
+    const cg=g.createRadialGradient(x-rr*.3,y-rr*.4,rr*.1,x,y,rr);cg.addColorStop(0,a(0));cg.addColorStop(.6,a(.16*k));cg.addColorStop(1,a(.42*k));g.fillStyle=cg;g.beginPath();g.arc(x,y,rr,0,7);g.fill()}}
+  if(night){for(let i=0;i<40;i++){const x=W*(.35+R()*.63),y=H*(.05+R()*.85),r=S*(.004+R()*.006);g.fillStyle=a(.7);g.beginPath();g.arc(x,y,r,0,7);g.fill()}
+    const mx=W*.86,my=H*.3,mr=S*.11;g.fillStyle=a(.55);g.beginPath();g.arc(mx,my,mr,0,7);g.fill();g.fillStyle='#000';g.beginPath();g.arc(mx+mr*.45,my-mr*.2,mr*.85,0,7);g.fill()}
+  else if(clear){const sx=W*.86,sy=H*.32,sr=S*.1;const hg=g.createRadialGradient(sx,sy,sr,sx,sy,sr*2.2);hg.addColorStop(0,a(.5));hg.addColorStop(1,a(0));g.fillStyle=hg;g.beginPath();g.arc(sx,sy,sr*2.2,0,7);g.fill();g.fillStyle='#000';g.beginPath();g.arc(sx,sy,sr,0,7);g.fill()}
+  puff(W*.74,H*.62,S*.16,clear?.5:1);puff(W*.5,H*.22,S*.1,.6);if(!clear)puff(W*.95,H*.2,S*.12,.8);
+  if(rain){g.strokeStyle=a(.5);g.lineWidth=Math.max(1,S*.006);for(let i=0;i<34;i++){const x=W*(.45+R()*.55),y=H*(.55+R()*.4),l=S*.06;g.beginPath();g.moveTo(x,y);g.lineTo(x-l*.3,y+l);g.stroke()}}
+  if(snow){for(let i=0;i<40;i++){const x=W*(.4+R()*.6),y=H*(.1+R()*.85),r=S*(.008+R()*.008);g.fillStyle=a(.55);g.beginPath();g.arc(x,y,r,0,7);g.fill()}}
+  /* nach links ausblenden, damit die Begrüßung frei bleibt */
+  g.globalCompositeOperation='destination-in';const fade=g.createLinearGradient(0,0,W,0);fade.addColorStop(0,'rgba(0,0,0,0)');fade.addColorStop(.42,'rgba(0,0,0,.25)');fade.addColorStop(.7,'rgba(0,0,0,1)');g.fillStyle=fade;g.fillRect(0,0,W,H);
+  g.globalCompositeOperation='source-over';
+  const src=g.getImageData(0,0,W,H).data,out=canvas.getContext('2d').createImageData(W,H),d=out.data,cell=dpr>1.5?2:1,R2=rnd(777);
+  for(let y=0;y<H;y+=cell)for(let x=0;x<W;x+=cell){const v=src[(y*W+x)*4]/255*(src[(y*W+x)*4+3]/255);const on=v>0.02&&R2()<v*.36;if(!on)continue;
+    for(let yy=0;yy<cell&&y+yy<H;yy++)for(let xx=0;xx<cell&&x+xx<W;xx++){const j=((y+yy)*W+x+xx)*4;d[j]=d[j+1]=d[j+2]=165;d[j+3]=130}}
+  canvas.getContext('2d').putImageData(out,0,0);
+}
 function epRender(){
   const el=$('ep');if(!el)return;
   const n=new Date(),p=part(n.getHours()),w=weather();
@@ -1464,7 +1490,7 @@ function epRender(){
   $('epA').innerHTML=f?'<small>Fokus läuft</small><b>'+esc(f.title)+'</b>':nx?'<small>Nächste Aufgabe</small><b>'+esc(nx.text)+'</b><span>'+(nx.kind==='s'?'S':nx.size)+' · '+estLabel(nx.kind==='s'?'S':nx.size)+' · antippen zum Starten</span>':'<small>Nächste Aufgabe</small><b>Nichts offen</b><span>Gönn dir eine Pause</span>';
   $('epA').classList.toggle('hidden',!f&&!nx&&!D.woche);
   const code=cur?cur.weather_code:2,night=cur?!cur.is_day:false;
-  requestAnimationFrame(()=>epScene($('epC'),code,night));
+  requestAnimationFrame(()=>{epScene($('epC'),code,night);epSky($('epS'),code,night)});
 }
 function epShow(){
   if(!isHM()||!EP_ON()){epHide();return}
