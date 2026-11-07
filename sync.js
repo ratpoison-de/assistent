@@ -89,8 +89,8 @@ const SLOTS={
     get:()=>parse(localStorage.getItem('planer.brain'),undefined),
     set:v=>{if(v===undefined)localStorage.removeItem('planer.brain');else localStorage.setItem('planer.brain',JSON.stringify(v))}},
   kleine:{frames:['start'],
-    get:()=>{const l=parse(localStorage.getItem('planer.fokus'),null),e=parse(localStorage.getItem('planer.energy'),null);if(!l&&!e)return undefined;return{log:(l&&l.log)||[],energy:e||null}},
-    set:v=>{if(!v)return;localStorage.setItem('planer.fokus',JSON.stringify({log:(v.log||[]).slice(-90)}));if(v.energy)localStorage.setItem('planer.energy',JSON.stringify(v.energy))}},
+    get:()=>{const l=parse(localStorage.getItem('planer.fokus'),null),e=parse(localStorage.getItem('planer.energy'),null),c=parse(localStorage.getItem('planer.claude'),null);if(!l&&!e&&!c)return undefined;return{log:(l&&l.log)||[],energy:e||null,claude:c||null}},
+    set:v=>{if(!v)return;localStorage.setItem('planer.fokus',JSON.stringify({log:(v.log||[]).slice(-90)}));if(v.energy)localStorage.setItem('planer.energy',JSON.stringify(v.energy));if(v.claude)localStorage.setItem('planer.claude',JSON.stringify(v.claude))}},
   profil:{frames:['start','woche'],
     get:()=>({name:localStorage.getItem('planer.name')||'',doneDays:parse(localStorage.getItem('planer.doneDays'),[]),green:(g=>g&&{done:g.done||{}})(parse(localStorage.getItem('planer.green'),null))||undefined}),
     set:v=>{if(!v)return;if(v.name)localStorage.setItem('planer.name',v.name);if(v.green){const g=parse(localStorage.getItem('planer.green'),{})||{};g.done=v.green.done||{};localStorage.setItem('planer.green',JSON.stringify(g))}if(v.doneDays)localStorage.setItem('planer.doneDays',JSON.stringify(v.doneDays))}}

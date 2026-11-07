@@ -623,6 +623,11 @@ body.epon{overflow:hidden}
 .tl2 .qi .mono{font-size:15px;font-weight:700;letter-spacing:.02em}
 .tl2:active .qi{background:#111}.tl2:active svg *{stroke:#fff}.tl2:active .mono{color:#fff}
 .tl2 small{font-size:10px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.epclw{display:flex;justify-content:center;margin:2px 0 8px}
+.epcl{display:inline-flex;align-items:center;gap:7px;font-size:12px!important;color:#111;opacity:.72;padding:4px 2px!important;max-width:100%}
+.epcl span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.epcl.dim{opacity:.45}
+.epcl.hit{opacity:1;font-weight:700}
 .epq{display:flex;gap:14px;margin-top:12px}
 .epq button{display:flex;flex-direction:column;align-items:center;gap:5px;width:auto}
 .epq .qi{display:grid;place-items:center;width:52px;height:52px;border:1.5px solid #111;border-radius:14px}
@@ -678,7 +683,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 2.10<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.11<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
   <canvas class="eps" id="epS" aria-hidden="true"></canvas>
@@ -686,6 +691,7 @@ body.epon .scrim{z-index:79}
   <div class="epm"><div class="epml"><h1 id="epG">Hallo.</h1><div class="epd" id="epD"></div><button class="epw" id="epW" aria-label="Wecker öffnen"></button>
     <div class="eptiles" id="epF"></div></div></div>
   <canvas class="epc" id="epC" aria-hidden="true"></canvas>
+  <div class="epclw" id="epCl"></div>
   <button class="epe" id="epE"></button>
   <button class="epa" id="epA"></button>
   <div class="epf" hidden><button data-epapps><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><rect x="3.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="2.5"/></svg>Apps</button><button data-epassist>Assistent<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button></div>
@@ -1609,6 +1615,42 @@ async function lockUpdate(force){
 }
 window.lockRender=lockRender;window.lockUpdate=lockUpdate;
 
+/* ================= Claude-Limits: dezente Anzeige (Daten trägt man selbst ein) ================= */
+const CL_KEY='planer.claude',WDS=['So','Mo','Di','Mi','Do','Fr','Sa'],WDF=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+function clCfg(){try{return Object.assign({reset:0,hit:false,wd:null,wt:'09:00'},JSON.parse(localStorage.getItem(CL_KEY)||'{}'))}catch(_){return{reset:0,hit:false,wd:null,wt:'09:00'}}}
+function clSave(c){c.at=Date.now();try{localStorage.setItem(CL_KEY,JSON.stringify(c))}catch(_){}epRender()}
+function clWeekNext(c){if(c.wd==null)return null;const [h,m]=String(c.wt||'09:00').split(':').map(Number),n=new Date(),d=new Date(n);
+  d.setHours(h||0,m||0,0,0);let add=(c.wd-n.getDay()+7)%7;if(add===0&&d<=n)add=7;d.setDate(d.getDate()+add);return d}
+function hm(d){return two(d.getHours())+':'+two(d.getMinutes())}
+function clHTML(){
+  const c=clCfg(),now=Date.now(),wk=clWeekNext(c);
+  const live=c.reset&&c.reset>now,left=live?c.reset-now:0,frac=live?Math.min(1,left/(5*3600e3)):0;
+  const ring='<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="#111" stroke-width="1.6"/>'+(frac>0?'<path d="M8 8V1.8A6.2 6.2 0 '+(frac>.5?1:0)+' 1 '+(8+6.2*Math.sin(frac*2*Math.PI)).toFixed(2)+' '+(8-6.2*Math.cos(frac*2*Math.PI)).toFixed(2)+'z" fill="#111"/>':'')+'</svg>';
+  const parts=[];
+  if(live)parts.push((c.hit?'Limit · frei ab ':'Reset ')+hm(new Date(c.reset)));
+  else if(c.reset&&now-c.reset<3*3600e3)parts.push('wieder frei');
+  if(wk)parts.push('Woche '+WDS[wk.getDay()]+' '+hm(wk));
+  if(!parts.length)return '<button class="epcl dim" data-cl>'+ring+'<span>Claude · Limits eintragen</span></button>';
+  return '<button class="epcl'+(c.hit&&live?' hit':'')+'" data-cl>'+ring+'<span>Claude · '+parts.join(' · ')+'</span></button>';
+}
+function openClaude(){
+  const c=clCfg(),n=new Date(),def=c.reset&&c.reset>Date.now()?hm(new Date(c.reset)):hm(new Date(Date.now()+5*3600e3));
+  openSheet('<div class="h-mid" style="margin:0 4px 4px">Claude-Limits</div><p class="kdp">Die Sitzung läuft fünf Stunden ab deiner ersten Nachricht. Die genauen Zeiten stehen auf claude.ai unter Einstellungen → Nutzung.</p>'+
+    '<div class="lbl">Aktuelle Sitzung</div><div class="row2"><button class="d-btn" id="clNow">Gerade gestartet</button><button class="d-btn" id="clHit">Limit erreicht</button></div>'+
+    '<div class="nudt" style="margin-top:10px"><span>Reset um</span><input type="time" id="clT" value="'+def+'"></div>'+
+    '<div class="lbl">Wöchentlicher Reset</div><div class="nudt"><select id="clWd" style="font:inherit;font-size:16px;border:0;background:#fff;border-radius:10px;padding:6px 8px"><option value="">nicht eingetragen</option>'+WDF.map((w,i)=>'<option value="'+i+'"'+(c.wd===i?' selected':'')+'>'+w+'</option>').join('')+'</select><input type="time" id="clWt" value="'+(c.wt||'09:00')+'"></div>'+
+    '<div class="row2"><button class="d-btn" id="clWeb">Auf claude.ai ansehen</button><button class="d-btn primary" id="clOk">Speichern</button></div>'+
+    (c.reset?'<button class="d-btn ghost" id="clClr" style="width:100%;margin-top:8px">Sitzung zurücksetzen</button>':''));
+  sheet.classList.add('tall');
+  const timeTo=v=>{const [h,m]=v.split(':').map(Number),d=new Date();d.setHours(h,m,0,0);if(d<=new Date())d.setDate(d.getDate()+1);return d.getTime()};
+  const week=()=>{const v=$('clWd').value;c.wd=v===''?null:+v;c.wt=$('clWt').value||'09:00'};
+  $('clNow').onclick=()=>{week();c.reset=Date.now()+5*3600e3;c.hit=false;clSave(c);closeSheet();toast('Sitzung bis '+hm(new Date(c.reset)))};
+  $('clHit').onclick=()=>{week();c.reset=timeTo($('clT').value||def);c.hit=true;clSave(c);closeSheet();toast('Frei ab '+hm(new Date(c.reset)))};
+  $('clOk').onclick=()=>{week();const v=$('clT').value;if(v&&(!c.reset||v!==hm(new Date(c.reset))))c.reset=timeTo(v);clSave(c);closeSheet()};
+  $('clWeb').onclick=()=>{const u='https://claude.ai/settings/usage';try{if(P.Native&&P.Native.openUrl)P.Native.openUrl(u);else window.open(u,'_blank')}catch(_){window.open(u,'_blank')}};
+  if($('clClr'))$('clClr').onclick=()=>{c.reset=0;c.hit=false;clSave(c);closeSheet()};
+}
+
 function epRender(){
   const el=$('ep');if(!el)return;
   const n=new Date(),p=part(n.getHours()),w=weather();
@@ -1617,6 +1659,7 @@ function epRender(){
   $('epT').textContent=cur?Math.round(cur.temperature_2m)+'°':'';
   $('epD').textContent=n.getDate()+'. '+MON[n.getMonth()]+' '+n.getFullYear();
   try{$('epF').innerHTML=epTilesHTML()}catch(_){}
+  try{$('epCl').innerHTML=clHTML()}catch(_){}
   $('epW').textContent=two(n.getHours())+':'+two(n.getMinutes());
   const ev=epNextEvent();
   $('epE').innerHTML=ev?'<b>'+esc(ev.e.title)+'</b><span>'+ev.day+' · '+(ev.e.allDay||!ev.e.tStart?'ganztägig':ev.e.tStart+(ev.e.tEnd?'–'+ev.e.tEnd:''))+(ev.e.loc?' · '+esc(ev.e.loc):'')+'</span>':'<b>Keine Termine</b><span>Heute und morgen ist der Kalender frei</span>';
@@ -1646,6 +1689,7 @@ $('ep').addEventListener('click',e=>{
   const fa=e.target.closest('#epF [data-app]');if(fa){try{L().launch(fa.dataset.app)}catch(_){}return}
   if(e.target.closest('#epF [data-all]')){try{L().openDrawer()}catch(_){}return}
   if(e.target.closest('#epSet')){$('bMenu').click();return}
+  if(e.target.closest('[data-cl]')){openClaude();return}
   const q=e.target.closest('[data-q]');if(q){try{P.Native&&P.Native.haptic()}catch(_){}
     if(q.dataset.q==='grad'){const u='https://ratpoison-de.github.io/pags-app/graduierung/lehrer.html';try{if(P.Native&&P.Native.openUrl)P.Native.openUrl(u);else window.open(u,'_blank')}catch(_){window.open(u,'_blank')}}
     else{let k=null;try{k=L()&&L().find(/sekret/i)}catch(_){}if(k)L().launch(k);else toast('Die App „Sekretär“ ist auf diesem Gerät nicht installiert')}
