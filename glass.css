@@ -125,3 +125,18 @@ html.glass body.epon .ep,html.glass body.home.mdopen #tasks{background:radial-gr
 
 html.glass{background:url(grid.png) center bottom/cover no-repeat,radial-gradient(130% 90% at 18% 0%,#F7F8FA 0%,#E9EBEE 45%,#D6D9DE 100%) fixed!important;background-color:#E6E8EB!important}
 html.glass body.epon .ep,html.glass body.home.mdopen #tasks{background:url(grid.png) center bottom/cover no-repeat,radial-gradient(130% 90% at 18% 0%,#F7F8FA 0%,#E9EBEE 45%,#D6D9DE 100%)!important;background-color:#E6E8EB!important}
+/* Dock nach Vorlage: helle Glas-Kapsel, aktive Taste als graublaue Mulde mit blauem Symbol */
+html.glass:not(.aqua) body .tabs{height:64px!important;padding:7px!important;gap:4px!important;background:linear-gradient(180deg,rgba(250,251,254,.94),rgba(230,234,243,.9))!important;border:1px solid rgba(255,255,255,.95)!important;box-shadow:inset 0 1px 0 #fff,0 0 0 1px rgba(150,160,182,.4),0 14px 30px -12px rgba(40,50,80,.38)!important}
+html.glass:not(.aqua) body .tab{height:50px!important;color:#14161B!important;transition:flex-grow .25s ease,background .2s}
+html.glass:not(.aqua) body .tab svg{color:#14161B!important;width:24px;height:24px}
+html.glass:not(.aqua) body .tab.on{flex-grow:1.9!important;max-width:104px!important;background:linear-gradient(180deg,rgba(204,211,226,.85),rgba(214,220,232,.8))!important;box-shadow:inset 0 1px 3px rgba(70,80,110,.18)!important}
+html.glass:not(.aqua) body .tab.on svg{color:#1F4FE0!important}
+html.glass:not(.aqua) body .tab.on[data-t=start] svg{fill:currentColor}
+html.glass:not(.aqua) body .tab .bdg{background:#fff!important;color:#111!important;border:2px solid #111!important;border-radius:6px!important;min-width:19px;height:19px;font-weight:700;box-shadow:none!important;top:4px!important}
+html.glass:not(.aqua) .magic{background:linear-gradient(180deg,rgba(250,251,254,.94),rgba(230,234,243,.9))!important;border:1px solid rgba(255,255,255,.95)!important;box-shadow:inset 0 1px 0 #fff,0 0 0 1px rgba(150,160,182,.4),0 14px 30px -12px rgba(40,50,80,.38)!important;color:#14161B!important}
+html.glass:not(.aqua) .magic svg{color:#1F4FE0!important}
+@media (min-width:900px){html.glass:not(.aqua) body .tabs{height:auto!important;border-radius:0!important}html.glass:not(.aqua) body .tab.on{max-width:none!important}}
+html.glass:not(.aqua) body .tab{font-size:0!important}
+html.glass:not(.aqua) body .tab .bdg{top:3px!important;left:calc(50% + 5px)!important;right:auto!important;min-width:17px;height:17px;padding:0 3px;font-size:10px!important;border-width:1.8px!important;border-radius:5px!important}
+html.glass:not(.aqua) body .tab.on{max-width:92px!important}
+@media (min-width:900px){html.glass:not(.aqua) body .tab{font-size:15px!important}html.glass:not(.aqua) body .tab .bdg{position:static!important}}

@@ -7,7 +7,7 @@
   /* Design: E-Paper (Standard) oder Himmel */
   try{
     var th=null,ls0=window.localStorage;th=ls0.getItem('planer.theme');if(th==null)th=ls0.getItem('assistent:planer.theme');
-    if(th==null)th='aqua';
+    if(th==null)th='glass';
     if(th==='epaper'||th==='glass'||th==='aqua'){
       var files=th==='aqua'?['glass','aqua']:[th];
       document.documentElement.classList.add(th==='aqua'?'glass':th);if(th==='aqua')document.documentElement.classList.add('aqua');
