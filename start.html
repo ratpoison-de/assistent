@@ -634,6 +634,11 @@ body.epon{overflow:hidden}
 .fcb{position:relative;display:block;width:6px;height:var(--fcb,26px);border:1px solid #111;border-radius:4px}
 .fcb i{position:absolute;left:0;right:0;background:#111;border-radius:3px}
 .epclw{display:flex;justify-content:center;margin:2px 0 8px}
+.ep.f1 .eph,.ep.f1 .epm{margin-top:2vh}.ep.f1 .epw{font-size:clamp(36px,11vw,48px)!important}.ep.f1 .epml h1{font-size:clamp(22px,6.4vw,28px)!important}
+.ep.f2 .eptiles{gap:6px 4px;margin-top:8px}.ep.f2 .epa span{display:none}.ep.f2 .fch{display:none}.ep.f2 .fcd .fcr{display:none}
+.ep.f3 .fcb{display:none}.ep.f3 .epe span{display:none}
+.ep.f4 .tl2 small{display:none}.ep.f4 .epd{display:none}
+.ep.f5 .epa{display:none}
 @media (max-height:760px){.fch{display:none}.fcd svg{width:20px;height:20px}.epa{padding:8px 14px!important;margin-top:8px}.epe{padding:10px 16px!important}.fcb,.fcd .fcr{display:none}.fcg{padding:6px 0 4px}.fcd{gap:1px}.fch{margin-bottom:4px}}
 .epcl{display:inline-flex;align-items:center;gap:7px;font-size:12px!important;color:#111;opacity:.72;padding:4px 2px!important;max-width:100%}
 .epcl span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -713,7 +718,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 3.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 3.2<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
   <canvas class="eps" id="epS" aria-hidden="true"></canvas>
@@ -1719,6 +1724,7 @@ function epForecast(){
     return '<div class="fcd"><small>'+WD[dt.getDay()]+'</small><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+WXI[wxKind(d.weather_code[i])]+'</svg>'+
       '<b>'+Math.round(mx)+'°</b><span class="fcb"><i style="top:'+top.toFixed(0)+'%;bottom:'+bot.toFixed(0)+'%"></i></span><em>'+Math.round(mn)+'°</em><small class="fcr">'+(rp>=20?rp+'%':'&nbsp;')+'</small></div>'}).join('');
   el.innerHTML='<div class="fch">'+TBB.name+' · 5 Tage</div><div class="fcg">'+cols+'</div>';
+  requestAnimationFrame(()=>{try{const c=$('epC');c.style.display='';epFit();if(c.clientHeight<60){c.style.display='none';epFit()}}catch(_){}});
 }
 
 /* ================= Begleiter: Morgen, Tag, Abend, Woche ================= */
@@ -1883,8 +1889,13 @@ function epRender(){
   else $('epA').innerHTML=f?'<small>Fokus läuft</small><b>'+esc(f.title)+'</b>':nx?'<small>Nächste Aufgabe</small><b>'+esc(nx.text)+'</b><span>'+(nx.kind==='s'?'S':nx.size)+' · '+estLabel(nx.kind==='s'?'S':nx.size)+' · ▶ starten</span>':'<small>Nächste Aufgabe</small><b>Nichts offen</b><span>Gönn dir eine Pause</span>';
   $('epA').classList.toggle('hidden',!cc&&!f&&!nx&&!D.woche);
   const code=cur?cur.weather_code:2,night=cur?!cur.is_day:false;
-  requestAnimationFrame(()=>{const c=$('epC');c.style.display='';c.style.display=c.clientHeight<60?'none':'';if(c.style.display!=='none')epScene(c,code,night);epSky($('epS'),code,night)});
+  requestAnimationFrame(()=>{const c=$('epC');c.style.display='';epFit();if(c.clientHeight<60){c.style.display='none';epFit()}if(c.style.display!=='none')epScene(c,code,night);epSky($('epS'),code,night)});
 }
+/* Startbildschirm passgenau: Stufenweise verdichten, bis nichts mehr überläuft */
+function epFit(){const el=$('ep');if(!el||!epVisible)return;
+  el.classList.remove('f1','f2','f3','f4','f5');
+  for(const c of ['f1','f2','f3','f4','f5']){if(el.scrollHeight<=el.clientHeight+1)break;el.classList.add(c)}}
+addEventListener('resize',()=>setTimeout(epFit,50));
 function epShow(){
   if(!isHM()||!EP_ON()){epHide();return}
   epVisible=true;document.body.classList.add('epon');try{P.setEpaper&&P.setEpaper(true)}catch(_){}epRender();

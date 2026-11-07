@@ -111,3 +111,17 @@ html.glass .mrow .mi{background:linear-gradient(180deg,#F3F4F6,#ECEEF1)!importan
 html.glass .cplist button.on i,html.glass .cpmood button.on,html.glass .cpen button.on{background:linear-gradient(180deg,#4C86EA,#2D6BDA)!important}
 html.glass .d-toast{background:rgba(29,29,31,.82)!important}
 html.glass body.home.mdopen #tasks{background:var(--wall)!important;background-color:#E9EBEE!important}
+
+/* Hintergrund wie auf dem Foto: helles Grau, Licht von oben links, Raster als Fläche in die Tiefe */
+html.glass{--wall:radial-gradient(130% 90% at 18% 0%,#F7F8FA 0%,#E9EBEE 45%,#D6D9DE 100%)}
+html.glass,html.glass body{background:radial-gradient(130% 90% at 18% 0%,#F7F8FA 0%,#E9EBEE 45%,#D6D9DE 100%) fixed!important;background-color:#E6E8EB!important}
+
+html.glass body .ldr,html.glass body .fk{background:radial-gradient(130% 90% at 18% 0%,rgba(247,248,250,.92) 0%,rgba(233,235,238,.92) 45%,rgba(214,217,222,.95) 100%)!important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+
+html.glass body{background:transparent!important}
+html.glass{background:radial-gradient(130% 90% at 18% 0%,#F7F8FA 0%,#E9EBEE 45%,#D6D9DE 100%) fixed!important;background-color:#E6E8EB!important}
+html.glass body.epon .ep,html.glass body.home.mdopen #tasks{background:radial-gradient(130% 90% at 18% 0%,#F7F8FA 0%,#E9EBEE 45%,#D6D9DE 100%)!important;background-color:#E6E8EB!important}
+
+
+html.glass{background:url(grid.png) center bottom/cover no-repeat,radial-gradient(130% 90% at 18% 0%,#F7F8FA 0%,#E9EBEE 45%,#D6D9DE 100%) fixed!important;background-color:#E6E8EB!important}
+html.glass body.epon .ep,html.glass body.home.mdopen #tasks{background:url(grid.png) center bottom/cover no-repeat,radial-gradient(130% 90% at 18% 0%,#F7F8FA 0%,#E9EBEE 45%,#D6D9DE 100%)!important;background-color:#E6E8EB!important}
