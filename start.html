@@ -821,7 +821,7 @@ function landscapeOld(){
   try{P&&P.updateBar&&P.updateBar()}catch(e){}
 }
 function landscape(){try{P&&P.updateBar&&P.updateBar()}catch(e){}}
-window.skyTop=function(){let ep=false;try{ep=epVisible}catch(_){}if(document.documentElement.classList.contains('glass'))return{color:'#DDE6FD',dark:false,nav:'#DCD4F8'};if(ep||document.documentElement.classList.contains('epaper'))return{color:'#FFFFFF',dark:false,nav:'#FFFFFF'};return{color:document.body.classList.contains('mdopen')?'#9AD6FB':'#86CEFA',dark:false}};
+window.skyTop=function(){let ep=false;try{ep=epVisible}catch(_){}if(document.documentElement.classList.contains('glass'))return{color:'#F3F4F6',dark:false,nav:'#DFE2E6'};if(ep||document.documentElement.classList.contains('epaper'))return{color:'#FFFFFF',dark:false,nav:'#FFFFFF'};return{color:document.body.classList.contains('mdopen')?'#9AD6FB':'#86CEFA',dark:false}};
 
 /* ================= Uhr ================= */
 (function buildClock(){
