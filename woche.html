@@ -302,7 +302,7 @@ function normalize(){
   const minOrder=Math.min(0,...state.tasks.filter(t=>t.date===today).map(t=>t.order));
   let i=0;
   state.tasks.filter(t=>!t.done&&t.date&&t.date<today).sort((a,b)=>a.date<b.date?-1:1).forEach(t=>{
-    t.date=today;t.carried=true;t.order=minOrder-100+(i++);
+    t.since=t.since||t.date;t.date=today;t.carried=true;t.order=minOrder-100+(i++);
   });
   save();
 }
@@ -642,7 +642,7 @@ window.briefing=function(){
   load();normalize();const t=today,tm=addDays(t,1);
   const td=state.tasks.filter(x=>x.date===t);
   const open=td.filter(x=>!x.done).sort((a,b)=>a.order-b.order);
-  const ks=x=>({size:x.size||'',steps:(x.steps||[]).map(s=>({id:s.id,text:s.text,done:!!s.done}))});
+  const ks=x=>({since:x.since||x.date||'',size:x.size||'',steps:(x.steps||[]).map(s=>({id:s.id,text:s.text,done:!!s.done}))});
   return {open:open.map(x=>Object.assign({id:x.id,text:x.text,carried:!!x.carried,mail:!!(x.mail&&x.mail.msgid),rep:!!(x.repeat&&x.repeat!=='none'),repL:REP[x.repeat]||'',prio:!!x.prio},ks(x))),
     done:td.filter(x=>x.done).length,
     doneList:td.filter(x=>x.done).sort((a,b)=>(a.doneAt||0)-(b.doneAt||0)).map(x=>Object.assign({id:x.id,text:x.text,mail:!!(x.mail&&x.mail.msgid),rep:!!(x.repeat&&x.repeat!=='none'),repL:REP[x.repeat]||'',prio:!!x.prio},ks(x))),
@@ -659,6 +659,8 @@ window.setSteps=function(id,steps){const t=find(id);if(!t)return false;t.steps=(
 window.toggleStep=function(id,sid){const t=find(id);if(!t||!t.steps)return null;const st=t.steps.find(x=>x.id===sid);if(!st)return null;st.done=!st.done;st.doneAt=st.done?Date.now():null;
   if(st.done){try{const k='planer.doneDays';const d=JSON.parse(localStorage.getItem(k)||'[]');const td=todayKey();if(!d.includes(td)){d.push(td);localStorage.setItem(k,JSON.stringify(d.slice(-120)))}}catch(e){}}
   const all=t.steps.every(x=>x.done);if(all&&!t.done)toggle(id);else if(!all&&t.done)toggle(id);save();render();return {step:st.done,task:t.done}};
+window.moveTask=function(id,date){const t=find(id);if(!t)return false;moveTo(id,date||null);render();return true};
+window.deleteTask=function(id){const t=find(id);if(!t)return false;state.tasks=state.tasks.filter(x=>x!==t);save();render();return true};
 window.completeTask=function(id){const t=find(id);if(!t)return false;if(!t.done)toggle(id);save();render();return true};
 window.completeStep=function(id,sid){const t=find(id);if(!t||!t.steps)return false;const st=t.steps.find(x=>x.id===sid);if(!st)return false;if(!st.done)window.toggleStep(id,sid);return true};
 window.addTasks=function(list){let n=0;const bucket=bucketOf({date:today});for(const o of list||[]){if(!o||!o.text)continue;
