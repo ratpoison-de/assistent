@@ -617,6 +617,11 @@ body.epon{overflow:hidden}
 .epm{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-top:4vh}
 .epml{flex:1;min-width:0}
 .epml h1{margin:0;font-size:clamp(24px,7.4vw,34px);line-height:1.12;font-weight:700;letter-spacing:-.02em}
+.epq{display:flex;gap:14px;margin-top:12px}
+.epq button{display:flex;flex-direction:column;align-items:center;gap:5px;width:auto}
+.epq .qi{display:grid;place-items:center;width:52px;height:52px;border:1.5px solid #111;border-radius:14px}
+.epq button:active .qi{background:#111}.epq button:active svg *{stroke:#fff}
+.epq small{font-size:11.5px}
 .epfav{flex:0 0 auto;max-width:48%;display:flex;flex-direction:column;align-items:flex-end;padding-top:4px}
 .epfav .lzA{display:block;max-width:100%;text-align:right;font-size:15.5px;padding:4px 0!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#111}
 .epfav .lzAll{margin-top:6px;font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:3px;padding:4px 0!important}
@@ -667,12 +672,14 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 2.9<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.9.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
   <canvas class="eps" id="epS" aria-hidden="true"></canvas>
   <div class="ept"><span class="epl">Assistent<svg width="26" height="20" viewBox="0 0 26 20" aria-hidden="true"><path d="M5 15a8 8 0 0 1 16 0" fill="none" stroke="#111" stroke-width="2.2"/><path d="M1 15h24M4 18.5h18" stroke="#111" stroke-width="2.2" stroke-linecap="round"/><path d="M13 1.5v3M4.2 5.2l2 2M21.8 5.2l-2 2" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg></span><span class="epr"><span class="eptmp" id="epT"></span><button class="epset" id="epSet" aria-label="Einstellungen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></span></div>
-  <div class="epm"><div class="epml"><h1 id="epG">Hallo.</h1><div class="epd" id="epD"></div><button class="epw" id="epW" aria-label="Wecker öffnen"></button></div><div class="epfav" id="epF"></div></div>
+  <div class="epm"><div class="epml"><h1 id="epG">Hallo.</h1><div class="epd" id="epD"></div><button class="epw" id="epW" aria-label="Wecker öffnen"></button>
+    <div class="epq"><button data-q="grad" aria-label="Graduierung öffnen"><span class="qi"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h4v-4h4v-4h4V8h4V4"/><path d="M15.5 4H19v3.5"/><path d="M3 20h18"/></svg></span><small>Graduierung</small></button>
+    <button data-q="sek" aria-label="Sekretär öffnen"><span class="qi"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3v18M12 8h4M12 12h4M12 16h2"/></svg></span><small>Sekretär</small></button></div></div><div class="epfav" id="epF"></div></div>
   <canvas class="epc" id="epC" aria-hidden="true"></canvas>
   <button class="epe" id="epE"></button>
   <button class="epa" id="epA"></button>
@@ -1524,6 +1531,10 @@ $('ep').addEventListener('click',e=>{
   const fa=e.target.closest('#epF [data-app]');if(fa){try{L().launch(fa.dataset.app)}catch(_){}return}
   if(e.target.closest('#epF [data-all]')){try{L().openDrawer()}catch(_){}return}
   if(e.target.closest('#epSet')){$('bMenu').click();return}
+  const q=e.target.closest('[data-q]');if(q){try{P.Native&&P.Native.haptic()}catch(_){}
+    if(q.dataset.q==='grad'){const u='https://ratpoison-de.github.io/pags-app/graduierung/lehrer.html';try{if(P.Native&&P.Native.openUrl)P.Native.openUrl(u);else window.open(u,'_blank')}catch(_){window.open(u,'_blank')}}
+    else{let k=null;try{k=L()&&L().find(/sekret/i)}catch(_){}if(k)L().launch(k);else toast('Die App „Sekretär“ ist auf diesem Gerät nicht installiert')}
+    return}
   if(e.target.closest('[data-epapps]')){try{P.Launcher.openDrawer()}catch(_){}return}
   if(e.target.closest('[data-epassist]')){epHide();try{P.Native&&P.Native.haptic()}catch(_){}return}
   if(e.target.closest('#epE')){epHide();try{P.showTab('kalender')}catch(_){}return}

@@ -200,7 +200,8 @@ function lock(){
 function setOpt(k,v){cfg[k]=v;save()}
 function opt(k){return cfg[k]}
 
-window.Launcher={on:ON,reload,favs,launch,menu,openDrawer,closeDrawer,isHome,notifications,lock,setOpt,opt,
+window.Launcher={on:ON,reload,favs,launch,
+  find(re){if(!apps.length)reload();const x=apps.find(a=>re.test(a.l)||re.test(nameOf(a))||re.test(a.p));return x?keyOf(x):null},menu,openDrawer,closeDrawer,isHome,notifications,lock,setOpt,opt,
   homeSettings(){try{N.homeSettings()}catch(e){}},openClock(){try{N.openClock()}catch(e){}},
   lockOn(){try{return N.lockOn()}catch(e){return false}},lockSettings(){try{N.lockSettings()}catch(e){}}};
 window.launcherHome=function(){
