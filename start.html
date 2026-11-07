@@ -658,6 +658,7 @@ body.epon{overflow:hidden}
 .cprit{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}.cprit .d-btn{font-size:13px;padding:10px 4px}
 .cptop3{margin-bottom:6px}
 .epq{display:flex;gap:14px;margin-top:12px}
+.chips.thm{display:flex;gap:8px;margin:0 0 12px}
 .epq button{display:flex;flex-direction:column;align-items:center;gap:5px;width:auto}
 .epq .qi{display:grid;place-items:center;width:52px;height:52px;border:1.5px solid #111;border-radius:14px}
 .epq button:active .qi{background:#111}.epq button:active svg *{stroke:#fff}
@@ -712,11 +713,12 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 3.0<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 3.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
   <canvas class="eps" id="epS" aria-hidden="true"></canvas>
   <div class="ept"><span class="epl">Assistent<svg width="26" height="20" viewBox="0 0 26 20" aria-hidden="true"><path d="M5 15a8 8 0 0 1 16 0" fill="none" stroke="#111" stroke-width="2.2"/><path d="M1 15h24M4 18.5h18" stroke="#111" stroke-width="2.2" stroke-linecap="round"/><path d="M13 1.5v3M4.2 5.2l2 2M21.8 5.2l-2 2" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg></span><span class="epr"><span class="eptmp" id="epT"></span><button class="epset" id="epSet" aria-label="Einstellungen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></span></div>
+  <div class="epgl"><button class="epwx" id="epWx"></button><button class="epdt" id="epDt"></button><button class="epgset" id="epSet2" aria-label="Einstellungen"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3C4043" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></button></div>
   <div class="epm"><div class="epml"><h1 id="epG">Hallo.</h1><div class="epd" id="epD"></div><button class="epw" id="epW" aria-label="Wecker öffnen"></button>
     <div class="eptiles" id="epF"></div></div></div>
   <canvas class="epc" id="epC" aria-hidden="true"></canvas>
@@ -819,7 +821,7 @@ function landscapeOld(){
   try{P&&P.updateBar&&P.updateBar()}catch(e){}
 }
 function landscape(){try{P&&P.updateBar&&P.updateBar()}catch(e){}}
-window.skyTop=function(){let ep=false;try{ep=epVisible}catch(_){}if(ep||document.documentElement.classList.contains('epaper'))return{color:'#FFFFFF',dark:false,nav:'#FFFFFF'};return{color:document.body.classList.contains('mdopen')?'#9AD6FB':'#86CEFA',dark:false}};
+window.skyTop=function(){let ep=false;try{ep=epVisible}catch(_){}if(document.documentElement.classList.contains('glass'))return{color:'#DDE6FD',dark:false,nav:'#DCD4F8'};if(ep||document.documentElement.classList.contains('epaper'))return{color:'#FFFFFF',dark:false,nav:'#FFFFFF'};return{color:document.body.classList.contains('mdopen')?'#9AD6FB':'#86CEFA',dark:false}};
 
 /* ================= Uhr ================= */
 (function buildClock(){
@@ -1235,7 +1237,7 @@ $('bMenu').onclick=()=>{
     '<button class="opt" id="oSync"><span><b>Synchronisation</b><small>'+syncLine()+'</small></span></button>'+
     '<div class="lbl">Begleiter</div><div class="cprit"><button class="d-btn" data-cpo="morning">Morgen planen</button><button class="d-btn" data-cpo="evening">Tag abschließen</button><button class="d-btn" data-cpo="week">Wochenrückblick</button></div>'+
     (P&&P.Native&&P.Native.companion?'<button class="opt" id="oCp"><span><b>Morgen- und Abendhinweis</b><small>Morgens dein Tag auf einen Blick, abends die Einladung zum Rückblick</small></span><span class="sw'+(cp().times.on?' on':'')+'"></span></button><div class="nudt'+(cp().times.on?'':' hidden')+'" id="oCpT"><span>Morgens</span><input type="time" id="oCpM" value="'+cp().times.m+'"><span>Abends</span><input type="time" id="oCpE" value="'+cp().times.e+'"></div>':'')+
-    '<button class="opt" id="oTheme"><span><b>E-Paper-Design</b><small>Schwarz-weiß mit Schreibmaschinenschrift – aus: Himmel-Design</small></span><span class="sw'+(document.documentElement.classList.contains('epaper')?' on':'')+'"></span></button>'+
+    '<div class="lbl">Design</div><div class="chips thm" id="oTheme">'+[['glass','Glas'],['epaper','E-Paper'],['sky','Himmel']].map(([k,l])=>'<button class="d-chip'+((document.documentElement.classList.contains('glass')?'glass':document.documentElement.classList.contains('epaper')?'epaper':'sky')===k?' on':'')+'" data-th="'+k+'">'+l+'</button>').join('')+'</div>'+
     (P&&P.Native&&P.Native.setLockWallpaper?'<button class="opt" id="oLockWp"><span><b>Sperrbildschirm im E-Paper-Stil</b><small>Hintergrundbild mit Datum, Wetter-Zeichnung, nächstem Termin und nächster Aufgabe – aktualisiert sich selbst</small></span><span class="sw'+(LOCK_ON()?' on':'')+'"></span></button>':'')+
     (homeMode?'<button class="opt" id="oEp"><span><b>Ruhiger Startbildschirm</b><small>Schwarz-weiß wie E-Paper: Uhrzeit, Wetter, nächster Termin und nächste Aufgabe</small></span><span class="sw'+(EP_ON()?' on':'')+'"></span></button>':'')+
     (L()?'<button class="opt" id="oHome"><span><b>Als Startbildschirm verwenden</b><small>'+(homeMode?'Aktiv – die Home-Taste führt zu Mein Tag und deinen Apps':'Mein Tag und deine Apps direkt auf dem Startbildschirm – tippen zum Festlegen')+'</small></span>'+(homeMode?'<span class="sw on"></span>':'')+'</button>':'')+
@@ -1254,7 +1256,7 @@ $('bMenu').onclick=()=>{
   if($('oCp')){const sv=f=>{const c=cp();f(c.times);cpSet(c);cpSig='';companionSync()};
     $('oCp').onclick=()=>{let on;sv(t=>{t.on=!t.on;on=t.on});$('oCp').querySelector('.sw').classList.toggle('on',on);$('oCpT').classList.toggle('hidden',!on);if(on)try{P.Native.askNotif()}catch(_){}};
     $('oCpM').onchange=()=>sv(t=>t.m=$('oCpM').value||'06:45');$('oCpE').onchange=()=>sv(t=>t.e=$('oCpE').value||'20:30');}
-  $('oTheme').onclick=()=>{const v=!document.documentElement.classList.contains('epaper');try{localStorage.setItem('planer.theme',v?'epaper':'sky')}catch(_){}$('oTheme').querySelector('.sw').classList.toggle('on',v);setTimeout(()=>{try{P.location.reload()}catch(_){location.reload()}},250)};
+  $('oTheme').onclick=e=>{const b=e.target.closest('[data-th]');if(!b)return;try{localStorage.setItem('planer.theme',b.dataset.th)}catch(_){}$('oTheme').querySelectorAll('[data-th]').forEach(x=>x.classList.toggle('on',x===b));setTimeout(()=>{try{P.location.reload()}catch(_){location.reload()}},250)};
   if($('oKbd'))$('oKbd').onclick=()=>{closeSheet();try{P.Native.kbSetup()}catch(_){}};
   if($('oLockWp'))$('oLockWp').onclick=()=>{const v=!LOCK_ON();try{localStorage.setItem('planer.lockwp',v?'1':'0')}catch(_){}$('oLockWp').querySelector('.sw').classList.toggle('on',v);
     if(v){toast('Sperrbildschirm wird gestaltet …');lockUpdate(true).then(ok=>toast(ok?'Sperrbildschirm aktualisiert':'Konnte das Bild nicht setzen'))}else{try{P.Native.clearLockWallpaper()}catch(_){}lockSig='';toast('Sperrbildschirm wieder wie vorher')}};
@@ -1581,7 +1583,7 @@ const EPRULES=[[/telefon|dialer|phone/i,'phone'],[/threema|signal/i,'lockchat'],
  [/amazon|shop|ebay|einkauf|kaufland|lidl|rewe/i,'cart'],[/db |db navigator|bahn|vrn|ticket/i,'train'],[/sekret|notiz|note|keep|docs/i,'note'],[/graduier/i,'stairs'],
  [/zeitung|news|tagesschau|heute|spiegel|feedly/i,'news'],[/bank|sparkasse|volksbank|paypal|finanz/i,'bank'],[/uhr|clock|wecker/i,'clock'],[/rechner|calculator/i,'calc'],
  [/kontakt|contacts/i,'contact'],[/dateien|files|drive|dropbox/i,'files'],[/vw|volkswagen|we connect|auto|charge|laden/i,'car']];
-function epIcon(name,pkg){const s=String(name||'')+' '+String(pkg||'');for(const [re,k] of EPRULES)if(re.test(s))return '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+EPI[k]+'</svg>';
+function epIcon(name,pkg){const s=String(name||'')+' '+String(pkg||'');for(const [re,k] of EPRULES)if(re.test(s))return '<svg data-k="'+k+'" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+EPI[k]+'</svg>';
   const m=String(name||'?').replace(/[^A-Za-zÄÖÜäöü0-9 ]/g,'').trim().split(/\s+/);const t=(m.length>1?m[0][0]+m[1][0]:String(m[0]||'?').slice(0,2)).toUpperCase();
   return '<b class="mono">'+esc(t)+'</b>'}
 function epTilesHTML(){
@@ -1589,7 +1591,7 @@ function epTilesHTML(){
   const T=(attr,ic,label)=>'<button class="tl2" '+attr+'><span class="qi">'+ic+'</span><small>'+esc(label)+'</small></button>';
   let h=T('data-q="grad"',epIcon('Graduierung'),'Graduierung')+T('data-q="sek"',epIcon('Sekretär'),'Sekretär');
   for(const x of f){let p='';try{p=x.k.split('/')[0]}catch(_){}h+=T('data-app="'+esc(x.k)+'"',epIcon(x.name,p),x.name)}
-  h+=T('data-all','<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9">'+EPI.apps+'</svg>','Alle Apps');
+  h+=T('data-all','<svg data-k="apps" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9">'+EPI.apps+'</svg>','Alle Apps');
   return h;
 }
 
@@ -1755,11 +1757,11 @@ function companionCard(){
     const ev=k?k.today:[],first=ev.find(e=>!e.allDay&&e.tStart);
     const open=w?w.open.length:0,f=c.focus&&c.focus.d===ymd(new Date())?c.focus.text:'';
     return{lab:'Guten Morgen · dein Tag',t:(ev.length?ev.length+(ev.length===1?' Termin':' Termine')+(first?', erster '+first.tStart:''):'Keine Termine')+' · '+open+(open===1?' Aufgabe':' Aufgaben'),
-      s:f?'Heute wichtig: '+f:'Antippen: Tag in Ruhe planen',act:'morning'}}
+      s:f?'Heute wichtig: '+f:'Tag in Ruhe planen',act:'morning'}}
   if(st.kind==='soon'){let fit=null;try{fit=dayPlan().now.find(u=>estMin(u.kind==='s'?'S':u.size)<=Math.max(5,st.m-5))}catch(_){}
     return{lab:'Gleich',t:st.e.title+' um '+st.e.tStart+' (in '+st.m+' Min)',s:fit?'Bis dahin passt: '+fit.text+' · '+estLabel(fit.kind==='s'?'S':fit.size):(st.e.loc?'Ort: '+st.e.loc:'Zeit zum Durchatmen'),act:fit?'start':'cal'}}
   if(st.kind==='evening'){const d=w?(w.doneList||[]).length:0,o=w?w.open.length:0;
-    return{lab:'Tagesrückblick',t:d+' erledigt · '+o+' offen',s:'Antippen: Tag abschließen und morgen vorbereiten',act:'evening'}}
+    return{lab:'Tagesrückblick',t:d+' erledigt · '+o+' offen',s:'Tag abschließen, morgen vorbereiten',act:'evening'}}
   if(st.kind==='week')return{lab:'Wochenrückblick',t:'Zeit für einen ehrlichen Blick auf die Woche',s:'Erledigt · Liegen geblieben · Warte auf · Top 3',act:'week'};
   return null;
 }
@@ -1858,6 +1860,7 @@ function openWeek(){
     const c2=cp();c2.week=wk;cpSet(c2);closeSheet();toast(top.length?'Woche abgeschlossen – Top 3 stehen für Montag bereit':'Woche abgeschlossen. Schönes Wochenende!');D.woche=undefined;load()};
 }
 
+const cap1=t=>t?t.charAt(0).toUpperCase()+t.slice(1):t;
 function epRender(){
   const el=$('ep');if(!el)return;
   const n=new Date(),p=part(n.getHours()),w=weather();
@@ -1865,6 +1868,8 @@ function epRender(){
   $('epG').innerHTML=esc(GREET[p])+',<br>'+esc(NAME)+'.';
   $('epT').textContent=cur?Math.round(cur.temperature_2m)+'°':'';
   $('epD').textContent=n.getDate()+'. '+MON[n.getMonth()]+' '+n.getFullYear();
+  try{const day=w&&w.data&&w.data.daily;$('epWx').innerHTML=cur?'<span class="e">'+(!cur.is_day&&cur.weather_code<=1?'🌙':WXE(cur.weather_code))+'</span><b>'+Math.round(cur.temperature_2m)+'°</b><span><i>'+esc(w.place||'Wetter')+'</i><i>'+esc(cap1(wtxt(cur.weather_code)))+(day?' · '+Math.round(day.temperature_2m_min[0])+'–'+Math.round(day.temperature_2m_max[0])+'°':'')+'</i></span>':'<span class="e">🌤️</span><span><i>Wetter</i><i>noch keine Daten</i></span>';
+    $('epDt').innerHTML='<span>'+WD[n.getDay()]+'</span><b>'+n.getDate()+'. '+MON[n.getMonth()].slice(0,3)+'</b>'}catch(_){}
   try{$('epF').innerHTML=epTilesHTML()}catch(_){}
   try{epForecast()}catch(_){}
   $('epW').textContent=two(n.getHours())+':'+two(n.getMinutes());
@@ -1898,7 +1903,9 @@ $('ep').addEventListener('click',e=>{
   if(epLp){epLp=false;return}
   const fa=e.target.closest('#epF [data-app]');if(fa){try{L().launch(fa.dataset.app)}catch(_){}return}
   if(e.target.closest('#epF [data-all]')){try{L().openDrawer()}catch(_){}return}
-  if(e.target.closest('#epSet')){$('bMenu').click();return}
+  if(e.target.closest('#epSet')||e.target.closest('#epSet2')){$('bMenu').click();return}
+  if(e.target.closest('#epWx')){try{P.showTab('wetter')}catch(_){}return}
+  if(e.target.closest('#epDt')){try{P.showTab('kalender')}catch(_){}return}
   if(e.target.closest('#epFc')){try{P.showTab('wetter')}catch(_){}return}
   const q=e.target.closest('[data-q]');if(q){try{P.Native&&P.Native.haptic()}catch(_){}
     if(q.dataset.q==='grad'){const u='https://ratpoison-de.github.io/pags-app/graduierung/lehrer.html';try{if(P.Native&&P.Native.openUrl)P.Native.openUrl(u);else window.open(u,'_blank')}catch(_){window.open(u,'_blank')}}

@@ -7,9 +7,10 @@
   /* Design: E-Paper (Standard) oder Himmel */
   try{
     var th=null,ls0=window.localStorage;th=ls0.getItem('planer.theme');if(th==null)th=ls0.getItem('assistent:planer.theme');
-    if(th!=='sky'){
-      document.documentElement.classList.add('epaper');
-      var add=function(){if(document.getElementById('epcss'))return;var l=document.createElement('link');l.id='epcss';l.rel='stylesheet';l.href='epaper.css';document.head.appendChild(l)};
+    if(th==null)th='glass';
+    if(th==='epaper'||th==='glass'){
+      document.documentElement.classList.add(th);
+      var add=function(){if(document.getElementById('epcss'))return;var l=document.createElement('link');l.id='epcss';l.rel='stylesheet';l.href=th+'.css';document.head.appendChild(l)};
       if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add);else add();
     }
   }catch(e){}
