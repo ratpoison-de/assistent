@@ -1,0 +1,58 @@
+/* Assistent – Design „Blau“: blauer Hintergrund mit Glasformen, weiße schmale Schrift, App-Kacheln wie Kärtchen.
+   Wird zusätzlich zu glass.css geladen (html.glass.aqua). */
+@font-face{font-family:"Assistent Tall";src:url(fonts/tall-300.woff2) format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"Assistent Tall";src:url(fonts/tall-400.woff2) format("woff2");font-weight:400;font-display:swap}
+html.glass.aqua{--accent:#1E6FD9;--gl:linear-gradient(160deg,rgba(255,255,255,.80) 0%,rgba(255,255,255,.62) 55%,rgba(255,255,255,.72) 100%);--gl2:linear-gradient(160deg,rgba(255,255,255,.9),rgba(255,255,255,.7));
+  --glb:1px solid rgba(255,255,255,.9);--gls:inset 0 1.5px 1px #fff,inset 0 -2px 3px rgba(40,80,140,.10),0 14px 28px -12px rgba(20,50,100,.45),0 3px 6px -2px rgba(20,50,100,.18)}
+html.glass.aqua,html.glass.aqua body.epon .ep,html.glass.aqua body.home.mdopen #tasks{background:url(wall-blau.jpg) center/cover no-repeat fixed!important;background-color:#6F9ACB!important}
+html.glass.aqua body .ldr,html.glass.aqua body .fk{background:linear-gradient(180deg,rgba(150,190,232,.86),rgba(90,134,190,.9))!important;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+/* Startbildschirm: weiße Schrift direkt auf dem Hintergrund */
+html.glass.aqua .ep,html.glass.aqua .ep .epml h1,html.glass.aqua .epd,html.glass.aqua .tl2 small,html.glass.aqua .fch{color:#fff!important;text-shadow:0 1px 6px rgba(20,50,100,.35)}
+html.glass.aqua .epd{font-size:17px!important;font-weight:400;opacity:.95}
+html.glass.aqua .epw{font-family:"Assistent Tall","Oswald",sans-serif!important;font-weight:300!important;font-size:clamp(64px,min(28vw,13vh),136px)!important;line-height:.95!important;letter-spacing:-.01em!important;color:#fff;margin-top:0!important}
+html.glass.aqua .ep.f1 .epw{font-size:clamp(58px,min(24vw,11vh),112px)!important}
+html.glass.aqua .ep.f2 .epw{font-size:clamp(54px,min(20vw,9.5vh),96px)!important}
+html.glass.aqua .ep.f2 .tl2 .qi{width:min(52px,13vw)!important;height:min(52px,13vw)!important}
+html.glass.aqua .ep.f3 .eptiles{gap:8px 8px!important}
+html.glass.aqua #epC,html.glass.aqua #epS{display:none!important}
+html.glass.aqua .epml{text-align:center}
+html.glass.aqua .epml h1{font-size:clamp(18px,5.2vw,22px)!important;font-weight:400!important;opacity:.95}
+html.glass.aqua .epm{flex-direction:column;align-items:stretch}
+html.glass.aqua .eptiles{grid-template-columns:repeat(4,1fr)!important;gap:14px 10px!important;text-align:left}
+html.glass.aqua .tl2 .qi{border-radius:24%!important;width:min(62px,15vw)!important;height:min(62px,15vw)!important;background:linear-gradient(180deg,#fff,#EEF3FA)!important;border:0!important;box-shadow:0 6px 14px -6px rgba(20,50,100,.5)!important}
+html.glass.aqua .tl2 .qi svg{width:30px;height:30px}
+html.glass.aqua .tl2 small{font-size:11.5px!important}
+html.glass.aqua .epwx,html.glass.aqua .epdt,html.glass.aqua .epgset{background:rgba(255,255,255,.22)!important;border:1px solid rgba(255,255,255,.55)!important;color:#fff!important;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 8px 20px -10px rgba(20,50,100,.5)!important;-webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3)}
+html.glass.aqua .epwx *,html.glass.aqua .epdt *{color:#fff!important}
+html.glass.aqua .epgset svg *{stroke:#fff!important}
+html.glass.aqua .epfc .fcg,html.glass.aqua .epe,html.glass.aqua .epa{background:rgba(255,255,255,.22)!important;border:1px solid rgba(255,255,255,.55)!important;color:#fff!important;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 10px 24px -12px rgba(20,50,100,.55)!important;-webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3)}
+html.glass.aqua .epfc .fcg *,html.glass.aqua .epe *,html.glass.aqua .epa *{color:#fff!important}
+html.glass.aqua .fcd svg *{stroke:#fff!important}
+html.glass.aqua .fcb{border-color:rgba(255,255,255,.7)!important}html.glass.aqua .fcb i{background:linear-gradient(180deg,#FFD66B,#fff)!important}
+html.glass.aqua .epa small{opacity:.85}
+/* Dock unten und Funkel-Knopf */
+html.glass.aqua body .tabs{background:rgba(255,255,255,.28)!important;border:1px solid rgba(255,255,255,.6)!important;box-shadow:inset 0 1px 1px rgba(255,255,255,.7),0 12px 26px -10px rgba(20,50,100,.55)!important}
+html.glass.aqua body .tab,html.glass.aqua body .tab svg{color:#fff!important}
+html.glass.aqua body .tab.on{background:#fff!important;color:#1E3F6E!important}
+html.glass.aqua body .tab.on svg{color:#1E6FD9!important}
+html.glass.aqua body .tab .bdg{background:#FF3B30!important;color:#fff!important;border-color:#fff!important}
+html.glass.aqua .magic{background:rgba(255,255,255,.28)!important;border:1px solid rgba(255,255,255,.6)!important;color:#fff!important}
+html.glass.aqua .magic svg{color:#fff}
+/* Bereiche: helle Glaskarten auf Blau, Überschriften weiß */
+html.glass.aqua body:not(.epon) .h-big,html.glass.aqua body:not(.epon) .h-eyebrow,html.glass.aqua .ldr .lt,html.glass.aqua .ldr .lg,html.glass.aqua .ldr .la,html.glass.aqua .fk .tt,html.glass.aqua .fk .sb,html.glass.aqua .fk .ring b,html.glass.aqua .fk .ring small{color:#fff!important;text-shadow:0 1px 6px rgba(20,50,100,.3)}
+html.glass.aqua .ldr .la:active{background:rgba(255,255,255,.2)!important}
+html.glass.aqua body .fk .ring circle.p{stroke:#fff!important}html.glass.aqua body .fk .ring circle:not(.p){stroke:rgba(255,255,255,.3)!important}
+html.glass.aqua .mrow .mi{background:rgba(255,255,255,.86)!important}
+/* Lesbarkeit auf Blau */
+html.glass.aqua{--ink:#0F2440;--mute:#2C4668;--accent:#0F56C4}
+html.glass.aqua .slh,html.glass.aqua .sec-h h2,html.glass.aqua .lbl{color:#fff!important;text-shadow:0 1px 5px rgba(20,50,100,.35)}
+html.glass.aqua .sl .slh{border-color:rgba(255,255,255,.5)!important}
+html.glass.aqua .add,html.glass.aqua .adds .add{color:#fff!important}
+html.glass.aqua .sheet .lbl{color:#2C4668!important;text-shadow:none}
+/* Startbildschirm kompakter: kein Gruß (wie iOS), 5 Spalten */
+html.glass.aqua #epG{display:none!important}
+html.glass.aqua .eptiles{grid-template-columns:repeat(5,1fr)!important;gap:10px 6px!important}
+html.glass.aqua .tl2 .qi{width:min(54px,13.5vw)!important;height:min(54px,13.5vw)!important}
+html.glass.aqua .tl2 .qi svg{width:26px;height:26px}
+html.glass.aqua .tl2 small{font-size:10.5px!important}
+html.glass.aqua .ep.f2 .tl2 .qi{width:min(48px,12vw)!important;height:min(48px,12vw)!important}

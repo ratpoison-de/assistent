@@ -826,7 +826,7 @@ function landscapeOld(){
   try{P&&P.updateBar&&P.updateBar()}catch(e){}
 }
 function landscape(){try{P&&P.updateBar&&P.updateBar()}catch(e){}}
-window.skyTop=function(){let ep=false;try{ep=epVisible}catch(_){}if(document.documentElement.classList.contains('glass'))return{color:'#F3F4F6',dark:false,nav:'#DFE2E6'};if(ep||document.documentElement.classList.contains('epaper'))return{color:'#FFFFFF',dark:false,nav:'#FFFFFF'};return{color:document.body.classList.contains('mdopen')?'#9AD6FB':'#86CEFA',dark:false}};
+window.skyTop=function(){let ep=false;try{ep=epVisible}catch(_){}if(document.documentElement.classList.contains('aqua'))return{color:'#9AC0E7',dark:true,nav:'#5682B9'};if(document.documentElement.classList.contains('glass'))return{color:'#F3F4F6',dark:false,nav:'#DFE2E6'};if(ep||document.documentElement.classList.contains('epaper'))return{color:'#FFFFFF',dark:false,nav:'#FFFFFF'};return{color:document.body.classList.contains('mdopen')?'#9AD6FB':'#86CEFA',dark:false}};
 
 /* ================= Uhr ================= */
 (function buildClock(){
@@ -1242,7 +1242,7 @@ $('bMenu').onclick=()=>{
     '<button class="opt" id="oSync"><span><b>Synchronisation</b><small>'+syncLine()+'</small></span></button>'+
     '<div class="lbl">Begleiter</div><div class="cprit"><button class="d-btn" data-cpo="morning">Morgen planen</button><button class="d-btn" data-cpo="evening">Tag abschließen</button><button class="d-btn" data-cpo="week">Wochenrückblick</button></div>'+
     (P&&P.Native&&P.Native.companion?'<button class="opt" id="oCp"><span><b>Morgen- und Abendhinweis</b><small>Morgens dein Tag auf einen Blick, abends die Einladung zum Rückblick</small></span><span class="sw'+(cp().times.on?' on':'')+'"></span></button><div class="nudt'+(cp().times.on?'':' hidden')+'" id="oCpT"><span>Morgens</span><input type="time" id="oCpM" value="'+cp().times.m+'"><span>Abends</span><input type="time" id="oCpE" value="'+cp().times.e+'"></div>':'')+
-    '<div class="lbl">Design</div><div class="chips thm" id="oTheme">'+[['glass','Glas'],['epaper','E-Paper'],['sky','Himmel']].map(([k,l])=>'<button class="d-chip'+((document.documentElement.classList.contains('glass')?'glass':document.documentElement.classList.contains('epaper')?'epaper':'sky')===k?' on':'')+'" data-th="'+k+'">'+l+'</button>').join('')+'</div>'+
+    '<div class="lbl">Design</div><div class="chips thm" id="oTheme">'+[['aqua','Blau'],['glass','Glas'],['epaper','E-Paper'],['sky','Himmel']].map(([k,l])=>'<button class="d-chip'+((document.documentElement.classList.contains('aqua')?'aqua':document.documentElement.classList.contains('glass')?'glass':document.documentElement.classList.contains('epaper')?'epaper':'sky')===k?' on':'')+'" data-th="'+k+'">'+l+'</button>').join('')+'</div>'+
     (P&&P.Native&&P.Native.setLockWallpaper?'<button class="opt" id="oLockWp"><span><b>Sperrbildschirm im E-Paper-Stil</b><small>Hintergrundbild mit Datum, Wetter-Zeichnung, nächstem Termin und nächster Aufgabe – aktualisiert sich selbst</small></span><span class="sw'+(LOCK_ON()?' on':'')+'"></span></button>':'')+
     (homeMode?'<button class="opt" id="oEp"><span><b>Ruhiger Startbildschirm</b><small>Schwarz-weiß wie E-Paper: Uhrzeit, Wetter, nächster Termin und nächste Aufgabe</small></span><span class="sw'+(EP_ON()?' on':'')+'"></span></button>':'')+
     (L()?'<button class="opt" id="oHome"><span><b>Als Startbildschirm verwenden</b><small>'+(homeMode?'Aktiv – die Home-Taste führt zu Mein Tag und deinen Apps':'Mein Tag und deine Apps direkt auf dem Startbildschirm – tippen zum Festlegen')+'</small></span>'+(homeMode?'<span class="sw on"></span>':'')+'</button>':'')+
@@ -1621,22 +1621,29 @@ async function lockRender(){
   const s=Math.min(1440/W,1);W=Math.round(W*s);H=Math.round(H*s);
   try{await document.fonts.load('700 40px "Assistent Mono"');await document.fonts.load('400 40px "Assistent Mono"')}catch(_){}
   const d=lockData(),c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
-  g.fillStyle='#fff';g.fillRect(0,0,W,H);
-  const M=Math.round(W*.08),F='"Assistent Mono",ui-monospace,monospace',u=W/100;
+  const AQ=document.documentElement.classList.contains('aqua');
+  if(AQ){try{await document.fonts.load('400 40px "Google Sans"')}catch(_){}
+    const img=await new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src='wall-blau.jpg'});
+    if(img){const sc=Math.max(W/img.width,H/img.height);g.drawImage(img,(W-img.width*sc)/2,(H-img.height*sc)/2,img.width*sc,img.height*sc)}else{g.fillStyle='#7FA7D6';g.fillRect(0,0,W,H)}}
+  else{g.fillStyle='#fff';g.fillRect(0,0,W,H)}
+  const M=Math.round(W*.08),F=AQ?'"Google Sans","Roboto",system-ui,sans-serif':'"Assistent Mono",ui-monospace,monospace',u=W/100;
   /* dezente Punkte oben, unter der System-Uhr */
-  const sky=document.createElement('canvas');sky.__w=W;sky.__h=Math.round(H*.3);epSky(sky,d.code,d.night);g.drawImage(sky,0,0);
+  if(!AQ){const sky=document.createElement('canvas');sky.__w=W;sky.__h=Math.round(H*.3);epSky(sky,d.code,d.night);g.drawImage(sky,0,0)}
+  if(AQ){g.shadowColor='rgba(20,50,100,.35)';g.shadowBlur=u*1.2}
   /* Datum und Wetter */
-  let y=Math.round(H*.33);g.fillStyle='#111';g.textAlign='center';g.textBaseline='alphabetic';
+  let y=Math.round(H*.33);g.fillStyle=AQ?'#fff':'#111';g.textAlign='center';g.textBaseline='alphabetic';
   g.font='700 '+Math.round(u*5.6)+'px '+F;g.fillText(fitText(g,d.date,W-2*M),W/2,y);
   if(d.temp){y+=Math.round(u*6.4);g.font='400 '+Math.round(u*4.2)+'px '+F;g.fillText(fitText(g,[d.temp+' · '+d.wtxt,d.range].filter(Boolean).join(' · '),W-2*M),W/2,y)}
   /* gepunktete Wetter-Zeichnung */
   const top=y+Math.round(u*4),bottom=Math.round(H*.63);
-  const art=document.createElement('canvas');art.__w=W-2*M;art.__h=Math.max(10,bottom-top);epScene(art,d.code,d.night);g.drawImage(art,M,top);
+  if(!AQ){const art=document.createElement('canvas');art.__w=W-2*M;art.__h=Math.max(10,bottom-top);epScene(art,d.code,d.night);g.drawImage(art,M,top)}
+  else{g.shadowBlur=0;g.font=Math.round(u*22)+'px sans-serif';g.textAlign='center';g.fillText(d.night&&d.code<=1?'🌙':WXE(d.code),W/2,top+(bottom-top)*.62)}
   /* Termin (schwarz) und Aufgabe (umrandet) */
   let cy=Math.round(H*.655);const cw=W-2*M,pad=Math.round(u*4.2),r=Math.round(u*2.4);
   const card=(o,dark,label)=>{const h=Math.round(u*(label?19.5:15));rrect(g,M,cy,cw,h,r);
-    if(dark){g.fillStyle='#111';g.fill()}else{g.lineWidth=Math.max(3,u*.5);g.strokeStyle='#111';g.stroke()}
-    g.textAlign='left';g.fillStyle=dark?'#fff':'#111';let ty=cy+pad+Math.round(u*3.6);
+    if(AQ){g.fillStyle='rgba(255,255,255,'+(dark?.26:.18)+')';g.fill();g.lineWidth=Math.max(2,u*.25);g.strokeStyle='rgba(255,255,255,.7)';g.stroke()}
+    else if(dark){g.fillStyle='#111';g.fill()}else{g.lineWidth=Math.max(3,u*.5);g.strokeStyle='#111';g.stroke()}
+    g.textAlign='left';g.fillStyle=AQ||dark?'#fff':'#111';let ty=cy+pad+Math.round(u*3.6);
     if(label){g.font='400 '+Math.round(u*2.7)+'px '+F;g.fillText(label,M+pad,cy+pad+Math.round(u*2));ty+=Math.round(u*3.2)}
     g.font='700 '+Math.round(u*4.6)+'px '+F;g.fillText(fitText(g,o.t,cw-2*pad),M+pad,ty);
     g.font='400 '+Math.round(u*3.3)+'px '+F;g.globalAlpha=dark?.9:.75;g.fillText(fitText(g,o.s,cw-2*pad),M+pad,ty+Math.round(u*5.2));g.globalAlpha=1;

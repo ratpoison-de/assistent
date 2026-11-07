@@ -287,6 +287,7 @@ function syncBar(){
   let c='#FFFFFF',dark=false;
   let nav=document.documentElement.classList.contains('epaper')?'#FFFFFF':'#F1F2F5';if(document.documentElement.classList.contains('epaper'))c='#FFFFFF';
   if(document.documentElement.classList.contains('glass')){c='#F3F4F6';nav='#DFE2E6';dark=false}
+  if(document.documentElement.classList.contains('aqua')){c='#9AC0E7';nav='#5682B9';dark=true}
   if(active==='start'){const s=call('start','skyTop');if(s){c=s.color;dark=s.dark;if(s.nav)nav=s.nav}}
   try{N.setBars(c,!dark)}catch(e){}
   try{N.setNav&&N.setNav(nav)}catch(e){}
