@@ -617,6 +617,12 @@ body.epon{overflow:hidden}
 .epm{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-top:4vh}
 .epml{flex:1;min-width:0}
 .epml h1{margin:0;font-size:clamp(24px,7.4vw,34px);line-height:1.12;font-weight:700;letter-spacing:-.02em}
+.eptiles{display:grid;grid-template-columns:repeat(6,1fr);gap:10px 4px;margin-top:14px}
+.tl2{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;width:100%}
+.tl2 .qi{display:grid;place-items:center;width:min(50px,11.6vw);height:min(50px,11.6vw);border:1.5px solid #111;border-radius:14px}
+.tl2 .qi .mono{font-size:15px;font-weight:700;letter-spacing:.02em}
+.tl2:active .qi{background:#111}.tl2:active svg *{stroke:#fff}.tl2:active .mono{color:#fff}
+.tl2 small{font-size:10px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
 .epq{display:flex;gap:14px;margin-top:12px}
 .epq button{display:flex;flex-direction:column;align-items:center;gap:5px;width:auto}
 .epq .qi{display:grid;place-items:center;width:52px;height:52px;border:1.5px solid #111;border-radius:14px}
@@ -634,7 +640,7 @@ body.epon .scrim{z-index:79}
 .eptmp{font-size:clamp(30px,9vw,40px);font-weight:700;line-height:1;white-space:nowrap}
 .epd{margin-top:10px;font-size:16px}
 .epw{margin-top:4px;font-size:clamp(40px,13vw,56px)!important;font-weight:700;letter-spacing:-.03em;line-height:1.05;font-variant-numeric:tabular-nums}
-.epc{flex:1;min-height:80px;width:100%;margin:14px 0 10px;display:block}
+.epc{flex:1;min-height:0;width:100%;margin:14px 0 10px;display:block}
 .epe{display:flex;flex-direction:column;gap:4px;background:#111!important;color:#fff!important;border-radius:10px;padding:14px 18px!important;width:100%}
 .epe b{font-size:19px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .epe span{font-size:13.5px;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -672,14 +678,13 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 2.9.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 2.9.2<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
   <canvas class="eps" id="epS" aria-hidden="true"></canvas>
   <div class="ept"><span class="epl">Assistent<svg width="26" height="20" viewBox="0 0 26 20" aria-hidden="true"><path d="M5 15a8 8 0 0 1 16 0" fill="none" stroke="#111" stroke-width="2.2"/><path d="M1 15h24M4 18.5h18" stroke="#111" stroke-width="2.2" stroke-linecap="round"/><path d="M13 1.5v3M4.2 5.2l2 2M21.8 5.2l-2 2" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg></span><span class="epr"><span class="eptmp" id="epT"></span><button class="epset" id="epSet" aria-label="Einstellungen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></span></div>
   <div class="epm"><div class="epml"><h1 id="epG">Hallo.</h1><div class="epd" id="epD"></div><button class="epw" id="epW" aria-label="Wecker öffnen"></button>
-    <div class="epq"><button data-q="grad" aria-label="Graduierung öffnen"><span class="qi"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h4v-4h4v-4h4V8h4V4"/><path d="M15.5 4H19v3.5"/><path d="M3 20h18"/></svg></span><small>Graduierung</small></button>
-    <button data-q="sek" aria-label="Sekretär öffnen"><span class="qi"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3v18M12 8h4M12 12h4M12 16h2"/></svg></span><small>Sekretär</small></button></div></div><div class="epfav" id="epF"></div></div>
+    <div class="eptiles" id="epF"></div></div></div>
   <canvas class="epc" id="epC" aria-hidden="true"></canvas>
   <button class="epe" id="epE"></button>
   <button class="epa" id="epA"></button>
@@ -1494,6 +1499,56 @@ function epSky(canvas,code,night){
     for(let yy=0;yy<cell&&y+yy<H;yy++)for(let xx=0;xx<cell&&x+xx<W;xx++){const j=((y+yy)*W+x+xx)*4;d[j]=d[j+1]=d[j+2]=165;d[j+3]=130}}
   canvas.getContext('2d').putImageData(out,0,0);
 }
+/* Strich-Symbole für App-Kacheln (E-Paper) – nach Name/Paket erkannt, sonst Monogramm */
+const EPI={
+ phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
+ chat:'<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
+ lockchat:'<path d="M4 5h16v11H9l-5 4z"/><rect x="9.5" y="9.5" width="5" height="4" rx="1"/><path d="M10.5 9.5V8a1.5 1.5 0 0 1 3 0v1.5"/>',
+ camera:'<path d="M3 8h4l2-3h6l2 3h4v11H3z"/><circle cx="12" cy="13" r="3.5"/>',
+ spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/>',
+ podcast:'<circle cx="12" cy="10" r="2.5"/><path d="M8 14a5.5 5.5 0 1 1 8 0M5.5 16.5a9 9 0 1 1 13 0M12 13v8"/>',
+ school:'<path d="M3 10l9-5 9 5-9 5z"/><path d="M7 12v5c3 2 7 2 10 0v-5M21 10v6"/>',
+ table:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 4v16M15 4v16"/>',
+ mail:'<rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="m4 7.5 8 6 8-6"/>',
+ globe:'<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/>',
+ music:'<path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',
+ pin:'<path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/>',
+ cal:'<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8.5 3v4M15.5 3v4"/>',
+ gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/>',
+ play:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9v6l5-3z"/>',
+ photo:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="9.5" r="1.8"/><path d="m3 17 5-5 4 4 3-3 6 6"/>',
+ cart:'<path d="M3 4h2.5l2.2 11h10.6L20.5 7H6.5"/><circle cx="9.5" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/>',
+ train:'<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M9 21l1.5-4M15 21l-1.5-4"/><circle cx="9" cy="14" r=".6"/><circle cx="15" cy="14" r=".6"/>',
+ note:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3v18M12 8h4M12 12h4M12 16h2"/>',
+ stairs:'<path d="M3 20h4v-4h4v-4h4V8h4V4"/><path d="M15.5 4H19v3.5"/><path d="M3 20h18"/>',
+ news:'<rect x="3" y="5" width="15" height="14" rx="1.5"/><path d="M18 9h3v8a2 2 0 0 1-2 2H5M7 9h7M7 12h7M7 15h4"/>',
+ bank:'<path d="M3 9l9-5 9 5M5 9v8M9.5 9v8M14.5 9v8M19 9v8M3 20h18"/>',
+ clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ calc:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h.5M12 12h.5M16 12h.5M8 16h.5M12 16h.5M16 16h.5"/>',
+ contact:'<circle cx="12" cy="9" r="3.5"/><path d="M5 20c1-4 4-5.5 7-5.5s6 1.5 7 5.5"/>',
+ files:'<path d="M3 7h6l2 2h10v10H3z"/>',
+ car:'<path d="M5 16V11l2-4.5h10L19 11v5M3.5 16h17M7 19v-3M17 19v-3"/><circle cx="8" cy="13" r=".7"/><circle cx="16" cy="13" r=".7"/>',
+ apps:'<rect x="3.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="2.5"/>'
+};
+const EPRULES=[[/telefon|dialer|phone/i,'phone'],[/threema|signal/i,'lockchat'],[/whatsapp|messag|sms|telegram|chat/i,'chat'],[/kamera|camera/i,'camera'],
+ [/claude|gemini|assistant|chatgpt|openai/i,'spark'],[/pocket ?casts|podcast|audiothek|radio/i,'podcast'],[/iserv|schul|moodle|classroom/i,'school'],[/untis|stundenplan/i,'table'],
+ [/gmail|mail|outlook|thunderbird/i,'mail'],[/chrome|browser|firefox|edge|opera/i,'globe'],[/spotify|music|musik|deezer|tidal/i,'music'],[/maps|karte|navi|komoot|osmand/i,'pin'],
+ [/kalender|calendar/i,'cal'],[/einstellung|settings/i,'gear'],[/youtube|netflix|video|mediathek|zdf|ard/i,'play'],[/foto|photo|galerie|gallery|bilder/i,'photo'],
+ [/amazon|shop|ebay|einkauf|kaufland|lidl|rewe/i,'cart'],[/db |db navigator|bahn|vrn|ticket/i,'train'],[/sekret|notiz|note|keep|docs/i,'note'],[/graduier/i,'stairs'],
+ [/zeitung|news|tagesschau|heute|spiegel|feedly/i,'news'],[/bank|sparkasse|volksbank|paypal|finanz/i,'bank'],[/uhr|clock|wecker/i,'clock'],[/rechner|calculator/i,'calc'],
+ [/kontakt|contacts/i,'contact'],[/dateien|files|drive|dropbox/i,'files'],[/vw|volkswagen|we connect|auto|charge|laden/i,'car']];
+function epIcon(name,pkg){const s=String(name||'')+' '+String(pkg||'');for(const [re,k] of EPRULES)if(re.test(s))return '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+EPI[k]+'</svg>';
+  const m=String(name||'?').replace(/[^A-Za-zÄÖÜäöü0-9 ]/g,'').trim().split(/\s+/);const t=(m.length>1?m[0][0]+m[1][0]:String(m[0]||'?').slice(0,2)).toUpperCase();
+  return '<b class="mono">'+esc(t)+'</b>'}
+function epTilesHTML(){
+  const f=L()?L().favs():[];
+  const T=(attr,ic,label)=>'<button class="tl2" '+attr+'><span class="qi">'+ic+'</span><small>'+esc(label)+'</small></button>';
+  let h=T('data-q="grad"',epIcon('Graduierung'),'Graduierung')+T('data-q="sek"',epIcon('Sekretär'),'Sekretär');
+  for(const x of f){let p='';try{p=x.k.split('/')[0]}catch(_){}h+=T('data-app="'+esc(x.k)+'"',epIcon(x.name,p),x.name)}
+  h+=T('data-all','<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9">'+EPI.apps+'</svg>','Alle Apps');
+  return h;
+}
+
 function epRender(){
   const el=$('ep');if(!el)return;
   const n=new Date(),p=part(n.getHours()),w=weather();
@@ -1501,7 +1556,7 @@ function epRender(){
   $('epG').innerHTML=esc(GREET[p])+',<br>'+esc(NAME)+'.';
   $('epT').textContent=cur?Math.round(cur.temperature_2m)+'°':'';
   $('epD').textContent=n.getDate()+'. '+MON[n.getMonth()]+' '+n.getFullYear();
-  try{$('epF').innerHTML=favsHTML()}catch(_){}
+  try{$('epF').innerHTML=epTilesHTML()}catch(_){}
   $('epW').textContent=two(n.getHours())+':'+two(n.getMinutes());
   const ev=epNextEvent();
   $('epE').innerHTML=ev?'<b>'+esc(ev.e.title)+'</b><span>'+ev.day+' · '+(ev.e.allDay||!ev.e.tStart?'ganztägig':ev.e.tStart+(ev.e.tEnd?'–'+ev.e.tEnd:''))+(ev.e.loc?' · '+esc(ev.e.loc):'')+'</span>':'<b>Keine Termine</b><span>Heute und morgen ist der Kalender frei</span>';
@@ -1510,7 +1565,7 @@ function epRender(){
   $('epA').innerHTML=f?'<small>Fokus läuft</small><b>'+esc(f.title)+'</b>':nx?'<small>Nächste Aufgabe</small><b>'+esc(nx.text)+'</b><span>'+(nx.kind==='s'?'S':nx.size)+' · '+estLabel(nx.kind==='s'?'S':nx.size)+' · antippen zum Starten</span>':'<small>Nächste Aufgabe</small><b>Nichts offen</b><span>Gönn dir eine Pause</span>';
   $('epA').classList.toggle('hidden',!f&&!nx&&!D.woche);
   const code=cur?cur.weather_code:2,night=cur?!cur.is_day:false;
-  requestAnimationFrame(()=>{epScene($('epC'),code,night);epSky($('epS'),code,night)});
+  requestAnimationFrame(()=>{const c=$('epC');c.style.display=c.clientHeight<60?'none':'';if(c.style.display!=='none')epScene(c,code,night);epSky($('epS'),code,night)});
 }
 function epShow(){
   if(!isHM()||!EP_ON()){epHide();return}
