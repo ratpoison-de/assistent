@@ -642,7 +642,7 @@ window.briefing=function(){
   load();normalize();const t=today,tm=addDays(t,1);
   const td=state.tasks.filter(x=>x.date===t);
   const open=td.filter(x=>!x.done).sort((a,b)=>a.order-b.order);
-  const ks=x=>({since:x.since||x.date||'',size:x.size||'',steps:(x.steps||[]).map(s=>({id:s.id,text:s.text,done:!!s.done}))});
+  const ks=x=>({since:x.since||x.date||'',ctx:x.ctx||'',size:x.size||'',steps:(x.steps||[]).map(s=>({id:s.id,text:s.text,done:!!s.done}))});
   return {open:open.map(x=>Object.assign({id:x.id,text:x.text,carried:!!x.carried,mail:!!(x.mail&&x.mail.msgid),rep:!!(x.repeat&&x.repeat!=='none'),repL:REP[x.repeat]||'',prio:!!x.prio},ks(x))),
     done:td.filter(x=>x.done).length,
     doneList:td.filter(x=>x.done).sort((a,b)=>(a.doneAt||0)-(b.doneAt||0)).map(x=>Object.assign({id:x.id,text:x.text,mail:!!(x.mail&&x.mail.msgid),rep:!!(x.repeat&&x.repeat!=='none'),repL:REP[x.repeat]||'',prio:!!x.prio},ks(x))),
@@ -660,11 +660,17 @@ window.toggleStep=function(id,sid){const t=find(id);if(!t||!t.steps)return null;
   if(st.done){try{const k='planer.doneDays';const d=JSON.parse(localStorage.getItem(k)||'[]');const td=todayKey();if(!d.includes(td)){d.push(td);localStorage.setItem(k,JSON.stringify(d.slice(-120)))}}catch(e){}}
   const all=t.steps.every(x=>x.done);if(all&&!t.done)toggle(id);else if(!all&&t.done)toggle(id);save();render();return {step:st.done,task:t.done}};
 window.moveTask=function(id,date){const t=find(id);if(!t)return false;moveTo(id,date||null);render();return true};
+/* GTD: Kontext je Aufgabe, Liste der nächsten Schritte und „Irgendwann“ */
+window.setCtx=function(id,ctx){const t=find(id);if(!t)return false;t.ctx=ctx||'';save();return true};
+window.gtdList=function(){load();normalize();const t=today,lim=addDays(t,6);
+  const m=x=>({id:x.id,text:x.text,date:x.date||'',ctx:x.ctx||'',size:x.size||'',prio:!!x.prio,since:x.since||x.date||'',steps:(x.steps||[]).filter(s=>!s.done).length});
+  return{next:state.tasks.filter(x=>!x.done&&x.date&&x.date<=lim).sort((a,b)=>a.date.localeCompare(b.date)||a.order-b.order).map(m),
+    someday:state.tasks.filter(x=>!x.done&&!x.date).map(m)}};
 window.deleteTask=function(id){const t=find(id);if(!t)return false;state.tasks=state.tasks.filter(x=>x!==t);save();render();return true};
 window.completeTask=function(id){const t=find(id);if(!t)return false;if(!t.done)toggle(id);save();render();return true};
 window.completeStep=function(id,sid){const t=find(id);if(!t||!t.steps)return false;const st=t.steps.find(x=>x.id===sid);if(!st)return false;if(!st.done)window.toggleStep(id,sid);return true};
 window.addTasks=function(list){let n=0;const bucket=bucketOf({date:today});for(const o of list||[]){if(!o||!o.text)continue;
-  state.tasks.push({id:uid(),text:String(o.text).slice(0,300),date:o.date||today,order:maxOrder(bucket)+1,done:false,repeat:'none',size:o.size||'',steps:(o.steps||[]).map(x=>({id:uid(),text:x,done:false}))});n++}
+  state.tasks.push({id:uid(),text:String(o.text).slice(0,300),date:o.date===null?null:(o.date||today),ctx:o.ctx||'',order:maxOrder(bucket)+1,done:false,repeat:'none',size:o.size||'',steps:(o.steps||[]).map(x=>({id:uid(),text:x,done:false}))});n++}
   state.tasks=state.tasks.filter(t=>!t.demo);save();render();return n};
 window.togglePrio=function(id){const t=find(id);if(!t)return null;t.prio=!t.prio;save();render();return t.prio};
 window.onShow=function(){const r=localStorage.getItem('wochenstapel');if(r&&r!==JSON.stringify(state)){load();normalize()}render()};

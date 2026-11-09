@@ -644,6 +644,18 @@ body.epon{overflow:hidden}
 .epcl span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .epcl.dim{opacity:.45}
 .epcl.hit{opacity:1;font-weight:700}
+.grow{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;background:#fff;border:1.5px solid #111;border-radius:10px;padding:11px 12px;margin-bottom:6px;font:inherit;color:#111}
+.grow span{min-width:0}.grow b{display:block;font-size:15px}.grow small{display:block;font-size:12.5px;color:#555;line-height:1.3;margin-top:1px}
+.grow i{flex:none;font-style:normal;font-weight:700;font-size:15px;min-width:30px;height:30px;border-radius:8px;border:1.5px solid #111;display:grid;place-items:center;padding:0 6px}
+.gbt{display:grid;gap:6px}.gbt .d-btn{display:block;text-align:left;height:auto;padding:10px 12px;line-height:1.3}.gbt .d-btn b{display:block;font-size:15px}.gbt .d-btn small{display:block;font-size:12.5px;font-weight:400;opacity:.75}
+.gbt3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.gbt3 .d-btn{padding:0 4px;font-size:13.5px;height:44px}
+.gtk{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #DDD}
+.gtk span{flex:1;min-width:0}.gtk b{display:block;font-size:15px;font-weight:700;line-height:1.3;overflow-wrap:anywhere}.gtk small{display:block;font-size:12.5px;color:#555}.gtk em{display:block;font-style:normal;font-weight:700;font-size:12.5px}
+.gck{flex:none;width:24px;height:24px;border:1.6px solid #111;border-radius:6px;background:#fff}
+.gcx{flex:none;border:1.2px solid #111;border-radius:8px;background:#fff;color:#111;font:inherit;font-size:12.5px;padding:5px 8px;white-space:nowrap}
+.gwb{padding:4px 12px}.gwr{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid #DDD;padding:9px 0;font:inherit;font-size:14px;color:#111}
+.gwb .gwr:last-of-type{border-bottom:0}.gwr i{flex:none;width:20px;height:20px;border:1.5px solid #111;border-radius:5px;font-style:normal;font-size:12px;font-weight:700;display:grid;place-items:center}
+.gwr.ok i{background:#111;color:#fff}.gwr span{flex:1;min-width:0}.gwr b{flex:none;font-size:14px}
 .cpbox{border:1.5px solid #111;border-radius:10px;padding:10px 12px;font-size:14px;line-height:1.5;margin-bottom:6px}
 .cpbox small{opacity:.75}.cpbox em,.cpo em,.cpw em{display:block;font-style:normal;font-weight:700;font-size:12.5px;margin-top:3px}
 .cpen{margin-top:4px}.cpen button.on{background:#111!important;color:#fff!important}.cpen button.on span{color:#ddd}
@@ -718,7 +730,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 3.6<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 3.7<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
   <div class="ept"><span class="epl">Assistent</span><span class="epr"><button class="epset" id="epSet" aria-label="Einstellungen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></span></div>
@@ -1164,6 +1176,7 @@ async function load(){
   if(loading)return;loading=true;render();
   await Promise.all([['woche','woche',4000],['kal','kalender',9000],['pin','pinnwand',5000],['proj','projekte',4000],['mail','mail',30000]].map(async([k,tab,to])=>{const r=await from(tab,to);if(k==='mail'){if(r&&r.loggedIn)try{localStorage.setItem('planer.mailbrief',JSON.stringify(r))}catch(_){}D.mail=r||D.mail||null}else D[k]=r;render()}));
   loading=false;
+  try{ticklerDue()}catch(_){}
 }
 
 /* ================= Bedienung ================= */
@@ -1314,7 +1327,7 @@ function estLabel(s){let l=null;try{l=P.Fokus.learned(s)}catch(_){}if(l)return'm
 function kdItems(){
   const t=D.woche;if(!t)return[];const out=[];
   for(const x of [...t.open.map(x=>Object.assign({},x,{done:false})),...(t.doneList||[]).map(x=>Object.assign({},x,{done:true}))])
-    out.push({kind:'w',id:x.id,text:x.text,size:x.size||guessSize(x.text),guess:!x.size,steps:x.steps||[],done:x.done,prio:x.prio,x});
+    out.push({kind:'w',id:x.id,text:x.text,ctx:x.ctx||'',size:x.size||guessSize(x.text),guess:!x.size,steps:x.steps||[],done:x.done,prio:x.prio,x});
   for(const x of (D.proj&&D.proj.today)||[])out.push({kind:'p',id:'p:'+x.pid+'|'+x.tid,text:x.text,size:guessSize(x.text),done:!!x.done,x});
   const g=greenToday();out.push({kind:'g',id:'green',text:GREEN[g.i],size:'S',done:g.done});
   return out;
@@ -1322,16 +1335,18 @@ function kdItems(){
 function kdUnits(list){
   const u=[];
   for(const it of list){if(it.done)continue;
-    if(it.kind==='w'&&it.steps.length){for(const s of it.steps)if(!s.done)u.push({kind:'s',id:it.id,sid:s.id,text:s.text,parent:it.text,size:'S',prio:it.prio})}
+    if(it.kind==='w'&&it.steps.length){for(const s of it.steps)if(!s.done)u.push({kind:'s',id:it.id,sid:s.id,text:s.text,parent:it.text,size:'S',prio:it.prio,ctx:it.ctx})}
     else u.push(it)}
   return u.sort((a,b)=>ORD[a.size]-ORD[b.size]||(b.prio?1:0)-(a.prio?1:0));
 }
 function dayPlan(){
-  const e=energy(),u=kdUnits(kdItems());
-  if(!e)return{e:null,now:u,later:[]};
+  const e=energy(),cx=gtdCtx();let u=kdUnits(kdItems()),off=[];
+  /* GTD-Kontext: was hier nicht geht, rückt nach hinten */
+  if(cx){off=u.filter(x=>x.ctx&&x.ctx!==cx);u=u.filter(x=>!x.ctx||x.ctx===cx)}
+  if(!e)return{e:null,now:u,later:off};
   const budget=ENERGY[e].m;let used=0;const now=[],later=[];
   for(const x of u){const m=estMin(x.size);if(used+m<=budget||(!now.length&&x.size==='S')){now.push(x);used+=m}else later.push(x)}
-  return{e,now,later,used};
+  return{e,now,later:later.concat(off),used};
 }
 function fState(){try{return P.Fokus&&P.Fokus.state()}catch(_){return null}}
 const mmss=ms=>{ms=Math.max(0,ms);const s=Math.round(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
@@ -1415,12 +1430,182 @@ function openSplit(id){
   $('spAll').onclick=()=>{for(const t of sug)if(!steps.some(s=>s.text===t))steps.push({text:t,done:false});draw()};
   $('spGo').onclick=()=>{try{P.call('woche','setSteps',id,steps)}catch(_){}closeSheet();toast(steps.length?steps.length+' kleine Schritte – einer nach dem anderen':'Schritte entfernt');D.woche=undefined;load()};
 }
+/* ================= GTD: Eingang klären, Kontexte, nächste Schritte, Irgendwann, Wiedervorlage, Warte auf ================= */
+const GK='planer.gtd';
+const CTX=[['schule','Schule'],['zuhause','Zuhause'],['telefon','Telefon'],['computer','Computer'],['besorgung','Besorgungen']];
+const ctxName=k=>{const c=CTX.find(x=>x[0]===k);return c?c[1]:''};
+function gtd(){let g={};try{g=JSON.parse(localStorage.getItem(GK)||'{}')||{}}catch(_){}return Object.assign({tickler:[],ref:[],ctx:''},g)}
+function gtdSet(g){try{localStorage.setItem(GK,JSON.stringify(g))}catch(_){}}
+function gtdCtx(){return gtd().ctx||''}
+const gid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+function gInbox(){let l=null;try{l=P.call('projekte','inboxList')}catch(_){}return Array.isArray(l)?l:[]}
+function gLists(){let l=null;try{l=P.call('woche','gtdList')}catch(_){}return l&&l.next?l:{next:[],someday:[]}}
+function gWaiting(){try{return (JSON.parse(localStorage.getItem('planer.waiting')||'[]')||[]).filter(x=>!x.done)}catch(_){return[]}}
+function gHap(){try{P.Native&&P.Native.haptic()}catch(_){}}
+function gReload(){D.woche=undefined;D.proj=undefined;load()}
+const dShort=s=>{if(!s)return'';const t=ymd(new Date());if(s===t)return'Heute';const d=new Date(s+'T12:00:00');return WD[d.getDay()]+' '+d.getDate()+'.'+(d.getMonth()+1)+'.'};
+const plusDays=n=>{const d=new Date();d.setDate(d.getDate()+n);return ymd(d)};
+/* Wiedervorlage: Fälliges wandert zurück in den Eingang */
+function ticklerDue(){
+  const g=gtd(),t=ymd(new Date()),due=g.tickler.filter(x=>x.date<=t);if(!due.length)return;
+  let ok=false;try{ok=typeof P.call('projekte','inboxList')!=='undefined'}catch(_){}if(!ok)return; /* Projekte noch nicht geladen: später erneut */
+  try{for(const x of due)P.call('projekte','capture',x.text)}catch(_){return}
+  g.tickler=g.tickler.filter(x=>x.date>t);gtdSet(g);
+  toast(due.length===1?'Wiedervorlage: „'+due[0].text+'“ liegt wieder im Eingang':due.length+' Wiedervorlagen liegen wieder im Eingang');
+}
+const ctxChips=(sel,any)=>'<div class="chips gctx">'+(any?'<button class="d-chip'+(!sel?' on':'')+'" data-cx="">'+any+'</button>':'')+CTX.map(c=>'<button class="d-chip'+(sel===c[0]?' on':'')+'" data-cx="'+c[0]+'">'+c[1]+'</button>').join('')+'</div>';
+
+/* ---------- Übersicht ---------- */
+window.openGtd=()=>openGtd();
+function openGtd(){
+  const inb=gInbox(),L=gLists(),g=gtd(),wt=gWaiting(),stuck=(D.proj&&D.proj.stuck)||[],ask=wt.filter(x=>daysSince(x.asked||x.since)>=7).length;
+  const row=(k,t,n,s)=>'<button class="grow" data-g="'+k+'"><span><b>'+t+'</b><small>'+s+'</small></span><i>'+(n===''?'›':n)+'</i></button>';
+  openSheet('<div class="h-mid" style="margin:0 4px 4px">Getting Things Done</div><p class="kdp">Sammeln, klären, ordnen, durchsehen, erledigen.</p>'+
+    '<div class="lbl">Wo bist du gerade?</div>'+ctxChips(g.ctx,'Egal')+
+    row('clarify','Eingang durcharbeiten',inb.length,inb.length?'Eins nach dem anderen entscheiden':'Der Eingang ist leer')+
+    row('next','Nächste Schritte',L.next.length,'Nach Ort, Zeit und Energie gefiltert')+
+    row('wait','Warte auf',wt.length,ask?ask+(ask===1?' Sache':' Dinge')+' zum Nachfassen':'Delegiertes im Blick behalten')+
+    row('tick','Wiedervorlage',g.tickler.length,'Taucht am gewählten Tag wieder auf')+
+    row('some','Irgendwann / Vielleicht',L.someday.length,'Ideen ohne Verpflichtung')+
+    row('stuck','Projekte ohne nächsten Schritt',stuck.length,stuck.length?stuck.slice(0,3).map(p=>esc(p.name)).join(', '):'Jedes Projekt hat einen nächsten Schritt')+
+    row('ref','Ablage',g.ref.length,'Nur zum Merken, nichts zu tun'));
+  sheet.classList.add('tall');
+  sheet.querySelector('.gctx').onclick=e=>{const b=e.target.closest('[data-cx]');if(!b)return;const x=gtd();x.ctx=b.dataset.cx;gtdSet(x);gHap();sheet.querySelectorAll('.gctx .d-chip').forEach(c=>c.classList.toggle('on',c===b));render()};
+  sheet.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{const k=b.dataset.g;
+    if(k==='clarify')openClarify();else if(k==='next')openNext();else if(k==='wait')openWaiting();else if(k==='tick')openTickler();else if(k==='some')openSomeday();else if(k==='ref')openRef();
+    else if(k==='stuck'){closeSheet();try{P.showTab('projekte')}catch(_){}}});
+}
+
+/* ---------- 1 · Eingang durcharbeiten ---------- */
+function openClarify(){
+  let list=gInbox(),i=0,total=list.length,mode='',ctx=gtdCtx(),when=0;
+  if(!total){toast('Der Eingang ist leer');openGtd();return}
+  const done=msg=>{try{P.call('projekte','inboxRemove',list[i].id)}catch(_){}gHap();if(msg)toast(msg);i++;mode='';when=0;if(i>=list.length){closeSheet();toast('Eingang leer. Der Kopf ist frei.');gReload();return}draw()};
+  const txt=()=>($('gcT').value.trim()||list[i].text);
+  const draw=()=>{
+    const it=list[i];let h='<div class="h-mid" style="margin:0 4px 4px">Eingang · '+(i+1)+' von '+total+'</div><p class="kdp">Formuliere es so, dass klar ist, was zu tun ist.</p><textarea class="field kdt" id="gcT" rows="2">'+esc(it.text)+'</textarea>';
+    if(!mode)h+='<div class="lbl">Ist etwas zu tun?</div><div class="gbt">'+
+      '<button class="d-btn" data-m="two"><b>Unter 2 Minuten</b><small>Jetzt sofort erledigen</small></button>'+
+      '<button class="d-btn" data-m="next"><b>Nächster Schritt</b><small>Mit Ort und Tag einplanen</small></button>'+
+      '<button class="d-btn" data-m="big"><b>Größeres Vorhaben</b><small>Als Aufgabe zum Zerlegen anlegen</small></button>'+
+      '<button class="d-btn" data-m="wait"><b>Delegieren</b><small>Kommt auf „Warte auf“</small></button>'+
+      '<button class="d-btn" data-m="tick"><b>Wiedervorlage</b><small>An einem Tag wieder vorlegen</small></button></div>'+
+      '<div class="lbl">Nichts zu tun</div><div class="gbt3"><button class="d-btn ghost" data-m="some">Irgendwann</button><button class="d-btn ghost" data-m="ref">Ablage</button><button class="d-btn ghost" data-m="del">Wegwerfen</button></div>';
+    else if(mode==='two')h+='<div class="cpbox"><b>Mach es jetzt.</b><div>Alles unter zwei Minuten kostet mehr, wenn du es verwaltest, als wenn du es gleich erledigst.</div></div><div class="row2"><button class="d-btn ghost" data-m="">Zurück</button><button class="d-btn primary" id="gcOk">Erledigt ✓</button></div>';
+    else if(mode==='next')h+='<div class="lbl">Wo geht das?</div>'+ctxChips(ctx,'Überall')+'<div class="lbl">Wann?</div><div class="chips gwh"><button class="d-chip'+(when===0?' on':'')+'" data-w="0">Heute</button><button class="d-chip'+(when===1?' on':'')+'" data-w="1">Morgen</button><button class="d-chip'+(when===3?' on':'')+'" data-w="3">In 3 Tagen</button><button class="d-chip'+(when===6?' on':'')+'" data-w="6">Ende der Woche</button></div><div class="row2"><button class="d-btn ghost" data-m="">Zurück</button><button class="d-btn primary" id="gcOk">Einplanen</button></div>';
+    else if(mode==='wait')h+='<div class="lbl">Auf wen wartest du?</div><input class="field" id="gcW" placeholder="Name" maxlength="40" autocomplete="off"><div class="row2"><button class="d-btn ghost" data-m="">Zurück</button><button class="d-btn primary" id="gcOk">Auf „Warte auf“</button></div>';
+    else if(mode==='tick')h+='<div class="lbl">Wann wieder vorlegen?</div><input class="field" type="date" id="gcD" value="'+plusDays(7)+'" min="'+plusDays(1)+'"><div class="row2"><button class="d-btn ghost" data-m="">Zurück</button><button class="d-btn primary" id="gcOk">Wiedervorlage</button></div>';
+    openSheet(h);sheet.classList.add('tall');
+    sheet.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{const m=b.dataset.m,t=txt();list[i].text=t;
+      if(m==='some'){try{P.call('woche','addTasks',[{text:t,size:guessSize(t),date:null}])}catch(_){}done('Auf „Irgendwann“ gelegt')}
+      else if(m==='ref'){const g=gtd();g.ref.push({id:gid(),text:t,at:Date.now()});g.ref=g.ref.slice(-200);gtdSet(g);done('Abgelegt')}
+      else if(m==='del')done('Weg damit');
+      else if(m==='big'){try{P.call('woche','addTasks',[{text:t,size:'L',date:ymd(new Date()),ctx:gtdCtx()}])}catch(_){}done('Angelegt – wartet aufs Zerlegen')}
+      else{mode=m;draw()}});
+    const cx=sheet.querySelector('.gctx');if(cx)cx.onclick=e=>{const b=e.target.closest('[data-cx]');if(!b)return;ctx=b.dataset.cx;cx.querySelectorAll('.d-chip').forEach(c=>c.classList.toggle('on',c===b))};
+    const wh=sheet.querySelector('.gwh');if(wh)wh.onclick=e=>{const b=e.target.closest('[data-w]');if(!b)return;when=+b.dataset.w;wh.querySelectorAll('.d-chip').forEach(c=>c.classList.toggle('on',c===b))};
+    if($('gcOk'))$('gcOk').onclick=()=>{const t=txt();
+      if(mode==='two'){try{const l=JSON.parse(localStorage.getItem(DL_KEY)||'{}'),d=ymd(new Date());(l[d]=l[d]||[]).push(t);localStorage.setItem(DL_KEY,JSON.stringify(l))}catch(_){}done('Erledigt ✓')}
+      else if(mode==='next'){try{P.call('woche','addTasks',[{text:t,size:guessSize(t),date:plusDays(when),ctx}])}catch(_){}done('Eingeplant'+(ctx?' · '+ctxName(ctx):''))}
+      else if(mode==='wait'){const who=$('gcW').value.trim();const w=jget(WT_KEY,[]);w.push({id:gid(),text:t,who,since:ymd(new Date()),done:false});jset(WT_KEY,w);done('Auf „Warte auf“'+(who?' · '+who:''))}
+      else if(mode==='tick'){const d=$('gcD').value;if(!d||d<=ymd(new Date())){toast('Bitte einen Tag in der Zukunft wählen');return}const g=gtd();g.tickler.push({id:gid(),text:t,date:d});gtdSet(g);done('Kommt am '+dShort(d)+' wieder')}};
+    if(mode==='wait')setTimeout(()=>{try{$('gcW').focus()}catch(_){}},260);
+  };
+  draw();
+}
+
+/* ---------- 2 + 3 · Nächste Schritte nach Ort, Zeit und Energie ---------- */
+function openNext(){
+  let ctx=gtdCtx(),mins=0,low=energy()==='wenig';
+  const draw=()=>{
+    const L=gLists(),t=ymd(new Date());
+    let l=L.next.map(x=>Object.assign({},x,{sz:x.size||guessSize(x.text)}));
+    if(ctx)l=l.filter(x=>!x.ctx||x.ctx===ctx);
+    if(mins)l=l.filter(x=>estMin(x.steps?'S':x.sz)<=mins);
+    if(low)l=l.filter(x=>x.steps||x.sz!=='L');
+    openSheet('<div class="h-mid" style="margin:0 4px 4px">Nächste Schritte</div><p class="kdp">Was geht hier und jetzt?</p>'+
+      '<div class="lbl">Ort</div>'+ctxChips(ctx,'Egal')+
+      '<div class="lbl">Zeit</div><div class="chips gmi">'+[[0,'Egal'],[10,'10 Min'],[25,'25 Min'],[60,'1 Std']].map(m=>'<button class="d-chip'+(mins===m[0]?' on':'')+'" data-mi="'+m[0]+'">'+m[1]+'</button>').join('')+'<button class="d-chip'+(low?' on':'')+'" data-low="1">Wenig Energie</button></div>'+
+      '<div class="lbl">'+l.length+(l.length===1?' Schritt':' Schritte')+' von '+L.next.length+'</div>'+
+      (l.length?l.map(x=>'<div class="gtk"><button class="gck" data-ok="'+x.id+'" aria-label="Erledigt"></button><span><b>'+esc(x.text)+'</b><small>'+dShort(x.date)+' · '+(x.steps?x.steps+' Schritte offen':x.sz+' · '+estLabel(x.sz))+(x.prio?' · wichtig':'')+'</small></span><button class="gcx" data-ct="'+x.id+'">'+(x.ctx?esc(ctxName(x.ctx)):'Ort?')+'</button></div>').join(''):'<div class="slempty">Dafür ist gerade nichts offen. Ändere den Filter oder gönn dir die Pause.</div>')+
+      '<button class="d-btn ghost" id="gnB" style="width:100%;margin-top:12px">Zur Übersicht</button>');
+    sheet.classList.add('tall');
+    sheet.querySelector('.gctx').onclick=e=>{const b=e.target.closest('[data-cx]');if(!b)return;ctx=b.dataset.cx;const g=gtd();g.ctx=ctx;gtdSet(g);draw();render()};
+    sheet.querySelector('.gmi').onclick=e=>{const b=e.target.closest('[data-mi]');if(b){mins=+b.dataset.mi;draw();return}if(e.target.closest('[data-low]')){low=!low;draw()}};
+    sheet.querySelectorAll('[data-ok]').forEach(b=>b.onclick=()=>{try{P.call('woche','completeTask',b.dataset.ok)}catch(_){}gHap();try{P.playNote&&P.playNote(false)}catch(_){}D.woche=undefined;load();draw()});
+    sheet.querySelectorAll('[data-ct]').forEach(b=>b.onclick=()=>{const x=L.next.find(y=>y.id===b.dataset.ct);if(!x)return;const ks=[''].concat(CTX.map(c=>c[0]));const n=ks[(ks.indexOf(x.ctx||'')+1)%ks.length];try{P.call('woche','setCtx',x.id,n)}catch(_){}gHap();D.woche=undefined;load();draw()});
+    $('gnB').onclick=openGtd;
+  };
+  draw();
+}
+
+/* ---------- 4 · Irgendwann / Vielleicht ---------- */
+function openSomeday(){
+  const draw=()=>{const L=gLists();
+    openSheet('<div class="h-mid" style="margin:0 4px 4px">Irgendwann / Vielleicht</div><p class="kdp">Ideen ohne Verpflichtung. Einmal pro Woche durchsehen reicht.</p>'+
+      (L.someday.length?L.someday.map(x=>'<div class="gtk"><span><b>'+esc(x.text)+'</b></span><button class="gcx" data-act="'+x.id+'">Diese Woche</button><button class="gcx" data-rm="'+x.id+'">×</button></div>').join(''):'<div class="slempty">Noch nichts geparkt.</div>')+
+      '<div class="spa" style="margin-top:12px"><input class="field" id="gsI" placeholder="Neue Idee …" enterkeyhint="done" autocomplete="off"><button class="d-btn" id="gsA">+</button></div><button class="d-btn ghost" id="gnB" style="width:100%;margin-top:8px">Zur Übersicht</button>');
+    sheet.classList.add('tall');
+    sheet.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>{try{P.call('woche','moveTask',b.dataset.act,ymd(new Date()))}catch(_){}gHap();toast('Liegt jetzt bei Heute');D.woche=undefined;load();draw()});
+    sheet.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{try{P.call('woche','deleteTask',b.dataset.rm)}catch(_){}gHap();D.woche=undefined;load();draw()});
+    const add=()=>{const v=$('gsI').value.trim();if(!v)return;try{P.call('woche','addTasks',[{text:v,size:guessSize(v),date:null}])}catch(_){}draw()};
+    $('gsA').onclick=add;$('gsI').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();add()}};$('gnB').onclick=openGtd;
+  };
+  draw();
+}
+
+/* ---------- 6 · Wiedervorlage ---------- */
+function openTickler(){
+  const draw=()=>{const g=gtd();g.tickler.sort((a,b)=>a.date.localeCompare(b.date));
+    openSheet('<div class="h-mid" style="margin:0 4px 4px">Wiedervorlage</div><p class="kdp">Bis zum gewählten Tag ausgeblendet. Dann liegt es wieder im Eingang.</p>'+
+      (g.tickler.length?g.tickler.map(x=>'<div class="gtk"><span><b>'+esc(x.text)+'</b><small>'+dShort(x.date)+'</small></span><button class="gcx" data-rm="'+x.id+'">×</button></div>').join(''):'<div class="slempty">Nichts auf Wiedervorlage.</div>')+
+      '<div class="lbl">Neu</div><input class="field" id="gtI" placeholder="Woran soll ich dich erinnern?" autocomplete="off"><div class="spa" style="margin-top:8px"><input class="field" type="date" id="gtD" value="'+plusDays(7)+'" min="'+plusDays(1)+'"><button class="d-btn" id="gtA">+</button></div><button class="d-btn ghost" id="gnB" style="width:100%;margin-top:8px">Zur Übersicht</button>');
+    sheet.classList.add('tall');
+    sheet.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{const x=gtd();x.tickler=x.tickler.filter(y=>y.id!==b.dataset.rm);gtdSet(x);draw()});
+    $('gtA').onclick=()=>{const v=$('gtI').value.trim(),d=$('gtD').value;if(!v){$('gtI').focus();return}if(!d||d<=ymd(new Date())){toast('Bitte einen Tag in der Zukunft wählen');return}const x=gtd();x.tickler.push({id:gid(),text:v,date:d});gtdSet(x);gHap();draw()};
+    $('gnB').onclick=openGtd;
+  };
+  draw();
+}
+
+/* ---------- 8 · Warte auf, mit Nachfassen ---------- */
+function waitRows(list){return list.length?list.map(x=>{const ds=daysSince(x.since),da=daysSince(x.asked||x.since);
+  return '<div class="gtk"><span><b>'+esc(x.text)+'</b><small>'+(x.who?esc(x.who)+' · ':'')+'seit '+ds+(ds===1?' Tag':' Tagen')+(x.asked?' · nachgefasst vor '+daysSince(x.asked)+' T.':'')+'</small>'+(da>=7?'<em>Zeit zum Nachfassen</em>':'')+'</span>'+(da>=7?'<button class="gcx" data-ask="'+x.id+'">Nachfassen</button>':'')+'<button class="gcx" data-wd="'+x.id+'">✓</button></div>'}).join(''):'<div class="slempty">Du wartest gerade auf niemanden.</div>'}
+function waitAct(e,redraw){
+  const a=e.target.closest('[data-ask]'),d=e.target.closest('[data-wd]');if(!a&&!d)return false;
+  const w=jget(WT_KEY,[]),x=w.find(y=>y.id===(a||d).dataset[a?'ask':'wd']);if(!x)return true;
+  if(d){x.done=true;jset(WT_KEY,w);gHap();redraw();return true}
+  x.asked=ymd(new Date());jset(WT_KEY,w);gHap();
+  const first=(x.who||'').split(' ')[0];closeSheet();
+  try{P.showTab('mail',{compose:{subject:'Kurze Nachfrage: '+x.text,text:'Hallo'+(first?' '+first:'')+',\n\nich wollte kurz nachfragen, wie der Stand ist bei: '+x.text+'.\n\nViele Grüße\n'+NAME}})}catch(_){toast('Nachgefasst vermerkt')}
+  return true;
+}
+function openWaiting(){
+  const draw=()=>{
+    openSheet('<div class="h-mid" style="margin:0 4px 4px">Warte auf</div><p class="kdp">Was du abgegeben hast. Nach einer Woche erinnere ich dich ans Nachfassen.</p><div id="gwL">'+waitRows(gWaiting())+'</div>'+
+      '<div class="lbl">Neu</div><input class="field" id="gwI" placeholder="Worauf wartest du?" autocomplete="off"><div class="spa" style="margin-top:8px"><input class="field" id="gwW" placeholder="Von wem?" maxlength="40" autocomplete="off"><button class="d-btn" id="gwA">+</button></div><button class="d-btn ghost" id="gnB" style="width:100%;margin-top:8px">Zur Übersicht</button>');
+    sheet.classList.add('tall');
+    $('gwL').onclick=e=>waitAct(e,draw);
+    $('gwA').onclick=()=>{const v=$('gwI').value.trim();if(!v){$('gwI').focus();return}const w=jget(WT_KEY,[]);w.push({id:gid(),text:v,who:$('gwW').value.trim(),since:ymd(new Date()),done:false});jset(WT_KEY,w);gHap();draw()};
+    $('gnB').onclick=openGtd;
+  };
+  draw();
+}
+function openRef(){
+  const draw=()=>{const g=gtd();
+    openSheet('<div class="h-mid" style="margin:0 4px 4px">Ablage</div><p class="kdp">Zum Merken. Hier ist nichts zu tun.</p>'+(g.ref.length?g.ref.slice().reverse().map(x=>'<div class="gtk"><span><b>'+esc(x.text)+'</b><small>'+new Date(x.at).toLocaleDateString('de-DE',{day:'numeric',month:'short'})+'</small></span><button class="gcx" data-rm="'+x.id+'">×</button></div>').join(''):'<div class="slempty">Die Ablage ist leer.</div>')+'<button class="d-btn ghost" id="gnB" style="width:100%;margin-top:12px">Zur Übersicht</button>');
+    sheet.classList.add('tall');
+    sheet.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{const x=gtd();x.ref=x.ref.filter(y=>y.id!==b.dataset.rm);gtdSet(x);draw()});$('gnB').onclick=openGtd;
+  };
+  draw();
+}
 window.openDump=()=>openDump();
 function openDump(){
   let day=0;const over={};
   openSheet('<div class="h-mid" style="margin:0 4px 4px">Kopf leeren</div><p class="kdp">Schreib einfach alles auf, was dir durch den Kopf geht – eine Sache pro Zeile. Ich schätze die Größe; antippen ändert sie.</p>'+
     '<textarea class="field kdt" id="kdT" rows="5" placeholder="Steuererklärung&#10;Mama anrufen&#10;Küche aufräumen"></textarea><div id="kdL" class="kdl"></div>'+
-    '<div class="chips"><button class="d-chip on" data-d="0">Heute</button><button class="d-chip" data-d="1">Morgen</button><button class="d-chip" data-d="-1">Irgendwann</button></div><button class="d-btn primary" id="kdGo" style="width:100%">Eintragen</button>');
+    '<div class="chips"><button class="d-chip on" data-d="0">Heute</button><button class="d-chip" data-d="1">Morgen</button><button class="d-chip" data-d="-1">Irgendwann</button><button class="d-chip" data-d="-2">Eingang</button></div><button class="d-btn primary" id="kdGo" style="width:100%">Eintragen</button><button class="d-btn ghost" id="kdGtd" style="width:100%;margin-top:8px">Getting Things Done · Übersicht</button>');
+  $('kdGtd').onclick=openGtd;
   sheet.classList.add('tall');
   const lines=()=>$('kdT').value.split(/\n+/).map(s=>s.replace(/^[-•*\d.)\s]+/,'').trim()).filter(Boolean).slice(0,40);
   const draw=()=>{const l=lines();$('kdL').innerHTML=l.map((t,i)=>{const s=over[t]||guessSize(t);return '<div class="kdr"><button class="szc s'+s+'" data-kd="'+i+'">'+s+'</button><span>'+esc(t)+'</span>'+(s==='L'?'<em>wird zum Zerlegen angelegt</em>':'')+'</div>'}).join('');
@@ -1429,6 +1614,7 @@ function openDump(){
   $('kdL').onclick=e=>{const b=e.target.closest('[data-kd]');if(!b)return;const t=lines()[+b.dataset.kd];over[t]=NEXT[over[t]||guessSize(t)];draw()};
   sheet.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{day=+b.dataset.d;sheet.querySelectorAll('[data-d]').forEach(x=>x.classList.toggle('on',x===b))});
   $('kdGo').onclick=()=>{const l=lines();if(!l.length){$('kdT').focus();return}
+    if(day===-2){try{for(const t of l)P.call('projekte','capture',t)}catch(_){}closeSheet();toast((l.length===1?'1 Sache liegt':l.length+' Dinge liegen')+' im Eingang. Später in Ruhe klären.');gReload();return}
     const d=new Date();d.setDate(d.getDate()+Math.max(0,day));const date=day<0?null:ymd(d);
     const list=l.map(t=>({text:t,size:over[t]||guessSize(t),date}));let n=0;try{n=P.call('woche','addTasks',list)||0}catch(_){}
     const big=list.filter(x=>x.size==='L').length;closeSheet();
@@ -1850,19 +2036,32 @@ function openWeek(){
   const w=D.woche,open=w?w.open:[],stuck=open.filter(x=>daysSince(x.since)>=7).sort((a,b)=>daysSince(b.since)-daysSince(a.since));
   let waiting=jget(WT_KEY,[]);
   const jr=jget(JR_KEY,{days:[]}),moods=(jr.days||[]).filter(x=>new Date(x.d+'T12:00:00')>=mon&&x.mood);
-  let h='<div class="h-mid" style="margin:0 4px 2px">Wochenrückblick</div><p class="kdp">Ehrlich, ohne Urteil. Fünf kurze Schritte.</p>';
+  let h='<div class="h-mid" style="margin:0 4px 2px">Wochenrückblick</div><p class="kdp">Ehrlich, ohne Urteil. Erst aufräumen, dann fünf kurze Schritte.</p>';
+  {const inb=gInbox(),GL=gLists(),stk=(D.proj&&D.proj.stuck)||[],tk=gtd().tickler.length;
+   const gl=(k,t,n,ok)=>'<button class="gwr'+(ok?' ok':'')+'" data-gw="'+k+'"><i>'+(ok?'✓':'')+'</i><span>'+t+'</span><b>'+n+'</b></button>';
+   h+='<div class="lbl">Durchsehen nach GTD</div><div class="cpbox gwb">'+
+     gl('clarify','Eingang leeren',inb.length,!inb.length)+
+     gl('cal','Kalender prüfen: 2 Wochen zurück, 4 voraus','›',false)+
+     gl('next','Nächste Schritte durchgehen',GL.next.length,false)+
+     gl('stuck','Projekte ohne nächsten Schritt',stk.length,!stk.length)+
+     gl('tick','Wiedervorlage ansehen',tk,!tk)+
+     gl('some','Irgendwann / Vielleicht sichten',GL.someday.length,!GL.someday.length)+
+     (stk.length?'<div><small>Ohne nächsten Schritt: '+stk.slice(0,5).map(p=>esc(p.name)).join(', ')+'</small></div>':'')+'</div>'}
   h+='<div class="lbl">1 · Erledigt</div><div class="cpbox">'+(done.length?'<b>'+done.length+(done.length===1?' Sache':' Dinge')+' diese Woche – das zählt.</b>'+done.slice(-12).map(t=>'<div>✓ '+esc(t)+'</div>').join('')+(done.length>12?'<div><small>… und '+(done.length-12)+' weitere</small></div>':''):'Diese Woche ist noch nichts festgehalten. Ab jetzt merke ich mir jeden erledigten Punkt.')+(moods.length?'<div><small>Stimmung im Schnitt: '+MOODS[Math.round(moods.reduce((a,b)=>a+b.mood,0)/moods.length)-1]+'</small></div>':'')+'</div>';
   h+='<div class="lbl">2 · Liegen geblieben</div><div class="cpbox">'+(stuck.length?stuck.map(x=>{const ds=daysSince(x.since);return '<div>· '+esc(x.text)+' <small>(seit '+ds+' Tagen)</small>'+(ds>=21?'<br><em>Diese Aufgabe steht seit '+Math.floor(ds/7)+' Wochen auf deiner Liste. Erledige sie, delegiere sie oder streiche sie.</em>':'')+'</div>'}).join(''):'Nichts hängt länger als eine Woche. Sauber!')+'</div>';
-  h+='<div class="lbl">3 · Warte auf</div><div class="cpbox" id="cpWait"></div><div class="spa"><input class="field" id="cpWI" placeholder="z. B. Rückmeldung von Patrick zur 9a"><button class="d-btn" id="cpWA">+</button></div>';
+  h+='<div class="lbl">3 · Warte auf</div><div class="cpbox" id="cpWait"></div><input class="field" id="cpWI" placeholder="Worauf wartest du?"><div class="spa" style="margin-top:8px"><input class="field" id="cpWW" placeholder="Von wem?" maxlength="40"><button class="d-btn" id="cpWA">+</button></div>';
   h+='<div class="lbl">4 · Nächste Woche – Top 3</div>'+[1,2,3].map(i=>'<input class="field cptop3" placeholder="Priorität '+i+'">').join('');
   h+='<div class="lbl">5 · Erfassen</div><textarea class="field kdt" id="cpCap" rows="3" placeholder="Alles, was dir noch im Kopf herumschwirrt – eine Sache pro Zeile."></textarea>';
   if(open.length>12)h+='<p class="kdp"><b>Ehrlich gesagt:</b> '+open.length+' offene Aufgaben sind zu viel für eine Woche. Streiche oder verschiebe, was nicht wirklich zählt.</p>';
   h+='<button class="d-btn primary" id="cpWk" style="width:100%;margin-top:12px">Woche abschließen</button>';
   openSheet(h);sheet.classList.add('tall');
-  const drawW=()=>{$('cpWait').innerHTML=waiting.filter(x=>!x.done).length?waiting.filter(x=>!x.done).map(x=>'<div class="cpw"><span>'+esc(x.text)+' <small>seit '+daysSince(x.since)+' T.</small>'+(daysSince(x.since)>=7?' <em>· nachfassen?</em>':'')+'</span><button data-wd="'+x.id+'">erledigt</button></div>').join(''):'<small>Du wartest gerade auf niemanden.</small>'};
+  const drawW=()=>{waiting=jget(WT_KEY,[]);$('cpWait').innerHTML=waitRows(waiting.filter(x=>!x.done))};
   drawW();
-  $('cpWait').onclick=e=>{const b=e.target.closest('[data-wd]');if(!b)return;const x=waiting.find(y=>y.id===b.dataset.wd);if(x)x.done=true;jset(WT_KEY,waiting);drawW()};
-  const addW=()=>{const v=$('cpWI').value.trim();if(!v)return;waiting.push({id:Date.now().toString(36),text:v,since:ymd(new Date()),done:false});jset(WT_KEY,waiting);$('cpWI').value='';drawW()};
+  $('cpWait').onclick=e=>waitAct(e,drawW);
+  sheet.querySelectorAll('[data-gw]').forEach(b=>b.onclick=()=>{const k=b.dataset.gw;
+    if(k==='clarify')openClarify();else if(k==='next')openNext();else if(k==='tick')openTickler();else if(k==='some')openSomeday();
+    else{closeSheet();try{P.showTab(k==='cal'?'kalender':'projekte')}catch(_){}}});
+  const addW=()=>{const v=$('cpWI').value.trim();if(!v)return;waiting=jget(WT_KEY,[]);waiting.push({id:gid(),text:v,who:$('cpWW').value.trim(),since:ymd(new Date()),done:false});jset(WT_KEY,waiting);$('cpWI').value='';$('cpWW').value='';drawW()};
   $('cpWA').onclick=addW;$('cpWI').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();addW()}};
   $('cpWk').onclick=()=>{const nm=new Date(mon);nm.setDate(mon.getDate()+7);const top=[...sheet.querySelectorAll('.cptop3')].map(x=>x.value.trim()).filter(Boolean);
     const cap=$('cpCap').value.split(/\n+/).map(s=>s.trim()).filter(Boolean);
@@ -1890,7 +2089,7 @@ function epRender(){
   let cc=null;try{cc=f?null:companionCard()}catch(_){}
   $('epA').dataset.act=cc?cc.act:'';
   if(cc)$('epA').innerHTML='<small>'+esc(cc.lab)+'</small><b>'+esc(cc.t)+'</b><span>'+esc(cc.s)+'</span>';
-  else $('epA').innerHTML=f?'<small>Fokus läuft</small><b>'+esc(f.title)+'</b>':nx?'<small>Nächste Aufgabe</small><b>'+esc(nx.text)+'</b><span>'+(nx.kind==='s'?'S':nx.size)+' · '+estLabel(nx.kind==='s'?'S':nx.size)+' · ▶ starten</span>':'<small>Nächste Aufgabe</small><b>Nichts offen</b><span>Gönn dir eine Pause</span>';
+  else $('epA').innerHTML=f?'<small>Fokus läuft</small><b>'+esc(f.title)+'</b>':nx?'<small>Nächste Aufgabe'+(gtdCtx()?' · '+ctxName(gtdCtx()):'')+'</small><b>'+esc(nx.text)+'</b><span>'+(nx.kind==='s'?'S':nx.size)+' · '+estLabel(nx.kind==='s'?'S':nx.size)+' · ▶ starten</span>':'<small>Nächste Aufgabe</small><b>Nichts offen</b><span>Gönn dir eine Pause</span>';
   $('epA').classList.toggle('hidden',!cc&&!f&&!nx&&!D.woche);
   const code=cur?cur.weather_code:2,night=cur?!cur.is_day:false;
   requestAnimationFrame(()=>epFit());
