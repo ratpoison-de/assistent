@@ -334,6 +334,8 @@ if(!onb&&N)setTimeout(window.openImport,500);
 if(!N){window.openImport=window.openSync;try{if(!JSON.parse(localStorage.getItem('planer.sync.cfg')||'{}').on&&!localStorage.getItem('planer.onboarded')){localStorage.setItem('planer.onboarded','1');setTimeout(window.openSync,600)}}catch(e){}}
 (function(){const hb=window.handleBack;window.handleBack=function(){if(window.AssistentSync&&AssistentSync.isOpen()){AssistentSync.close();return true}return hb()}})();
 window.onResumeApp=(function(f){return function(){f();try{AssistentSync.sync('resume')}catch(e){}}})(window.onResumeApp);
+/* Als Launcher kommt die App ständig nach vorn: alle Bereiche und der Abgleich höchstens alle 2 Minuten, sonst nur der sichtbare Bereich */
+window.onResumeApp=(function(f){let last=Date.now();return function(){const n=Date.now();if(n-last<120000){let w=null;try{w=frame(active).contentWindow}catch(e){}if(w&&typeof w.onResumeLight==='function')w.onResumeLight();else call(active,'onShow');return}last=n;f()}})(window.onResumeApp);
 </script>
 <script src="launcher.js"></script>
 <script src="fokus.js"></script>

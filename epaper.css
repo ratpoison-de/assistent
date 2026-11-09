@@ -11,6 +11,8 @@ html.epaper{
   --font:"Assistent Mono",ui-monospace,Menlo,Consolas,monospace;--serif:"Assistent Mono",ui-monospace,monospace;
   filter:grayscale(1);
 }
+/* Android: Graustufen übernimmt die App selbst in einem Schritt statt je Seite */
+html.epaper.nat{filter:none}
 html.epaper,html.epaper body{background:#FFFFFF!important;color:#111}
 html.epaper body,html.epaper body *{font-family:"Assistent Mono",ui-monospace,Menlo,Consolas,monospace!important;box-shadow:none!important;text-shadow:none!important;letter-spacing:0}
 html.epaper h1,html.epaper h2,html.epaper h3,html.epaper b,html.epaper strong{font-weight:700!important}

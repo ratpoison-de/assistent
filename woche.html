@@ -619,7 +619,7 @@ window.handleBack=function(){
 };
 window.onResumeApp=function(){if(todayKey()!==today){normalize();render()}};
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)window.onResumeApp()});
-setInterval(window.onResumeApp,60000);
+setInterval(()=>{if(!document.hidden)window.onResumeApp()},60000);
 
 /* ---------- Assistent: Datenübernahme ---------- */
 window.importData=function(p){

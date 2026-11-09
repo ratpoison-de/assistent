@@ -219,7 +219,9 @@ async function watch(){
   if(!cfg.on||!cfg.token||running||document.hidden)return;
   try{const s=stable(await readLocal());if(s!==lastSnap){const first=!lastSnap;lastSnap=s;const B=loadBase();if(!first&&B)schedule(2500)}}catch(e){}
 }
-setInterval(watch,3000);
+/* Änderungen kommen als storage-Ereignis aus den Bereichen; die langsame Schleife fängt nur den Rest (Pinnwand-Datenbank) */
+let wT=0;window.addEventListener('storage',e=>{if(e.key&&e.key.indexOf('planer.sync')===0)return;clearTimeout(wT);wT=setTimeout(watch,900)});
+setInterval(watch,15000);
 setInterval(()=>{if(!document.hidden)sync('pull')},60000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)schedule(800)});
 window.addEventListener('online',()=>schedule(500));

@@ -718,7 +718,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 3.5<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 3.6<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
   <div class="ept"><span class="epl">Assistent</span><span class="epr"><button class="epset" id="epSet" aria-label="Einstellungen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></span></div>
@@ -835,12 +835,13 @@ window.skyTop=function(){let ep=false;try{ep=epVisible}catch(_){}if(document.doc
 })();
 const hH=$('hH'),hM=$('hM'),hS=$('hS');let ticking=true,raf=0;
 function clock(){
-  const d=new Date(),s=d.getSeconds()+d.getMilliseconds()/1000,m=d.getMinutes(),h=d.getHours()%12;
+  raf=0;if(typeof epVisible!=='undefined'&&epVisible)return;
+  const d=new Date(),s=d.getSeconds(),m=d.getMinutes(),h=d.getHours()%12;
   hS.setAttribute('transform','rotate('+(s*6)+')');hM.setAttribute('transform','rotate('+(m*6)+')');hH.setAttribute('transform','rotate('+(h*30+m*0.5)+')');
   $('clock').setAttribute('aria-label','Es ist '+d.getHours()+':'+pad(m)+' Uhr');
-  if(ticking&&!document.hidden)raf=requestAnimationFrame(clock);else raf=0;
+  if(ticking&&!document.hidden)raf=setTimeout(clock,1005-d.getMilliseconds());
 }
-function startClock(){ticking=true;if(!raf)raf=requestAnimationFrame(clock)}
+function startClock(){ticking=true;if(!raf)clock()}
 
 /* ================= Daten ================= */
 async function from(tab,timeout){
@@ -1279,6 +1280,8 @@ let lastLoad=0;
 window.onShow=function(){startClock();launcherUI();if(Date.now()-lastLoad>15000){lastLoad=Date.now();load()}else render()};
 window.onHide=function(){ticking=false};
 window.onResumeApp=function(){lastLoad=0;window.onShow()};
+/* Kurze Rückkehr zum Startbildschirm: nur neu zeichnen, Daten höchstens alle 90 s neu holen */
+window.onResumeLight=function(){startClock();launcherUI();if(Date.now()-lastLoad>90000){lastLoad=Date.now();load()}else render()};
 window.onWeather=function(){render()};
 window.handleBack=function(){if(sheet.classList.contains('on')){closeSheet();return true}if(epVisible)return false;if(document.body.classList.contains('mdopen')){document.body.classList.remove('mdopen');try{P.updateBar()}catch(_){}return true}if(isHM()&&EP_ON()&&!epVisible){epShow();return true}return false};
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&ticking)startClock()});
@@ -1903,7 +1906,7 @@ function epShow(){
 }
 function epHide(){
   if(!epVisible&&!document.body.classList.contains('epon'))return false;
-  epVisible=false;document.body.classList.remove('epon');try{P.setEpaper&&P.setEpaper(false)}catch(_){}return true;
+  epVisible=false;document.body.classList.remove('epon');try{P.setEpaper&&P.setEpaper(false)}catch(_){}try{startClock()}catch(_){}return true;
 }
 let epLp=false,epT=null,epX=0,epY=0;
 $('epF').addEventListener('touchstart',e=>{const b=e.target.closest('[data-app]');epLp=false;if(!b)return;epX=e.touches[0].clientX;epY=e.touches[0].clientY;epT=setTimeout(()=>{epLp=true;try{P.Native.haptic()}catch(_){}L().menu(b.dataset.app)},480)},{passive:true});

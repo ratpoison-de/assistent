@@ -6,7 +6,7 @@
   window.ASSISTENT_PLATFORM=plat;
   /* Design: nur noch E-Paper */
   try{
-    document.documentElement.classList.add('epaper');
+    document.documentElement.classList.add('epaper');if(plat==='android')document.documentElement.classList.add('nat');
     var add=function(){if(document.getElementById('epcss'))return;var l=document.createElement('link');l.id='epcss';l.rel='stylesheet';l.href='epaper.css';document.head.appendChild(l)};
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add);else add();
   }catch(e){}
