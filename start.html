@@ -644,6 +644,18 @@ body.epon{overflow:hidden}
 .epcl span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .epcl.dim{opacity:.45}
 .epcl.hit{opacity:1;font-weight:700}
+.wkp{display:flex;gap:5px;margin:2px 4px 12px}.wkp i{flex:1;height:5px;border:1.4px solid #111;border-radius:3px}.wkp i.d{background:#111}.wkp i.on{background:repeating-linear-gradient(90deg,#111 0 3px,#fff 3px 6px)}
+.wkg{display:block;width:100%;max-width:330px;margin:4px auto 8px;font-family:inherit}
+.wkn{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}.wkn span{border:1.5px solid #111;border-radius:10px;padding:7px 4px;text-align:center;font-size:11px;line-height:1.25}.wkn b{display:block;font-size:17px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wkm{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:40px;max-width:330px;margin:0 auto;border-bottom:1.5px solid #111}.wkm span{display:flex;justify-content:center;align-items:flex-end;height:100%}.wkm em{display:block;width:10px;background:#111;border-radius:3px 3px 0 0}
+.wkh{font-size:12.5px;color:#555;margin:4px 4px 8px;line-height:1.35}
+.wkq{font-size:17px;font-weight:700;line-height:1.3;margin:16px 4px 8px;padding-left:10px;border-left:4px solid #111}
+.wka{border-bottom:1px solid #DDD;padding:9px 0}.wka b{display:block;font-size:15px;line-height:1.3}.wka em{display:block;font-style:normal;font-weight:700;font-size:12.5px;margin:3px 0}.wka .chips{margin:6px 0 0}
+.wkb{display:flex;align-items:center;gap:8px;margin-top:5px}.wkb i{display:block;height:9px;background:#111;border-radius:3px;max-width:70%}.wkb small{font-size:12px;white-space:nowrap}
+.wkl{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;align-items:end;margin:6px 0 4px}.wkc{text-align:center}.wkc b{display:block;font-size:13px;border-top:1.5px solid #111;margin-top:4px;padding-top:3px}.wkc small{font-size:11px;color:#555}.wkc.full small{color:#111;font-weight:700}
+.wks{display:flex;flex-direction:column-reverse;align-items:center;gap:3px;min-height:74px}.wks i,.wkk i{display:block;width:22px;height:9px;border:1.5px solid #111;border-radius:3px;background:#fff}.wks i.e,.wkk i.e{background:#111}.wks i.p,.wkk i.p{background:repeating-linear-gradient(135deg,#111 0 2px,#fff 2px 5px)}
+.wkk{display:flex;gap:14px;justify-content:center;font-size:11.5px;margin-bottom:10px}.wkk span{display:flex;align-items:center;gap:5px}.wkk i{width:14px}
+.wkd{margin:6px 0 12px}.wkr{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid #DDD;font-size:14px;line-height:1.4}.wkr:last-child{border-bottom:0}.wkr b{flex:none;width:26px}
 .grow{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;background:#fff;border:1.5px solid #111;border-radius:10px;padding:11px 12px;margin-bottom:6px;font:inherit;color:#111}
 .grow span{min-width:0}.grow b{display:block;font-size:15px}.grow small{display:block;font-size:12.5px;color:#555;line-height:1.3;margin-top:1px}
 .grow i{flex:none;font-style:normal;font-weight:700;font-size:15px;min-width:30px;height:30px;border-radius:8px;border:1.5px solid #111;display:grid;place-items:center;padding:0 6px}
@@ -730,7 +742,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 3.7<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 3.8<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
   <div class="ept"><span class="epl">Assistent</span><span class="epr"><button class="epset" id="epSet" aria-label="Einstellungen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></span></div>
@@ -1431,7 +1443,7 @@ function openSplit(id){
   $('spGo').onclick=()=>{try{P.call('woche','setSteps',id,steps)}catch(_){}closeSheet();toast(steps.length?steps.length+' kleine Schritte – einer nach dem anderen':'Schritte entfernt');D.woche=undefined;load()};
 }
 /* ================= GTD: Eingang klären, Kontexte, nächste Schritte, Irgendwann, Wiedervorlage, Warte auf ================= */
-const GK='planer.gtd';
+const GK='planer.gtd';let gBack=null;
 const CTX=[['schule','Schule'],['zuhause','Zuhause'],['telefon','Telefon'],['computer','Computer'],['besorgung','Besorgungen']];
 const ctxName=k=>{const c=CTX.find(x=>x[0]===k);return c?c[1]:''};
 function gtd(){let g={};try{g=JSON.parse(localStorage.getItem(GK)||'{}')||{}}catch(_){}return Object.assign({tickler:[],ref:[],ctx:''},g)}
@@ -1458,6 +1470,7 @@ const ctxChips=(sel,any)=>'<div class="chips gctx">'+(any?'<button class="d-chip
 /* ---------- Übersicht ---------- */
 window.openGtd=()=>openGtd();
 function openGtd(){
+  gBack=null;
   const inb=gInbox(),L=gLists(),g=gtd(),wt=gWaiting(),stuck=(D.proj&&D.proj.stuck)||[],ask=wt.filter(x=>daysSince(x.asked||x.since)>=7).length;
   const row=(k,t,n,s)=>'<button class="grow" data-g="'+k+'"><span><b>'+t+'</b><small>'+s+'</small></span><i>'+(n===''?'›':n)+'</i></button>';
   openSheet('<div class="h-mid" style="margin:0 4px 4px">Getting Things Done</div><p class="kdp">Sammeln, klären, ordnen, durchsehen, erledigen.</p>'+
@@ -1468,19 +1481,21 @@ function openGtd(){
     row('tick','Wiedervorlage',g.tickler.length,'Taucht am gewählten Tag wieder auf')+
     row('some','Irgendwann / Vielleicht',L.someday.length,'Ideen ohne Verpflichtung')+
     row('stuck','Projekte ohne nächsten Schritt',stuck.length,stuck.length?stuck.slice(0,3).map(p=>esc(p.name)).join(', '):'Jedes Projekt hat einen nächsten Schritt')+
-    row('ref','Ablage',g.ref.length,'Nur zum Merken, nichts zu tun'));
+    row('ref','Ablage',g.ref.length,'Nur zum Merken, nichts zu tun')+
+    row('week','Wochenrückblick','','Geführt, mit Grafiken und Plan für nächste Woche'));
   sheet.classList.add('tall');
   sheet.querySelector('.gctx').onclick=e=>{const b=e.target.closest('[data-cx]');if(!b)return;const x=gtd();x.ctx=b.dataset.cx;gtdSet(x);gHap();sheet.querySelectorAll('.gctx .d-chip').forEach(c=>c.classList.toggle('on',c===b));render()};
   sheet.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{const k=b.dataset.g;
     if(k==='clarify')openClarify();else if(k==='next')openNext();else if(k==='wait')openWaiting();else if(k==='tick')openTickler();else if(k==='some')openSomeday();else if(k==='ref')openRef();
+    else if(k==='week')openWeek();
     else if(k==='stuck'){closeSheet();try{P.showTab('projekte')}catch(_){}}});
 }
 
 /* ---------- 1 · Eingang durcharbeiten ---------- */
 function openClarify(){
   let list=gInbox(),i=0,total=list.length,mode='',ctx=gtdCtx(),when=0;
-  if(!total){toast('Der Eingang ist leer');openGtd();return}
-  const done=msg=>{try{P.call('projekte','inboxRemove',list[i].id)}catch(_){}gHap();if(msg)toast(msg);i++;mode='';when=0;if(i>=list.length){closeSheet();toast('Eingang leer. Der Kopf ist frei.');gReload();return}draw()};
+  if(!total){toast('Der Eingang ist leer');if(gBack){const b=gBack;gBack=null;b()}else openGtd();return}
+  const done=msg=>{try{P.call('projekte','inboxRemove',list[i].id)}catch(_){}gHap();if(msg)toast(msg);i++;mode='';when=0;if(i>=list.length){closeSheet();toast('Eingang leer. Der Kopf ist frei.');gReload();if(gBack){const b=gBack;gBack=null;setTimeout(b,350)}return}draw()};
   const txt=()=>($('gcT').value.trim()||list[i].text);
   const draw=()=>{
     const it=list[i];let h='<div class="h-mid" style="margin:0 4px 4px">Eingang · '+(i+1)+' von '+total+'</div><p class="kdp">Formuliere es so, dass klar ist, was zu tun ist.</p><textarea class="field kdt" id="gcT" rows="2">'+esc(it.text)+'</textarea>';
@@ -1528,13 +1543,13 @@ function openNext(){
       '<div class="lbl">Zeit</div><div class="chips gmi">'+[[0,'Egal'],[10,'10 Min'],[25,'25 Min'],[60,'1 Std']].map(m=>'<button class="d-chip'+(mins===m[0]?' on':'')+'" data-mi="'+m[0]+'">'+m[1]+'</button>').join('')+'<button class="d-chip'+(low?' on':'')+'" data-low="1">Wenig Energie</button></div>'+
       '<div class="lbl">'+l.length+(l.length===1?' Schritt':' Schritte')+' von '+L.next.length+'</div>'+
       (l.length?l.map(x=>'<div class="gtk"><button class="gck" data-ok="'+x.id+'" aria-label="Erledigt"></button><span><b>'+esc(x.text)+'</b><small>'+dShort(x.date)+' · '+(x.steps?x.steps+' Schritte offen':x.sz+' · '+estLabel(x.sz))+(x.prio?' · wichtig':'')+'</small></span><button class="gcx" data-ct="'+x.id+'">'+(x.ctx?esc(ctxName(x.ctx)):'Ort?')+'</button></div>').join(''):'<div class="slempty">Dafür ist gerade nichts offen. Ändere den Filter oder gönn dir die Pause.</div>')+
-      '<button class="d-btn ghost" id="gnB" style="width:100%;margin-top:12px">Zur Übersicht</button>');
+      '<button class="d-btn ghost" id="gnB" style="width:100%;margin-top:12px">'+(gBack?'Zurück zum Wochenrückblick':'Zur Übersicht')+'</button>');
     sheet.classList.add('tall');
     sheet.querySelector('.gctx').onclick=e=>{const b=e.target.closest('[data-cx]');if(!b)return;ctx=b.dataset.cx;const g=gtd();g.ctx=ctx;gtdSet(g);draw();render()};
     sheet.querySelector('.gmi').onclick=e=>{const b=e.target.closest('[data-mi]');if(b){mins=+b.dataset.mi;draw();return}if(e.target.closest('[data-low]')){low=!low;draw()}};
     sheet.querySelectorAll('[data-ok]').forEach(b=>b.onclick=()=>{try{P.call('woche','completeTask',b.dataset.ok)}catch(_){}gHap();try{P.playNote&&P.playNote(false)}catch(_){}D.woche=undefined;load();draw()});
     sheet.querySelectorAll('[data-ct]').forEach(b=>b.onclick=()=>{const x=L.next.find(y=>y.id===b.dataset.ct);if(!x)return;const ks=[''].concat(CTX.map(c=>c[0]));const n=ks[(ks.indexOf(x.ctx||'')+1)%ks.length];try{P.call('woche','setCtx',x.id,n)}catch(_){}gHap();D.woche=undefined;load();draw()});
-    $('gnB').onclick=openGtd;
+    $('gnB').onclick=()=>{const b=gBack;if(b){gBack=null;b()}else openGtd()};
   };
   draw();
 }
@@ -1544,12 +1559,12 @@ function openSomeday(){
   const draw=()=>{const L=gLists();
     openSheet('<div class="h-mid" style="margin:0 4px 4px">Irgendwann / Vielleicht</div><p class="kdp">Ideen ohne Verpflichtung. Einmal pro Woche durchsehen reicht.</p>'+
       (L.someday.length?L.someday.map(x=>'<div class="gtk"><span><b>'+esc(x.text)+'</b></span><button class="gcx" data-act="'+x.id+'">Diese Woche</button><button class="gcx" data-rm="'+x.id+'">×</button></div>').join(''):'<div class="slempty">Noch nichts geparkt.</div>')+
-      '<div class="spa" style="margin-top:12px"><input class="field" id="gsI" placeholder="Neue Idee …" enterkeyhint="done" autocomplete="off"><button class="d-btn" id="gsA">+</button></div><button class="d-btn ghost" id="gnB" style="width:100%;margin-top:8px">Zur Übersicht</button>');
+      '<div class="spa" style="margin-top:12px"><input class="field" id="gsI" placeholder="Neue Idee …" enterkeyhint="done" autocomplete="off"><button class="d-btn" id="gsA">+</button></div><button class="d-btn ghost" id="gnB" style="width:100%;margin-top:8px">'+(gBack?'Zurück zum Wochenrückblick':'Zur Übersicht')+'</button>');
     sheet.classList.add('tall');
     sheet.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>{try{P.call('woche','moveTask',b.dataset.act,ymd(new Date()))}catch(_){}gHap();toast('Liegt jetzt bei Heute');D.woche=undefined;load();draw()});
     sheet.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{try{P.call('woche','deleteTask',b.dataset.rm)}catch(_){}gHap();D.woche=undefined;load();draw()});
     const add=()=>{const v=$('gsI').value.trim();if(!v)return;try{P.call('woche','addTasks',[{text:v,size:guessSize(v),date:null}])}catch(_){}draw()};
-    $('gsA').onclick=add;$('gsI').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();add()}};$('gnB').onclick=openGtd;
+    $('gsA').onclick=add;$('gsI').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();add()}};$('gnB').onclick=()=>{const b=gBack;if(b){gBack=null;b()}else openGtd()};
   };
   draw();
 }
@@ -1559,11 +1574,11 @@ function openTickler(){
   const draw=()=>{const g=gtd();g.tickler.sort((a,b)=>a.date.localeCompare(b.date));
     openSheet('<div class="h-mid" style="margin:0 4px 4px">Wiedervorlage</div><p class="kdp">Bis zum gewählten Tag ausgeblendet. Dann liegt es wieder im Eingang.</p>'+
       (g.tickler.length?g.tickler.map(x=>'<div class="gtk"><span><b>'+esc(x.text)+'</b><small>'+dShort(x.date)+'</small></span><button class="gcx" data-rm="'+x.id+'">×</button></div>').join(''):'<div class="slempty">Nichts auf Wiedervorlage.</div>')+
-      '<div class="lbl">Neu</div><input class="field" id="gtI" placeholder="Woran soll ich dich erinnern?" autocomplete="off"><div class="spa" style="margin-top:8px"><input class="field" type="date" id="gtD" value="'+plusDays(7)+'" min="'+plusDays(1)+'"><button class="d-btn" id="gtA">+</button></div><button class="d-btn ghost" id="gnB" style="width:100%;margin-top:8px">Zur Übersicht</button>');
+      '<div class="lbl">Neu</div><input class="field" id="gtI" placeholder="Woran soll ich dich erinnern?" autocomplete="off"><div class="spa" style="margin-top:8px"><input class="field" type="date" id="gtD" value="'+plusDays(7)+'" min="'+plusDays(1)+'"><button class="d-btn" id="gtA">+</button></div><button class="d-btn ghost" id="gnB" style="width:100%;margin-top:8px">'+(gBack?'Zurück zum Wochenrückblick':'Zur Übersicht')+'</button>');
     sheet.classList.add('tall');
     sheet.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{const x=gtd();x.tickler=x.tickler.filter(y=>y.id!==b.dataset.rm);gtdSet(x);draw()});
     $('gtA').onclick=()=>{const v=$('gtI').value.trim(),d=$('gtD').value;if(!v){$('gtI').focus();return}if(!d||d<=ymd(new Date())){toast('Bitte einen Tag in der Zukunft wählen');return}const x=gtd();x.tickler.push({id:gid(),text:v,date:d});gtdSet(x);gHap();draw()};
-    $('gnB').onclick=openGtd;
+    $('gnB').onclick=()=>{const b=gBack;if(b){gBack=null;b()}else openGtd()};
   };
   draw();
 }
@@ -1583,19 +1598,19 @@ function waitAct(e,redraw){
 function openWaiting(){
   const draw=()=>{
     openSheet('<div class="h-mid" style="margin:0 4px 4px">Warte auf</div><p class="kdp">Was du abgegeben hast. Nach einer Woche erinnere ich dich ans Nachfassen.</p><div id="gwL">'+waitRows(gWaiting())+'</div>'+
-      '<div class="lbl">Neu</div><input class="field" id="gwI" placeholder="Worauf wartest du?" autocomplete="off"><div class="spa" style="margin-top:8px"><input class="field" id="gwW" placeholder="Von wem?" maxlength="40" autocomplete="off"><button class="d-btn" id="gwA">+</button></div><button class="d-btn ghost" id="gnB" style="width:100%;margin-top:8px">Zur Übersicht</button>');
+      '<div class="lbl">Neu</div><input class="field" id="gwI" placeholder="Worauf wartest du?" autocomplete="off"><div class="spa" style="margin-top:8px"><input class="field" id="gwW" placeholder="Von wem?" maxlength="40" autocomplete="off"><button class="d-btn" id="gwA">+</button></div><button class="d-btn ghost" id="gnB" style="width:100%;margin-top:8px">'+(gBack?'Zurück zum Wochenrückblick':'Zur Übersicht')+'</button>');
     sheet.classList.add('tall');
     $('gwL').onclick=e=>waitAct(e,draw);
     $('gwA').onclick=()=>{const v=$('gwI').value.trim();if(!v){$('gwI').focus();return}const w=jget(WT_KEY,[]);w.push({id:gid(),text:v,who:$('gwW').value.trim(),since:ymd(new Date()),done:false});jset(WT_KEY,w);gHap();draw()};
-    $('gnB').onclick=openGtd;
+    $('gnB').onclick=()=>{const b=gBack;if(b){gBack=null;b()}else openGtd()};
   };
   draw();
 }
 function openRef(){
   const draw=()=>{const g=gtd();
-    openSheet('<div class="h-mid" style="margin:0 4px 4px">Ablage</div><p class="kdp">Zum Merken. Hier ist nichts zu tun.</p>'+(g.ref.length?g.ref.slice().reverse().map(x=>'<div class="gtk"><span><b>'+esc(x.text)+'</b><small>'+new Date(x.at).toLocaleDateString('de-DE',{day:'numeric',month:'short'})+'</small></span><button class="gcx" data-rm="'+x.id+'">×</button></div>').join(''):'<div class="slempty">Die Ablage ist leer.</div>')+'<button class="d-btn ghost" id="gnB" style="width:100%;margin-top:12px">Zur Übersicht</button>');
+    openSheet('<div class="h-mid" style="margin:0 4px 4px">Ablage</div><p class="kdp">Zum Merken. Hier ist nichts zu tun.</p>'+(g.ref.length?g.ref.slice().reverse().map(x=>'<div class="gtk"><span><b>'+esc(x.text)+'</b><small>'+new Date(x.at).toLocaleDateString('de-DE',{day:'numeric',month:'short'})+'</small></span><button class="gcx" data-rm="'+x.id+'">×</button></div>').join(''):'<div class="slempty">Die Ablage ist leer.</div>')+'<button class="d-btn ghost" id="gnB" style="width:100%;margin-top:12px">'+(gBack?'Zurück zum Wochenrückblick':'Zur Übersicht')+'</button>');
     sheet.classList.add('tall');
-    sheet.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{const x=gtd();x.ref=x.ref.filter(y=>y.id!==b.dataset.rm);gtdSet(x);draw()});$('gnB').onclick=openGtd;
+    sheet.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{const x=gtd();x.ref=x.ref.filter(y=>y.id!==b.dataset.rm);gtdSet(x);draw()});$('gnB').onclick=()=>{const b=gBack;if(b){gBack=null;b()}else openGtd()};
   };
   draw();
 }
@@ -1961,7 +1976,7 @@ function companionCard(){
     return{lab:'Gleich',t:st.e.title+' um '+st.e.tStart+' (in '+st.m+' Min)',s:fit?'Bis dahin passt: '+fit.text+' · '+estLabel(fit.kind==='s'?'S':fit.size):(st.e.loc?'Ort: '+st.e.loc:'Zeit zum Durchatmen'),act:fit?'start':'cal'}}
   if(st.kind==='evening'){const d=w?(w.doneList||[]).length:0,o=w?w.open.length:0;
     return{lab:'Tagesrückblick',t:d+' erledigt · '+o+' offen',s:'Tag abschließen, morgen vorbereiten',act:'evening'}}
-  if(st.kind==='week')return{lab:'Wochenrückblick',t:'Zeit für einen ehrlichen Blick auf die Woche',s:'Erledigt · Liegen geblieben · Warte auf · Top 3',act:'week'};
+  if(st.kind==='week')return{lab:'Wochenrückblick',t:'Zeit für einen ehrlichen Blick auf die Woche',s:'Grafiken · Leitfragen · Plan für nächste Woche',act:'week'};
   return null;
 }
 function companionText(){ /* Texte für die Benachrichtigungen (Android) */
@@ -1994,6 +2009,7 @@ function openMorning(){
   const open=w?w.open:[];
   let h='<div class="h-mid" style="margin:0 4px 2px">Guten Morgen, '+esc(NAME)+'</div><p class="kdp">'+esc(WDL[new Date().getDay()])+', '+new Date().getDate()+'. '+MON[new Date().getMonth()]+(k&&k.hol?' · '+esc(k.hol):k&&k.fer?' · '+esc(k.fer[2]):'')+'</p>';
   h+='<div class="lbl">Wetter</div><div class="cpbox">'+(td?esc(wtxt(td.code))+', '+td.mn+' bis '+td.mx+'°'+(td.rain>=20?' · Regen '+td.rain+'%':''):'Noch keine Wetterdaten')+(hints.length?'<br><small>'+hints.map(esc).join(' · ')+'</small>':'')+'</div>';
+  h+=weekPlanBox();
   h+='<div class="lbl">Termine heute</div><div class="cpbox">'+(evs.length?evs.map(e=>'<div>'+esc(evLine(e))+'</div>').join(''):'Keine Termine – freie Bahn.')+'</div>';
   if(D.mail&&D.mail.loggedIn&&D.mail.unread)h+='<div class="cpbox"><small>'+D.mail.unread+' ungelesene Mails warten – plane dir dafür einen festen Block.</small></div>';
   h+='<div class="lbl">Wie viel Kraft hast du heute?</div><div class="enb cpen">'+Object.keys(ENERGY).map(x=>'<button data-cpen="'+x+'" class="'+(energy()===x?'on':'')+'"><b>'+ENERGY[x].l+'</b><span>'+ENERGY[x].h+'</span></button>').join('')+'</div>';
@@ -2030,46 +2046,116 @@ function openEvening(){
     closeSheet();toast('Gut gemacht. Der Tag ist abgeschlossen – schönen Abend!');D.woche=undefined;load()};
 }
 /* ---------- Woche ---------- */
-function openWeek(){
-  const n=new Date(),mon=new Date(n);mon.setDate(n.getDate()-((n.getDay()+6)%7));mon.setHours(0,0,0,0);
-  const log=jget(DL_KEY,{}),done=[];Object.keys(log).sort().forEach(d=>{if(new Date(d+'T12:00:00')>=mon)log[d].forEach(t=>done.push(t))});
-  const w=D.woche,open=w?w.open:[],stuck=open.filter(x=>daysSince(x.since)>=7).sort((a,b)=>daysSince(b.since)-daysSince(a.since));
-  let waiting=jget(WT_KEY,[]);
-  const jr=jget(JR_KEY,{days:[]}),moods=(jr.days||[]).filter(x=>new Date(x.d+'T12:00:00')>=mon&&x.mood);
-  let h='<div class="h-mid" style="margin:0 4px 2px">Wochenrückblick</div><p class="kdp">Ehrlich, ohne Urteil. Erst aufräumen, dann fünf kurze Schritte.</p>';
-  {const inb=gInbox(),GL=gLists(),stk=(D.proj&&D.proj.stuck)||[],tk=gtd().tickler.length;
-   const gl=(k,t,n,ok)=>'<button class="gwr'+(ok?' ok':'')+'" data-gw="'+k+'"><i>'+(ok?'✓':'')+'</i><span>'+t+'</span><b>'+n+'</b></button>';
-   h+='<div class="lbl">Durchsehen nach GTD</div><div class="cpbox gwb">'+
-     gl('clarify','Eingang leeren',inb.length,!inb.length)+
-     gl('cal','Kalender prüfen: 2 Wochen zurück, 4 voraus','›',false)+
-     gl('next','Nächste Schritte durchgehen',GL.next.length,false)+
-     gl('stuck','Projekte ohne nächsten Schritt',stk.length,!stk.length)+
-     gl('tick','Wiedervorlage ansehen',tk,!tk)+
-     gl('some','Irgendwann / Vielleicht sichten',GL.someday.length,!GL.someday.length)+
-     (stk.length?'<div><small>Ohne nächsten Schritt: '+stk.slice(0,5).map(p=>esc(p.name)).join(', ')+'</small></div>':'')+'</div>'}
-  h+='<div class="lbl">1 · Erledigt</div><div class="cpbox">'+(done.length?'<b>'+done.length+(done.length===1?' Sache':' Dinge')+' diese Woche – das zählt.</b>'+done.slice(-12).map(t=>'<div>✓ '+esc(t)+'</div>').join('')+(done.length>12?'<div><small>… und '+(done.length-12)+' weitere</small></div>':''):'Diese Woche ist noch nichts festgehalten. Ab jetzt merke ich mir jeden erledigten Punkt.')+(moods.length?'<div><small>Stimmung im Schnitt: '+MOODS[Math.round(moods.reduce((a,b)=>a+b.mood,0)/moods.length)-1]+'</small></div>':'')+'</div>';
-  h+='<div class="lbl">2 · Liegen geblieben</div><div class="cpbox">'+(stuck.length?stuck.map(x=>{const ds=daysSince(x.since);return '<div>· '+esc(x.text)+' <small>(seit '+ds+' Tagen)</small>'+(ds>=21?'<br><em>Diese Aufgabe steht seit '+Math.floor(ds/7)+' Wochen auf deiner Liste. Erledige sie, delegiere sie oder streiche sie.</em>':'')+'</div>'}).join(''):'Nichts hängt länger als eine Woche. Sauber!')+'</div>';
-  h+='<div class="lbl">3 · Warte auf</div><div class="cpbox" id="cpWait"></div><input class="field" id="cpWI" placeholder="Worauf wartest du?"><div class="spa" style="margin-top:8px"><input class="field" id="cpWW" placeholder="Von wem?" maxlength="40"><button class="d-btn" id="cpWA">+</button></div>';
-  h+='<div class="lbl">4 · Nächste Woche – Top 3</div>'+[1,2,3].map(i=>'<input class="field cptop3" placeholder="Priorität '+i+'">').join('');
-  h+='<div class="lbl">5 · Erfassen</div><textarea class="field kdt" id="cpCap" rows="3" placeholder="Alles, was dir noch im Kopf herumschwirrt – eine Sache pro Zeile."></textarea>';
-  if(open.length>12)h+='<p class="kdp"><b>Ehrlich gesagt:</b> '+open.length+' offene Aufgaben sind zu viel für eine Woche. Streiche oder verschiebe, was nicht wirklich zählt.</p>';
-  h+='<button class="d-btn primary" id="cpWk" style="width:100%;margin-top:12px">Woche abschließen</button>';
-  openSheet(h);sheet.classList.add('tall');
-  const drawW=()=>{waiting=jget(WT_KEY,[]);$('cpWait').innerHTML=waitRows(waiting.filter(x=>!x.done))};
-  drawW();
-  $('cpWait').onclick=e=>waitAct(e,drawW);
-  sheet.querySelectorAll('[data-gw]').forEach(b=>b.onclick=()=>{const k=b.dataset.gw;
-    if(k==='clarify')openClarify();else if(k==='next')openNext();else if(k==='tick')openTickler();else if(k==='some')openSomeday();
-    else{closeSheet();try{P.showTab(k==='cal'?'kalender':'projekte')}catch(_){}}});
-  const addW=()=>{const v=$('cpWI').value.trim();if(!v)return;waiting=jget(WT_KEY,[]);waiting.push({id:gid(),text:v,who:$('cpWW').value.trim(),since:ymd(new Date()),done:false});jset(WT_KEY,waiting);$('cpWI').value='';$('cpWW').value='';drawW()};
-  $('cpWA').onclick=addW;$('cpWI').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();addW()}};
-  $('cpWk').onclick=()=>{const nm=new Date(mon);nm.setDate(mon.getDate()+7);const top=[...sheet.querySelectorAll('.cptop3')].map(x=>x.value.trim()).filter(Boolean);
-    const cap=$('cpCap').value.split(/\n+/).map(s=>s.trim()).filter(Boolean);
-    const list=top.map(t=>({text:t,size:guessSize(t),date:ymd(nm)})).concat(cap.map(t=>({text:t,size:guessSize(t),date:null})));
-    if(list.length)try{P.call('woche','addTasks',list)}catch(_){}
-    if(top.length)setTimeout(()=>{try{const st=JSON.parse(localStorage.getItem('wochenstapel'));for(const t of st.tasks)if(t.date===ymd(nm)&&top.includes(t.text)&&!t.prio)P.call('woche','togglePrio',t.id)}catch(_){}},400);
-    const j=jget(JR_KEY,{days:[],weeks:[]}),wk=isoWeek(n);j.weeks=(j.weeks||[]).filter(x=>x.id!==wk);j.weeks.push({id:wk,wk,done:done.length,stuck:stuck.length,top3:top,at:Date.now()});j.weeks=j.weeks.slice(-30);jset(JR_KEY,j);
-    const c2=cp();c2.week=wk;cpSet(c2);closeSheet();toast(top.length?'Woche abgeschlossen – Top 3 stehen für Montag bereit':'Woche abgeschlossen. Schönes Wochenende!');D.woche=undefined;load()};
+/* ---------- Wochenrückblick: geführt, mit Grafiken und Leitfragen; die Ergebnisse planen die nächste Woche ---------- */
+let WKD=null;
+const WKS=['Rückblick','Liegen geblieben','Aufräumen','Ausblick','Bewusst planen','Dein Plan'];
+function wkBars(vals,labels,hi){
+  const mx=Math.max(1,...vals),bw=30,gap=14,H=92,W=vals.length*(bw+gap)-gap;
+  return '<svg class="wkg" viewBox="0 0 '+W+' '+(H+34)+'" role="img" aria-label="Erledigtes pro Tag">'+vals.map((v,i)=>{const h=Math.round(v/mx*H),x=i*(bw+gap),y=16+H-h;
+    return (v?'<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+Math.max(h,2)+'" rx="3" fill="'+(i===hi?'#111':'#fff')+'" stroke="#111" stroke-width="1.6"/>':'<rect x="'+x+'" y="'+(16+H-2)+'" width="'+bw+'" height="2" fill="#111"/>')+
+      '<text x="'+(x+bw/2)+'" y="'+(y-4)+'" text-anchor="middle" font-size="11" font-weight="700" fill="#111">'+(v||'')+'</text><text x="'+(x+bw/2)+'" y="'+(H+31)+'" text-anchor="middle" font-size="11" fill="#111">'+labels[i]+'</text>'}).join('')+'</svg>';
+}
+function weekPlanBox(){
+  const d=new Date();d.setDate(d.getDate()-7);const e=(jget(JR_KEY,{}).weeks||[]).find(x=>x.id===isoWeek(d));
+  if(!e||!((e.plan&&e.plan.length)||e.drop||e.block))return'';
+  return '<div class="lbl">Aus deinem Wochenrückblick</div><div class="cpbox">'+((e.plan||[]).length?'<b>Diese Woche wichtig</b>'+e.plan.map(p=>'<div>· '+esc(p.text)+(p.date?' <small>('+dShort(p.date)+')</small>':'')+'</div>').join(''):'')+
+    (e.drop?'<div><small>Bewusst weglassen: '+esc(e.drop)+'</small></div>':'')+(e.block?'<div><small>Letzte Woche hat dich aufgehalten: '+esc(e.block)+'</small></div>':'')+'</div>';
+}
+async function openWeek(){
+  const n=new Date(),wk=isoWeek(n),mon=new Date(n);mon.setDate(n.getDate()-((n.getDay()+6)%7));mon.setHours(12,0,0,0);
+  const dayOf=(base,i)=>{const d=new Date(base);d.setDate(base.getDate()+i);return ymd(d)};
+  const nm=new Date(mon);nm.setDate(mon.getDate()+7);
+  const cur=[0,1,2,3,4,5,6].map(i=>dayOf(mon,i)),nxt=[0,1,2,3,4,5,6].map(i=>dayOf(nm,i)),LB=['Mo','Di','Mi','Do','Fr','Sa','So'];
+  if(!WKD||WKD.wk!==wk)WKD={wk,step:0,good:'',block:'',dec:{},top:[{text:'',day:-1},{text:'',day:-1},{text:'',day:-1}],drop:'',joy:'',cap:''};
+  const S=WKD;
+  /* Daten */
+  const log=jget(DL_KEY,{}),perDay=cur.map(d=>(log[d]||[]).length),doneAll=[];cur.forEach(d=>(log[d]||[]).forEach(t=>doneAll.push(t)));
+  const pmon=new Date(mon);pmon.setDate(mon.getDate()-7);const prevDone=[0,1,2,3,4,5,6].reduce((a,i)=>a+(log[dayOf(pmon,i)]||[]).length,0);
+  const jr=jget(JR_KEY,{days:[],weeks:[]}),moodBy={};(jr.days||[]).forEach(x=>{if(x.mood)moodBy[x.d]=x.mood});
+  const moods=cur.map(d=>moodBy[d]||0),mv=moods.filter(Boolean);
+  let fmin=0;try{(JSON.parse(localStorage.getItem('planer.fokus')||'{}').log||[]).forEach(e=>{if(e.at&&cur.includes(ymd(new Date(e.at))))fmin+=e.mins||0})}catch(_){}
+  const prevE=(jr.weeks||[]).find(x=>x.id===isoWeek(pmon)),prevPlan=(prevE&&prevE.plan)||[];
+  const hist=Object.keys(log).filter(d=>d<cur[0]).sort().slice(-28).map(d=>log[d].length).filter(Boolean),capDay=hist.length?Math.max(1,Math.round(hist.reduce((a,b)=>a+b,0)/hist.length)):0;
+  const w=D.woche,open=w?w.open:[],stuck=open.filter(x=>daysSince(x.since)>=5).sort((a,b)=>daysSince(b.since)-daysSince(a.since)).slice(0,8);
+  let evs={},tks={};
+  try{evs=await Promise.race([Promise.resolve(P.call('kalender','rangeBrief',nxt[0],nxt[6])),new Promise(r=>setTimeout(()=>r({}),3500))])||{}}catch(_){}
+  try{tks=P.call('woche','loadByDate',nxt[0],nxt[6])||{}}catch(_){}
+  const hrs=e=>{if(e.allDay||!e.tStart)return 0;const a=e.tStart.split(':'),b=(e.tEnd||'').split(':');const s=+a[0]*60+ +a[1],x=b.length===2?+b[0]*60+ +b[1]:s+60;return Math.max(.5,(x-s)/60)};
+  const load=nxt.map(d=>{const e=evs[d]||[],t=tks[d]||[];return{ev:e,tk:t,h:e.reduce((a,x)=>a+hrs(x),0),score:e.reduce((a,x)=>a+hrs(x),0)+e.filter(x=>x.allDay||!x.tStart).length+t.length*.6}});
+  const lightOrder=[0,1,2,3,4].sort((a,b)=>load[a].score-load[b].score),light=lightOrder.slice(0,2),full=[0,1,2,3,4].sort((a,b)=>load[b].score-load[a].score)[0];
+  S.top.forEach((t,i)=>{if(t.day<0)t.day=lightOrder[i%lightOrder.length]});
+  const plannedNext=nxt.reduce((a,d)=>a+(tks[d]||[]).length,0);
+  const keep=()=>{const g=id=>{const e=$(id);return e?e.value.trim():null};
+    let v;if((v=g('wkGood'))!==null)S.good=v;if((v=g('wkBlock'))!==null)S.block=v;if((v=g('wkDrop'))!==null)S.drop=v;if((v=g('wkJoy'))!==null)S.joy=v;if((v=g('wkCap'))!==null)S.cap=$('wkCap').value;
+    sheet.querySelectorAll('.wktop').forEach((e,i)=>{S.top[i].text=e.value.trim()})};
+  const q=(t)=>'<div class="wkq">'+t+'</div>';
+  const loadG=()=>'<div class="wkl">'+load.map((l,i)=>'<div class="wkc'+(i===full&&l.score>0?' full':'')+'"><div class="wks">'+l.ev.slice(0,6).map(()=>'<i class="e"></i>').join('')+l.tk.slice(0,6).map(()=>'<i></i>').join('')+S.top.filter(t=>t.text&&t.day===i).map(()=>'<i class="p"></i>').join('')+'</div><b>'+LB[i]+'</b><small>'+(i===full&&l.score>0?'voll':light.includes(i)?'frei':'&nbsp;')+'</small></div>').join('')+'</div><div class="wkk"><span><i class="e"></i>Termin</span><span><i></i>Aufgabe</span><span><i class="p"></i>Top 3</span></div>';
+  const draw=()=>{
+    const s=S.step;let h='<div class="wkp">'+WKS.map((_,i)=>'<i class="'+(i<s?'d':i===s?'on':'')+'"></i>').join('')+'</div><div class="h-mid" style="margin:0 4px 2px">'+(s+1)+' · '+WKS[s]+'</div>';
+    if(s===0){
+      h+='<p class="kdp">Kalenderwoche '+wk.split('-W')[1]+'. Erst hinschauen, dann bewerten.</p>'+wkBars(perDay,LB,(n.getDay()+6)%7)+
+        '<div class="wkn"><span><b>'+doneAll.length+'</b>erledigt</span><span><b>'+(prevDone||'–')+'</b>Vorwoche</span><span><b>'+(fmin?fmin:'–')+'</b>Min Fokus</span><span><b>'+(mv.length?MOODS[Math.round(mv.reduce((a,b)=>a+b,0)/mv.length)-1]:'–')+'</b>Stimmung</span></div>'+
+        (mv.length?'<div class="wkm">'+moods.map((m,i)=>'<span><em style="height:'+(m?m*7:2)+'px"></em></span>').join('')+'</div><p class="wkh">Stimmung von Montag bis Sonntag</p>':'')+
+        (prevPlan.length?'<div class="lbl">Deine Top 3 der letzten Planung</div><div class="cpbox">'+prevPlan.map(p=>{const ok=doneAll.some(t=>t===p.text);return '<div>'+(ok?'✓':'○')+' '+esc(p.text)+'</div>'}).join('')+'</div>':'')+
+        q('Worauf bist du diese Woche stolz?')+'<textarea class="field kdt" id="wkGood" rows="2" placeholder="Auch Kleines zählt.">'+esc(S.good)+'</textarea>';
+    }else if(s===1){
+      h+='<p class="kdp">Ohne Urteil. Jede Aufgabe bekommt eine Entscheidung.</p>';
+      if(stuck.length){const mxd=Math.max(...stuck.map(x=>daysSince(x.since)));
+        h+=stuck.map(x=>{const ds=daysSince(x.since),d=S.dec[x.id]||'';return '<div class="wka"><b>'+esc(x.text)+'</b><div class="wkb"><i style="width:'+Math.max(6,Math.round(ds/mxd*100))+'%"></i><small>'+ds+' Tage</small></div>'+(ds>=21?'<em>Seit '+Math.floor(ds/7)+' Wochen auf der Liste. Erledigen, delegieren oder streichen.</em>':'')+
+          '<div class="chips">'+[['next','Nächste Woche'],['some','Irgendwann'],['del','Streichen']].map(o=>'<button class="d-chip'+(d===o[0]?' on':'')+'" data-dec="'+x.id+'|'+o[0]+'">'+o[1]+'</button>').join('')+'</div></div>'}).join('')}
+      else h+='<div class="cpbox">Nichts hängt länger als fünf Tage. Sauber!</div>';
+      h+=q('Was hat dich diese Woche aufgehalten?')+'<textarea class="field kdt" id="wkBlock" rows="2" placeholder="Zu viel auf einmal, Unterbrechungen, etwas Unklares …">'+esc(S.block)+'</textarea>';
+    }else if(s===2){
+      const inb=gInbox(),GL=gLists(),stk=(D.proj&&D.proj.stuck)||[],tk=gtd().tickler.length;
+      const gl=(k,t,c,ok)=>'<button class="gwr'+(ok?' ok':'')+'" data-gw="'+k+'"><i>'+(ok?'✓':'')+'</i><span>'+t+'</span><b>'+c+'</b></button>';
+      h+='<p class="kdp">Ein leerer Kopf plant besser. Tippe an, was noch offen ist.</p><div class="cpbox gwb">'+gl('clarify','Eingang leeren',inb.length,!inb.length)+gl('cal','Kalender prüfen: 2 Wochen zurück, 4 voraus','›',false)+gl('next','Nächste Schritte durchgehen',GL.next.length,false)+gl('stuck','Projekte ohne nächsten Schritt',stk.length,!stk.length)+gl('tick','Wiedervorlage ansehen',tk,!tk)+gl('some','Irgendwann / Vielleicht sichten',GL.someday.length,!GL.someday.length)+
+        (stk.length?'<div><small>Ohne nächsten Schritt: '+stk.slice(0,5).map(p=>esc(p.name)).join(', ')+'</small></div>':'')+'</div>'+
+        '<div class="lbl">Warte auf</div><div id="cpWait">'+waitRows(gWaiting())+'</div>'+q('Gibt es etwas, das du abgeben kannst?')+'<input class="field" id="cpWI" placeholder="Worauf wartest du dann?"><div class="spa" style="margin-top:8px"><input class="field" id="cpWW" placeholder="Von wem?" maxlength="40"><button class="d-btn" id="cpWA">+</button></div>';
+    }else if(s===3){
+      const hi=[];nxt.forEach((d,i)=>(evs[d]||[]).slice(0,3).forEach(e=>hi.push(LB[i]+' · '+evLine(e))));
+      h+='<p class="kdp">So sieht die nächste Woche schon aus. Schwarz sind Termine, weiß geplante Aufgaben.</p>'+loadG()+
+        (hi.length?'<div class="lbl">Feste Termine</div><div class="cpbox">'+hi.slice(0,8).map(x=>'<div>'+esc(x)+'</div>').join('')+(hi.length>8?'<div><small>… und '+(hi.length-8)+' weitere</small></div>':'')+'</div>':'<div class="cpbox">Noch keine Termine in der nächsten Woche.</div>')+
+        q('Was muss nächste Woche unbedingt passieren?')+'<p class="wkh">Höchstens drei. Ich schlage die freiesten Tage vor.</p>'+
+        S.top.map((t,i)=>'<input class="field wktop" placeholder="Priorität '+(i+1)+'" value="'+esc(t.text)+'"><div class="chips wkd" data-ti="'+i+'">'+LB.slice(0,5).map((l,j)=>'<button class="d-chip'+(t.day===j?' on':'')+'" data-day="'+j+'">'+l+'</button>').join('')+'</div>').join('');
+    }else if(s===4){
+      const moved=Object.values(S.dec).filter(v=>v==='next').length,tops=S.top.filter(t=>t.text).length,tot=plannedNext+moved+tops,capW=capDay*5;
+      h+='<p class="kdp">Eine gute Woche hat Luft.</p><div class="cpbox"><b>'+tot+(tot===1?' Aufgabe':' Aufgaben')+' für nächste Woche</b><div><small>'+plannedNext+' schon geplant · '+moved+' verschoben · '+tops+' Top-Prioritäten</small></div>'+
+        (capDay?'<div class="wkb" style="margin-top:8px"><i style="width:'+Math.min(100,Math.round(tot/Math.max(1,capW)*100))+'%"></i><small>'+tot+' von etwa '+capW+'</small></div><div><small>Du schaffst im Schnitt '+capDay+' am Tag, also etwa '+capW+' in fünf Tagen.</small></div>'+(tot>capW?'<em>Ehrlich gesagt: Das ist mehr, als du sonst schaffst. Streiche etwas oder verschiebe es.</em>':''):'<div><small>Sobald ich ein paar Wochen kenne, sage ich dir, wie viel realistisch ist.</small></div>')+'</div>'+
+        q('Was lässt du nächste Woche bewusst weg?')+'<input class="field" id="wkDrop" placeholder="Absagen, verschieben, nicht perfekt machen …" value="'+esc(S.drop)+'">'+
+        q('Worauf freust du dich?')+'<input class="field" id="wkJoy" placeholder="Etwas, das dir guttut." value="'+esc(S.joy)+'">'+
+        q('Was schwirrt dir noch im Kopf herum?')+'<textarea class="field kdt" id="wkCap" rows="3" placeholder="Eine Sache pro Zeile. Landet im Eingang.">'+esc(S.cap)+'</textarea>';
+    }else{
+      const mv2=stuck.filter(x=>S.dec[x.id]==='next'),byDay=nxt.map(()=>[]);S.top.filter(t=>t.text).forEach(t=>byDay[t.day].push('★ '+t.text));
+      mv2.forEach((x,i)=>byDay[lightOrder[i%lightOrder.length]].push(x.text));
+      h+='<p class="kdp">Das nimmst du mit in die nächste Woche.</p>'+loadG()+'<div class="cpbox">'+nxt.map((d,i)=>{const l=load[i];if(i>4&&!l.ev.length&&!l.tk.length&&!byDay[i].length)return'';
+        return '<div class="wkr"><b>'+LB[i]+'</b><span>'+(l.ev.length?l.ev.length+(l.ev.length===1?' Termin':' Termine'):'frei')+(l.tk.length?' · '+l.tk.length+' geplant':'')+byDay[i].map(t=>'<br>'+esc(t)).join('')+'</span></div>'}).join('')+'</div>'+
+        (S.drop?'<div class="cpbox"><small>Bewusst weglassen</small><div>'+esc(S.drop)+'</div></div>':'')+(S.joy?'<div class="cpbox"><small>Darauf freust du dich</small><div>'+esc(S.joy)+'</div></div>':'')+
+        '<p class="wkh">Die Top 3 stehen an ihren Tagen bereit und erscheinen in deiner Morgenplanung.</p>';
+    }
+    h+='<div class="row2"><button class="d-btn ghost" id="wkBk"'+(s?'':' disabled')+'>Zurück</button><button class="d-btn primary" id="wkNx">'+(s===WKS.length-1?'Woche abschließen':'Weiter')+'</button></div>';
+    openSheet(h);sheet.classList.add('tall');sheet.scrollTop=0;
+    $('wkBk').onclick=()=>{keep();if(S.step>0){S.step--;draw()}};
+    $('wkNx').onclick=()=>{keep();if(S.step<WKS.length-1){S.step++;gHap();draw()}else finish()};
+    sheet.querySelectorAll('[data-dec]').forEach(b=>b.onclick=()=>{keep();const [id,v]=b.dataset.dec.split('|');S.dec[id]=S.dec[id]===v?'':v;draw()});
+    sheet.querySelectorAll('.wkd').forEach(c=>c.onclick=e=>{const b=e.target.closest('[data-day]');if(!b)return;keep();S.top[+c.dataset.ti].day=+b.dataset.day;draw()});
+    sheet.querySelectorAll('[data-gw]').forEach(b=>b.onclick=()=>{keep();const k=b.dataset.gw;gBack=()=>openWeek();
+      if(k==='clarify')openClarify();else if(k==='next')openNext();else if(k==='tick')openTickler();else if(k==='some')openSomeday();
+      else{gBack=null;closeSheet();try{P.showTab(k==='cal'?'kalender':'projekte')}catch(_){}}});
+    if($('cpWait')){const dw=()=>{$('cpWait').innerHTML=waitRows(gWaiting())};$('cpWait').onclick=e=>waitAct(e,dw);
+      $('cpWA').onclick=()=>{const v=$('cpWI').value.trim();if(!v)return;const wl=jget(WT_KEY,[]);wl.push({id:gid(),text:v,who:$('cpWW').value.trim(),since:ymd(new Date()),done:false});jset(WT_KEY,wl);$('cpWI').value='';$('cpWW').value='';dw()}}
+  };
+  const finish=()=>{
+    const top=S.top.filter(t=>t.text),plan=top.map(t=>({text:t.text,date:nxt[t.day]}));
+    let k=0;for(const x of stuck){const d=S.dec[x.id];try{
+      if(d==='next'){P.call('woche','moveTask',x.id,nxt[lightOrder[k++%lightOrder.length]])}else if(d==='some')P.call('woche','moveTask',x.id,null);else if(d==='del')P.call('woche','deleteTask',x.id)}catch(_){}}
+    if(plan.length){try{P.call('woche','addTasks',plan.map(p=>({text:p.text,size:guessSize(p.text),date:p.date})))}catch(_){}
+      setTimeout(()=>{try{const st=JSON.parse(localStorage.getItem('wochenstapel'));for(const t of st.tasks)if(plan.some(p=>p.text===t.text&&p.date===t.date)&&!t.prio)P.call('woche','togglePrio',t.id)}catch(_){}},400)}
+    const cap=S.cap.split(/\n+/).map(x=>x.trim()).filter(Boolean);try{for(const t of cap)P.call('projekte','capture',t)}catch(_){}
+    const j=jget(JR_KEY,{days:[],weeks:[]});j.weeks=(j.weeks||[]).filter(x=>x.id!==wk);
+    j.weeks.push({id:wk,wk,done:doneAll.length,stuck:stuck.length,good:S.good,block:S.block,drop:S.drop,joy:S.joy,top3:top.map(t=>t.text),plan,at:Date.now()});j.weeks=j.weeks.slice(-30);jset(JR_KEY,j);
+    const c2=cp();c2.week=wk;cpSet(c2);WKD=null;closeSheet();toast(plan.length?'Woche abgeschlossen. Die Top 3 stehen an ihren Tagen bereit.':'Woche abgeschlossen. Schönes Wochenende!');gReload();
+  };
+  draw();
 }
 
 const cap1=t=>t?t.charAt(0).toUpperCase()+t.slice(1):t;

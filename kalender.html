@@ -858,6 +858,9 @@ window.briefing=async function(){
   const ev=d=>(map[d]||[]).filter(x=>x.kind!=='task').map(fmt);
   return {today:ev(t),tomorrow:ev(tm),hol:holOf(t),holTomorrow:holOf(tm),fer:ferOf(t),ferTomorrow:ferOf(tm),google:gOn(),perm:G.perm};
 };
+/* Wochenrückblick: Termine eines Zeitraums je Tag */
+window.rangeBrief=async function(a,b){gInit();await readPlans();readTasks();const map=itemsInRange(a,b),o={};
+  for(const d in map)o[d]=map[d].filter(x=>x.kind!=='task').map(x=>({title:x.title,allDay:!!(x.allDay||(x.len&&x.day>0&&x.day<x.len)),tStart:x.tStart||'',tEnd:x.tEnd||''}));return o};
 window.newEventFrom=function(o){const t=todayS();openEditor(null,t);setTimeout(()=>{if(o&&o.title)$('fTitle').value=o.title;if(o&&o.note)$('fNote').value=o.note},30)};
 window.handleBack=function(){
   if(dlg){dlg.__cancel();return true}

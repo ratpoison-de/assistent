@@ -662,6 +662,7 @@ window.toggleStep=function(id,sid){const t=find(id);if(!t||!t.steps)return null;
 window.moveTask=function(id,date){const t=find(id);if(!t)return false;moveTo(id,date||null);render();return true};
 /* GTD: Kontext je Aufgabe, Liste der nächsten Schritte und „Irgendwann“ */
 window.setCtx=function(id,ctx){const t=find(id);if(!t)return false;t.ctx=ctx||'';save();return true};
+window.loadByDate=function(a,b){load();normalize();const o={};for(const x of state.tasks)if(!x.done&&x.date&&x.date>=a&&x.date<=b)(o[x.date]=o[x.date]||[]).push(x.text);return o};
 window.gtdList=function(){load();normalize();const t=today,lim=addDays(t,6);
   const m=x=>({id:x.id,text:x.text,date:x.date||'',ctx:x.ctx||'',size:x.size||'',prio:!!x.prio,since:x.since||x.date||'',steps:(x.steps||[]).filter(s=>!s.done).length});
   return{next:state.tasks.filter(x=>!x.done&&x.date&&x.date<=lim).sort((a,b)=>a.date.localeCompare(b.date)||a.order-b.order).map(m),
