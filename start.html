@@ -613,6 +613,22 @@ body.epon{overflow:hidden}
 .eph{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-top:6vh}
 .epr{display:inline-flex;align-items:center;gap:14px}
 .epr .eptmp{font-size:22px}
+.epr{gap:8px!important}
+.epbrf{display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:6px;height:36px;padding:0 14px 0 12px;border:1.5px solid #111!important;border-radius:18px!important;background:#fff;color:#111;font:inherit;font-size:14px;font-weight:700}
+.brf{position:fixed;inset:0;z-index:75;font-family:"Assistent Mono",ui-monospace,monospace;background:#fff;color:#111;display:none;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 18px) 20px calc(env(safe-area-inset-bottom,0px) + 100px);box-sizing:border-box;max-width:640px;margin:0 auto}
+.brf.on{display:flex}
+.brh{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex:none}
+.brh h2{margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.1}.brh p{margin:4px 0 0;font-size:14px;color:#555}
+.brx{flex:none;display:grid;place-items:center;padding:0;width:36px;height:36px;border:1.5px solid #111;border-radius:50%;background:#fff;font-size:18px;line-height:1;color:#111}
+.brs{flex:none;margin:12px 0 4px;padding:10px 12px;background:#111;color:#fff;border-radius:10px;font-size:15px;font-weight:700;line-height:1.3}
+.brb{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.brl{flex:none;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;margin:12px 0 2px;padding-bottom:4px;border-bottom:1.5px solid #111;display:flex;justify-content:space-between}
+.bri{flex:none;display:flex;align-items:baseline;gap:10px;padding:7px 0;border-bottom:1px solid #DDD;font-size:15.5px;line-height:1.3}
+.bri i{flex:none;font-style:normal;font-weight:700;min-width:52px;font-size:14px}.bri span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bri small{flex:none;font-size:12px;color:#555}
+.bri.nx span{font-weight:700}.bri .bx{flex:none;align-self:center;width:15px;height:15px;min-width:0;border:1.5px solid #111;border-radius:4px}
+.brm{flex:none;font-size:13px;color:#555;padding:6px 0}
+.brf.sm .bri{font-size:14px;padding:5px 0}.brf.sm .brl{margin-top:8px}.brf.sm .brs{margin-top:8px;padding:8px 12px;font-size:14px}
+.brf.xs .bri{font-size:13px;padding:3px 0}.brf.xs .brh h2{font-size:22px}
 .epset{display:grid;place-items:center;width:36px;height:36px;border:1.5px solid #111!important;border-radius:50%!important}
 .epm{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-top:4vh}
 .epml{flex:1;min-width:0}
@@ -742,10 +758,11 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 3.8<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 3.9<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
+<div class="brf" id="brf" role="dialog" aria-label="Briefing"></div>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
-  <div class="ept"><span class="epl">Assistent</span><span class="epr"><button class="epset" id="epSet" aria-label="Einstellungen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></span></div>
+  <div class="ept"><span class="epl">Assistent</span><span class="epr"><button class="epbrf" id="epBrf"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h8"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>Briefing</button><button class="epset" id="epSet" aria-label="Einstellungen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></span></div>
   <div class="epm"><div class="epml"><h1 id="epG">Hallo.</h1><div class="epd" id="epD"></div><button class="epw" id="epW" aria-label="Wecker öffnen"></button>
     <div class="eptiles" id="epF"></div></div></div>
   <div class="epfc" id="epFc"></div>
@@ -1308,7 +1325,7 @@ window.onResumeApp=function(){lastLoad=0;window.onShow()};
 /* Kurze Rückkehr zum Startbildschirm: nur neu zeichnen, Daten höchstens alle 90 s neu holen */
 window.onResumeLight=function(){startClock();launcherUI();if(Date.now()-lastLoad>90000){lastLoad=Date.now();load()}else render()};
 window.onWeather=function(){render()};
-window.handleBack=function(){if(sheet.classList.contains('on')){closeSheet();return true}if(epVisible)return false;if(document.body.classList.contains('mdopen')){document.body.classList.remove('mdopen');try{P.updateBar()}catch(_){}return true}if(isHM()&&EP_ON()&&!epVisible){epShow();return true}return false};
+window.handleBack=function(){if(sheet.classList.contains('on')){closeSheet();return true}if($('brf').classList.contains('on')){closeBriefing();return true}if(epVisible)return false;if(document.body.classList.contains('mdopen')){document.body.classList.remove('mdopen');try{P.updateBar()}catch(_){}return true}if(isHM()&&EP_ON()&&!epVisible){epShow();return true}return false};
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&ticking)startClock()});
 setInterval(()=>{if(!document.hidden)render()},60000);
 /* ================= Kleine Dinge: Energie, Größen, Schritte, Fokus ================= */
@@ -1614,6 +1631,33 @@ function openRef(){
   };
   draw();
 }
+/* ================= Briefing: heute noch offen, auf einer Seite ohne Scrollen ================= */
+function closeBriefing(){$('brf').classList.remove('on')}
+function openBriefing(){
+  const el=$('brf'),n=new Date(),hm=pad(n.getHours())+':'+pad(n.getMinutes());
+  const evAll=(D.kal&&D.kal.today)||[],ev=evAll.filter(e=>e.allDay||!e.tStart||(e.tEnd||e.tStart)>=hm).sort((a,b)=>(a.allDay||!a.tStart?'00:00':a.tStart).localeCompare(b.allDay||!b.tStart?'00:00':b.tStart));
+  const past=evAll.length-ev.length,nextI=ev.findIndex(e=>!e.allDay&&e.tStart&&e.tStart>=hm);
+  let tk=[];try{tk=kdItems().filter(x=>!x.done&&x.kind!=='g')}catch(_){}
+  tk.sort((a,b)=>(b.prio?1:0)-(a.prio?1:0));
+  const mins=tk.reduce((a,x)=>a+(x.steps&&x.steps.length?x.steps.filter(s=>!s.done).length*estMin('S'):estMin(x.size)),0);
+  const dur=mins>=60?Math.floor(mins/60)+' Std'+(mins%60>=10?' '+Math.round(mins%60/5)*5+' Min':''):mins+' Min';
+  const until=t=>{const a=t.split(':'),m=+a[0]*60+ +a[1]-(n.getHours()*60+n.getMinutes());return m<=0?'läuft':m<60?'in '+m+' Min':'in '+Math.floor(m/60)+' Std'+(m%60?' '+m%60+' Min':'')};
+  const sum=!tk.length&&!ev.length?'Für heute ist alles erledigt. Feierabend!':'Noch '+tk.length+(tk.length===1?' Aufgabe':' Aufgaben')+(tk.length?' (etwa '+dur+')':'')+' und '+ev.length+(ev.length===1?' Termin':' Termine')+'.';
+  const eRow=(e,i)=>'<div class="bri'+(i===nextI?' nx':'')+'"><i>'+(e.allDay||!e.tStart?'ganzt.':e.tStart)+'</i><span>'+esc(e.title)+'</span><small>'+(i===nextI?until(e.tStart):e.tEnd&&!e.allDay?'bis '+e.tEnd:e.loc?esc(e.loc):'')+'</small></div>';
+  const tRow=x=>{const o=x.steps&&x.steps.length?x.steps.filter(s=>!s.done).length:0;return '<div class="bri'+(x.prio?' nx':'')+'"><i class="bx"></i><span>'+esc(x.text)+'</span><small>'+(x.prio?'wichtig · ':'')+(o?o+' Schritte':x.kind==='p'?'Projekt':x.size)+(x.ctx?' · '+esc(ctxName(x.ctx)):'')+'</small></div>'};
+  let ne=ev.length,nt=tk.length;
+  const paint=()=>{
+    el.innerHTML='<div class="brh"><div><h2>Briefing</h2><p>'+WDL[n.getDay()]+', '+n.getDate()+'. '+MON[n.getMonth()]+' · '+hm+' Uhr</p></div><button class="brx" id="brX" aria-label="Schließen">✕</button></div><div class="brs">'+sum+'</div><div class="brb" id="brB">'+
+      '<div class="brl"><span>Termine</span><span>'+ev.length+(past?' · '+past+' vorbei':'')+'</span></div>'+(ev.length?ev.slice(0,ne).map(eRow).join('')+(ne<ev.length?'<div class="brm">+ '+(ev.length-ne)+(ev.length-ne===1?' weiterer Termin':' weitere Termine')+'</div>':''):'<div class="brm">'+(past?'Alle Termine für heute sind vorbei.':'Heute steht kein Termin mehr an.')+'</div>')+
+      '<div class="brl"><span>Aufgaben</span><span>'+tk.length+' offen</span></div>'+(tk.length?tk.slice(0,nt).map(tRow).join('')+(nt<tk.length?'<div class="brm">+ '+(tk.length-nt)+(tk.length-nt===1?' weitere Aufgabe':' weitere Aufgaben')+'</div>':''):'<div class="brm">Keine Aufgabe mehr offen.</div>')+'</div>';
+    $('brX').onclick=closeBriefing};
+  /* Einpassen: erst kleinere Schrift, dann kürzen – nie scrollen */
+  el.className='brf on';paint();
+  const over=()=>{const b=$('brB');return b.scrollHeight>b.clientHeight+1};
+  if(over()){el.classList.add('sm');if(over()){el.classList.add('xs');let g=0;while(over()&&g++<80){if(nt>=ne&&nt>1)nt--;else if(ne>1)ne--;else if(nt>1)nt--;else break;paint()}}}
+  try{P.Native&&P.Native.haptic()}catch(_){}
+}
+window.openBriefing=openBriefing;
 window.openDump=()=>openDump();
 function openDump(){
   let day=0;const over={};
@@ -2203,6 +2247,7 @@ $('ep').addEventListener('click',e=>{
   if(epLp){epLp=false;return}
   const fa=e.target.closest('#epF [data-app]');if(fa){try{L().launch(fa.dataset.app)}catch(_){}return}
   if(e.target.closest('#epF [data-all]')){try{L().openDrawer()}catch(_){}return}
+  if(e.target.closest('#epBrf')){openBriefing();return}
   if(e.target.closest('#epSet')||e.target.closest('#epSet2')){$('bMenu').click();return}
   if(e.target.closest('#epWx')){try{P.showTab('wetter')}catch(_){}return}
   if(e.target.closest('#epDt')){try{P.showTab('kalender')}catch(_){}return}
