@@ -1,5 +1,7 @@
 /* Assistent – E-Paper-Design: schwarz-weiß, Schreibmaschinenschrift, klare Linien.
    Wird von platform.js als letztes Stylesheet in jede Seite geladen (html.epaper). */
+@font-face{font-family:"Assistent Mono";src:url(fonts/mono-200.woff2) format("woff2");font-weight:200;font-display:swap}
+@font-face{font-family:"Assistent Mono";src:url(fonts/mono-300.woff2) format("woff2");font-weight:300;font-display:swap}
 @font-face{font-family:"Assistent Mono";src:url(fonts/mono-400.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Assistent Mono";src:url(fonts/mono-700.woff2) format("woff2");font-weight:700;font-display:swap}
 html.epaper{
@@ -83,3 +85,9 @@ html.epaper body .fk .bt .d-btn.primary{background:#111!important;color:#FFF!imp
   html.epaper body .tabs{background:#FFFFFF!important;border:0!important;border-right:2px solid #111!important}
   html.epaper body .tabs::before{color:#111!important}
 }
+/* Startbildschirm: feinere Schrift (JetBrains Mono Light/ExtraLight) */
+html.epaper body .ep,html.epaper body .ep *{font-weight:300!important}
+html.epaper body .ep .epg,html.epaper body .ep .epw,html.epaper body .ep #epG,html.epaper body .ep #epW{font-weight:200!important}
+html.epaper body .ep b,html.epaper body .ep strong,html.epaper body .ep h2,html.epaper body .ep h3,html.epaper body .ep .epl{font-weight:400!important}
+html.epaper body .brf,html.epaper body .brf *{font-weight:300!important}
+html.epaper body .brf b,html.epaper body .brf h2,html.epaper body .brf .brs,html.epaper body .brf .nx span,html.epaper body .brf .bri i{font-weight:400!important}

@@ -758,7 +758,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 3.9<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 4.0<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="brf" id="brf" role="dialog" aria-label="Briefing"></div>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
@@ -1839,7 +1839,7 @@ function epIcon(name,pkg){const s=String(name||'')+' '+String(pkg||'');for(const
 function epTilesHTML(){
   const f=L()?L().favs():[];
   const T=(attr,ic,label)=>'<button class="tl2" '+attr+'><span class="qi">'+ic+'</span><small>'+esc(label)+'</small></button>';
-  let h=T('data-q="grad"',epIcon('Graduierung'),'Graduierung')+T('data-q="sek"',epIcon('Sekretär'),'Sekretär');
+  let h=T('data-q="grad"',epIcon('Graduierung'),'Graduierung');
   for(const x of f){let p='';try{p=x.k.split('/')[0]}catch(_){}h+=T('data-app="'+esc(x.k)+'"',epIcon(x.name,p),x.name)}
   h+=T('data-all','<svg data-k="apps" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9">'+EPI.apps+'</svg>','Alle Apps');
   return h;
