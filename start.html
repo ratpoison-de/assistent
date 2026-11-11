@@ -614,6 +614,7 @@ body.epon{overflow:hidden}
 .epr{display:inline-flex;align-items:center;gap:14px}
 .epr .eptmp{font-size:22px}
 .epr{gap:8px!important}
+@media (min-width:760px){body.epon .ep>*{width:100%;max-width:680px;margin-left:auto!important;margin-right:auto!important}}
 .epbrf{display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:6px;height:36px;padding:0 14px 0 12px;border:1.5px solid #111!important;border-radius:18px!important;background:#fff;color:#111;font:inherit;font-size:14px;font-weight:700}
 .brf{position:fixed;inset:0;z-index:75;font-family:"Assistent Mono",ui-monospace,monospace;background:#fff;color:#111;display:none;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 18px) 20px calc(env(safe-area-inset-bottom,0px) + 100px);box-sizing:border-box;max-width:640px;margin:0 auto}
 .brf.on{display:flex}
@@ -758,7 +759,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 4.0<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 4.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="brf" id="brf" role="dialog" aria-label="Briefing"></div>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
@@ -1284,7 +1285,7 @@ $('bMenu').onclick=()=>{
     (P&&P.Native&&P.Native.companion?'<button class="opt" id="oCp"><span><b>Morgen- und Abendhinweis</b><small>Morgens dein Tag auf einen Blick, abends die Einladung zum Rückblick</small></span><span class="sw'+(cp().times.on?' on':'')+'"></span></button><div class="nudt'+(cp().times.on?'':' hidden')+'" id="oCpT"><span>Morgens</span><input type="time" id="oCpM" value="'+cp().times.m+'"><span>Abends</span><input type="time" id="oCpE" value="'+cp().times.e+'"></div>':'')+
     
     (P&&P.Native&&P.Native.setLockWallpaper?'<button class="opt" id="oLockWp"><span><b>Sperrbildschirm im E-Paper-Stil</b><small>Hintergrundbild mit Datum, Wetter-Zeichnung, nächstem Termin und nächster Aufgabe – aktualisiert sich selbst</small></span><span class="sw'+(LOCK_ON()?' on':'')+'"></span></button>':'')+
-    (homeMode?'<button class="opt" id="oEp"><span><b>Ruhiger Startbildschirm</b><small>Schwarz-weiß wie E-Paper: Uhrzeit, Wetter, nächster Termin und nächste Aufgabe</small></span><span class="sw'+(EP_ON()?' on':'')+'"></span></button>':'')+
+    ((homeMode||EPW())?'<button class="opt" id="oEp"><span><b>Ruhiger Startbildschirm</b><small>Schwarz-weiß wie E-Paper: Uhrzeit, Wetter, nächster Termin und nächste Aufgabe</small></span><span class="sw'+(EP_ON()?' on':'')+'"></span></button>':'')+
     (L()?'<button class="opt" id="oHome"><span><b>Als Startbildschirm verwenden</b><small>'+(homeMode?'Aktiv – die Home-Taste führt zu Mein Tag und deinen Apps':'Mein Tag und deine Apps direkt auf dem Startbildschirm – tippen zum Festlegen')+'</small></span>'+(homeMode?'<span class="sw on"></span>':'')+'</button>':'')+
     (homeMode?'<button class="opt" id="oLock"><span><b>Doppeltippen sperrt das Handy</b><small>'+(L().lockOn()?'Eingeschaltet · in den Bedienungshilfen änderbar':'Einmal in den Bedienungshilfen einschalten')+'</small></span><span class="sw'+(L().lockOn()?' on':'')+'"></span></button>'+
       '<button class="opt" id="oKb"><span><b>Tastatur bei „Alle Apps“ öffnen</b><small>Sofort lostippen, um eine App zu suchen</small></span><span class="sw'+(L().opt('kb')!==false?' on':'')+'"></span></button>':'')+
@@ -1824,6 +1825,8 @@ const EPI={
  contact:'<circle cx="12" cy="9" r="3.5"/><path d="M5 20c1-4 4-5.5 7-5.5s6 1.5 7 5.5"/>',
  files:'<path d="M3 7h6l2 2h10v10H3z"/>',
  car:'<path d="M5 16V11l2-4.5h10L19 11v5M3.5 16h17M7 19v-3M17 19v-3"/><circle cx="8" cy="13" r=".7"/><circle cx="16" cy="13" r=".7"/>',
+ cloud:'<path d="M7 18h10a4 4 0 0 0 .5-8 6 6 0 0 0-11.5 1.5A3.3 3.3 0 0 0 7 18z"/>',
+ board:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h4v4H7zM14 8h3M14 11h3M7 15h10"/>',
  apps:'<rect x="3.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="2.5"/>'
 };
 const EPRULES=[[/telefon|dialer|phone/i,'phone'],[/threema|signal/i,'lockchat'],[/whatsapp|messag|sms|telegram|chat/i,'chat'],[/kamera|camera/i,'camera'],
@@ -1840,6 +1843,9 @@ function epTilesHTML(){
   const f=L()?L().favs():[];
   const T=(attr,ic,label)=>'<button class="tl2" '+attr+'><span class="qi">'+ic+'</span><small>'+esc(label)+'</small></button>';
   let h=T('data-q="grad"',epIcon('Graduierung'),'Graduierung');
+  if(!L()){const I=k=>'<svg data-k="'+k+'" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+EPI[k]+'</svg>';
+    for(const [t,k,n] of [['woche','note','Woche'],['kalender','cal','Kalender'],['projekte','files','Projekte'],['mail','mail','Mail'],['pinnwand','board','Pinnwand']])h+=T('data-tab="'+t+'"',I(k),n);
+    return h}
   for(const x of f){let p='';try{p=x.k.split('/')[0]}catch(_){}h+=T('data-app="'+esc(x.k)+'"',epIcon(x.name,p),x.name)}
   h+=T('data-all','<svg data-k="apps" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9">'+EPI.apps+'</svg>','Alle Apps');
   return h;
@@ -2229,8 +2235,10 @@ function epFit(){const el=$('ep');if(!el||!epVisible)return;
   el.classList.remove('f1','f2','f3','f4','f5');
   for(const c of ['f1','f2','f3','f4','f5']){if(el.scrollHeight<=el.clientHeight+1)break;el.classList.add(c)}}
 addEventListener('resize',()=>setTimeout(epFit,50));
+/* Windows und Web haben keinen Launcher: dort ist der ruhige Startbildschirm einfach die Startseite */
+function EPW(){try{return !L()}catch(_){return true}}
 function epShow(){
-  if(!isHM()||!EP_ON()){epHide();return}
+  if((!isHM()&&!EPW())||!EP_ON()){epHide();return}
   epVisible=true;document.body.classList.add('epon');try{P.setEpaper&&P.setEpaper(true)}catch(_){}epRender();
 }
 function epHide(){
@@ -2248,6 +2256,7 @@ $('ep').addEventListener('click',e=>{
   const fa=e.target.closest('#epF [data-app]');if(fa){try{L().launch(fa.dataset.app)}catch(_){}return}
   if(e.target.closest('#epF [data-all]')){try{L().openDrawer()}catch(_){}return}
   if(e.target.closest('#epBrf')){openBriefing();return}
+  {const tb=e.target.closest('#epF [data-tab]');if(tb){try{P.showTab(tb.dataset.tab)}catch(_){}return}}
   if(e.target.closest('#epSet')||e.target.closest('#epSet2')){$('bMenu').click();return}
   if(e.target.closest('#epWx')){try{P.showTab('wetter')}catch(_){}return}
   if(e.target.closest('#epDt')){try{P.showTab('kalender')}catch(_){}return}
@@ -2279,7 +2288,7 @@ function favsHTML(){
 function launcherUI(){
   const l=L();let on=false;try{on=!!(l&&l.isHome())}catch(e){}
   const first=on&&!homeMode&&!window.__epInit;homeMode=on;document.body.classList.toggle('home',on);
-  if(on&&EP_ON())setTimeout(epShow,0);if(!on)epHide();
+  if((on||EPW())&&EP_ON())setTimeout(epShow,0);if(!on&&!EPW())epHide();
   $('lclock').classList.toggle('hidden',!on);$('favs').classList.toggle('hidden',!on);
   if(on){lclock();$('favs').innerHTML=favsHTML()}
   fit();
