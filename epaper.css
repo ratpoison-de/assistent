@@ -100,3 +100,5 @@ html.epaper body .ep .rw b,html.epaper body .ep .rw .rtab,html.epaper body .ep .
 html.epaper body .ep #epW{letter-spacing:.02em!important}
 html.epaper body.onstart{background:#B9B5A9!important}
 html.epaper:not(.col){filter:grayscale(1) sepia(.5) brightness(.94) contrast(1.06)}
+/* Startbildschirm am Handy: die Leiste sitzt im Fenster-Widget, unten bleibt frei */
+@media (max-width:899px){html.epaper body.onstart .tabs,html.epaper body.onstart .magic{display:none!important}html.epaper body.onstart .frames{bottom:0!important}}

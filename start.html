@@ -655,6 +655,17 @@ body.epon .ep{background:#B9B5A9!important;padding:14px 16px calc(14px + env(saf
 .rdr{display:grid;grid-template-columns:30px 22px 1fr auto 38px 38px;align-items:center;gap:6px;padding:3.5px 0;font-size:11px}
 .rdr b{font-weight:700!important}.rdr span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700!important}.rdr small{font-size:9px;color:#3F7FB5;white-space:nowrap}
 .rdr .lo{text-align:right;color:#3F7FB5;font-weight:700!important}.rdr .hi{text-align:right;color:#C9412F;font-weight:700!important}
+/* Bereiche: die frühere untere Leiste sitzt jetzt im Fenster */
+.rnav{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:7px 8px 8px;border-top:2.5px solid #111;background:#E2DDCC}
+.ep .rnav button{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;font-size:8.5px;color:#111}
+.rnav .ni{display:grid;place-items:center;width:100%;max-width:40px;aspect-ratio:1;background:var(--rc);border:2px solid #111;border-bottom-width:3.5px;border-radius:24%}
+.rnav .ni svg{width:20px;height:20px;stroke-width:2.4;stroke-linecap:square;stroke-linejoin:miter;shape-rendering:crispEdges}
+.rnav button:active .ni{background:#111;transform:translateY(1.5px);border-bottom-width:2px}.rnav button:active svg{color:var(--rc)}
+.rnav .mg .ni{background:#111}.rnav .mg svg{color:var(--ro)}
+.rnav em{position:absolute;top:-4px;right:0;min-width:15px;height:15px;padding:0 3px;border:1.5px solid #111;border-radius:8px;background:var(--ro);font-style:normal;font-size:9px;font-weight:700;line-height:12px;text-align:center}
+.rnav span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.ep.f3 .rnav span{display:none}
+@media (min-width:900px){.rnav{display:none}}
 /* Kacheln im Pixel-Stil */
 .ep .eptiles{grid-template-columns:repeat(5,1fr)!important;gap:10px 6px!important;margin-top:14px!important}
 .ep .tl2 .qi{width:min(56px,14vw)!important;height:min(56px,14vw)!important;background:var(--rc);border:2.5px solid #111!important;border-bottom-width:4.5px!important;border-radius:24%!important}
@@ -669,7 +680,7 @@ body.epon .ep{background:#B9B5A9!important;padding:14px 16px calc(14px + env(saf
 .ep.f3 .epa span{display:none}.ep.f3 .rwx .i small{display:none}.ep.f4 .tl2 small{display:none}.ep.f5 .epa{display:none}
 @media (min-width:760px){.ep .eptiles{grid-template-columns:repeat(6,1fr)!important}}
 .epbrf{display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:6px;height:36px;padding:0 14px 0 12px;border:1.5px solid #111!important;border-radius:18px!important;background:#fff;color:#111;font:inherit;font-size:14px;font-weight:700}
-.brf{position:fixed;inset:0;z-index:75;font-family:"Assistent Mono",ui-monospace,monospace;background:#fff;color:#111;display:none;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 18px) 20px calc(env(safe-area-inset-bottom,0px) + 100px);box-sizing:border-box;max-width:640px;margin:0 auto}
+.brf{position:fixed;inset:0;z-index:75;font-family:"Assistent Mono",ui-monospace,monospace;background:#fff;color:#111;display:none;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 18px) 20px calc(env(safe-area-inset-bottom,0px) + 22px);box-sizing:border-box;max-width:640px;margin:0 auto}
 .brf.on{display:flex}
 .brh{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex:none}
 .brh h2{margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.1}.brh p{margin:4px 0 0;font-size:14px;color:#555}
@@ -812,7 +823,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 5.0<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 5.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="brf" id="brf" role="dialog" aria-label="Briefing"></div>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
@@ -827,6 +838,7 @@ body.epon .scrim{z-index:79}
     </div>
     <div class="rp" id="rpAgenda" hidden></div>
     <div class="rp" id="rpWetter" hidden></div>
+    <div class="rnav" id="rwNav"></div>
   </div>
   <div class="eptiles" id="epF"></div>
   <div class="epfc" id="epFc" hidden></div>
@@ -2302,7 +2314,17 @@ async function rwAgenda(){
   if(Date.now()-rAgAt<120000&&rAg)return;rAgAt=Date.now();
   try{const a=ymd(new Date()),b=plusDays(13);const r=await Promise.race([Promise.resolve(P.call('kalender','rangeBrief',a,b)),new Promise(x=>setTimeout(()=>x(null),3500))]);if(r){rAg=r;if(epVisible&&rTab==='agenda')rwPaint(weather())}}catch(_){}
 }
+const RNAV=[['woche','Woche'],['kalender','Kalender'],['projekte','Projekte'],['mail','Mail'],['pinnwand','Pinnwand'],['wetter','Wetter']];
+function rwNav(){
+  const el=$('rwNav');if(!el)return;let h='';
+  for(const [t,n] of RNAV){let svg='',bd='';try{const b=P.document.querySelector('.tab[data-t="'+t+'"]');svg=b.querySelector('svg').outerHTML;const g=b.querySelector('.bdg');if(g&&g.textContent.trim()&&getComputedStyle(g).display!=='none')bd='<em>'+esc(g.textContent.trim())+'</em>'}catch(_){}
+    h+='<button data-nav="'+t+'" aria-label="'+n+'"><span class="ni">'+svg+'</span>'+bd+'<span>'+n+'</span></button>'}
+  let ms='';try{ms=P.document.getElementById('magic').querySelector('svg').outerHTML}catch(_){}
+  h+='<button data-nav="dump" class="mg" aria-label="Kopf leeren"><span class="ni">'+ms+'</span><span>Sammeln</span></button>';
+  if(el.__h!==h){el.innerHTML=h;el.__h=h}
+}
 function rwPaint(w){
+  try{rwNav()}catch(_){}
   const n=new Date(),cur=w&&w.data&&w.data.current,day=w&&w.data&&w.data.daily,hr=w&&w.data&&w.data.hourly,td=ymd(n);
   let i0=day&&day.time?day.time.indexOf(td):-1;if(i0<0)i0=0;
   const night=cur?cur.is_day===0:false,kind=cur?wxKind(cur.weather_code):'cloud';
@@ -2383,6 +2405,7 @@ $('ep').addEventListener('click',e=>{
     return}
   if(e.target.closest('[data-epapps]')){try{P.Launcher.openDrawer()}catch(_){}return}
   if(e.target.closest('[data-epassist]')){epHide();try{P.Native&&P.Native.haptic()}catch(_){}return}
+  {const nv=e.target.closest('#rwNav [data-nav]');if(nv){try{P.Native&&P.Native.haptic()}catch(_){}if(nv.dataset.nav==='dump')openDump();else try{P.showTab(nv.dataset.nav)}catch(_){}return}}
   {const rt=e.target.closest('#rw .rtab[data-rt]');if(rt){rTab=rt.dataset.rt;try{P.Native&&P.Native.haptic()}catch(_){}epRender();return}}
   if(e.target.closest('#epE')){rTab='agenda';epRender();return}
   if(e.target.closest('#rwWx')){rTab='wetter';epRender();return}
