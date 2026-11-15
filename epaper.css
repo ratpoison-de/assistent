@@ -5,7 +5,7 @@
 @font-face{font-family:"Assistent Mono";src:url(fonts/mono-400.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Assistent Mono";src:url(fonts/mono-700.woff2) format("woff2");font-weight:700;font-display:swap}
 html.epaper{
-  --bg:#FFFFFF;--card:#FFFFFF;--ink:#111111;--mute:#4A463E;--line:#111111;--soft:#FFFFFF;--soft2:#F2F2F2;
+  --bg:#FFFFFF;--card:#FFFFFF;--ink:#111111;--mute:#555555;--line:#111111;--soft:#FFFFFF;--soft2:#F2F2F2;
   --accent:#111111;--accent-2:#333333;--accent-ink:#FFFFFF;--accent-soft:#EDEDED;--grad:#111111;
   --danger:#111111;--ok:#111111;--warn:#111111;--v:#111;--v2:#333;--vd:#000;--lav:#EDEDED;--lav2:#DDD;--vgrad:#FFFFFF;
   --green:#111;--yellow:#111;--blue:#111;--pink:#111;--orange:#111;--grey:#555;
