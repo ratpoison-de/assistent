@@ -615,6 +615,59 @@ body.epon{overflow:hidden}
 .epr .eptmp{font-size:22px}
 .epr{gap:8px!important}
 @media (min-width:760px){body.epon .ep>*{width:100%;max-width:680px;margin-left:auto!important;margin-right:auto!important}}
+/* ===== Retro-Fenster: Home · Agenda · Wetter ===== */
+body.epon .ep{background:#B9B5A9!important;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px))!important;--rc:#EFEBDC;--ro:#E8622A;--rm:#4A463E}
+.rw{flex:none;background:var(--rc);border:2.5px solid #111;border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.rwt{display:flex;align-items:center;gap:3px;height:30px;padding:0 6px;border-bottom:2.5px solid #111;background:var(--rc)}
+.rwb{display:inline-flex;gap:4px;flex:none;margin-right:2px}.rwb i{width:11px;height:11px;border:2px solid #111;border-radius:2px;display:block}
+.rwb .r{background:#E2574C}.rwb .y{background:#E9B93A}.rwb .g{background:#57B05A}
+.rwg{flex:none;width:6px;height:16px;background:repeating-linear-gradient(90deg,#111 0 1.5px,transparent 1.5px 3px)}
+.ep .rtab{flex:none;height:19px;padding:0 6px!important;font-size:10.5px;font-weight:700!important;letter-spacing:.01em;border-radius:3px!important;color:#111;line-height:19px}
+.ep .rtab.on{background:#111!important;color:var(--rc)!important}
+.rwl{flex:1;min-width:6px;height:15px;background:repeating-linear-gradient(180deg,#111 0 1.5px,transparent 1.5px 3.5px)}
+.ep .rset{flex:none;display:grid;place-items:center;width:22px;height:22px}
+.rp{display:flex;flex-direction:column}.rp[hidden]{display:none}
+.rblk{background:#111;padding:8px 12px 10px;text-align:center}
+.ep #epW{display:block;width:100%;margin:0;text-align:center!important;font-size:clamp(62px,23vw,104px)!important;line-height:1;font-weight:700!important;letter-spacing:.02em;color:transparent!important;background:repeating-linear-gradient(180deg,var(--ro) 0 3px,rgba(232,98,42,.18) 3px 5px)!important;-webkit-background-clip:text!important;background-clip:text!important}
+.ep .epd{margin:2px 0 0;font-size:11.5px;color:var(--ro);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rstr{height:8px;background:linear-gradient(180deg,var(--ro) 0 3px,var(--rc) 3px 4.5px,var(--ro) 4.5px 6px,var(--rc) 6px 7px,var(--ro) 7px 8px)}
+.ep .rwx{display:flex;align-items:center;gap:8px;width:100%;padding:10px 12px 9px!important}
+.rwx svg{flex:none}.rwx .t{font-size:30px;font-weight:700!important;line-height:1;letter-spacing:-.02em}
+.rwx .i{flex:1;min-width:0;text-align:right;display:flex;flex-direction:column;gap:1px}
+.rwx .i b{font-size:13px;font-weight:700!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rwx .i span{font-size:11.5px;font-weight:700!important}
+.rwx .i small{font-size:9.5px;color:var(--rm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rwx .i small em{font-style:normal;color:#3F7FB5}
+.ep .epe{display:flex!important;flex-direction:row!important;align-items:center;gap:10px;background:none!important;color:#111!important;border-radius:0!important;border-top:1.5px solid #111!important;margin:0 12px;width:auto!important;padding:10px 0 11px!important}
+.epe .l{flex:1;min-width:0;border-left:3px solid #111;padding-left:8px;display:flex;flex-direction:column;gap:2px}
+.ep .epe b{font-size:13.5px;font-weight:700!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ep .epe span{font-size:10px;font-weight:700!important;opacity:1;color:#111}
+.epe .w{flex:none;font-size:13px;font-weight:700!important;color:var(--ro);white-space:nowrap}
+.rhd{background:#111;color:var(--rc);display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px}
+.rhd b{font-size:17px;font-weight:700!important;display:flex;align-items:center;gap:7px;white-space:nowrap}.rhd svg *{stroke:var(--rc)}
+.rhd .x{text-align:right;font-size:11.5px;font-weight:700!important;line-height:1.35;min-width:0}.rhd .x small{display:block;font-size:9.5px;font-weight:400!important}.rhd .x .hi{color:#F08A7A}.rhd .x .lo{color:#8CC0E8}
+.rag{display:flex;flex-direction:column;padding:4px 12px 6px}
+.ep .rar{display:flex;align-items:center;gap:10px;padding:7px 0;width:100%;border-bottom:1px solid #CFC9B8!important}.ep .rar:last-child{border-bottom:0!important}
+.rar .l{flex:1;min-width:0;border-left:3px solid #111;padding-left:8px;display:flex;flex-direction:column;gap:1px}
+.rar b{font-size:12.5px;font-weight:700!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rar span{font-size:9.5px;font-weight:700!important}
+.rar .w{flex:none;font-size:10.5px;color:var(--rm);white-space:nowrap}.rar.rnx b{font-size:13.5px}.rar.rnx .w{color:var(--ro);font-size:13px;font-weight:700!important}
+.rem{padding:16px 12px;font-size:12px;color:var(--rm);text-align:center}
+.rhr{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;padding:8px 8px 6px;border-bottom:1.5px solid #111}
+.rhr div{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:9px}.rhr b{font-size:12px;font-weight:700!important}.rhr small{font-size:8.5px;color:#3F7FB5}
+.rdl{display:flex;flex-direction:column;padding:4px 12px 6px}
+.rdr{display:grid;grid-template-columns:30px 22px 1fr auto 38px 38px;align-items:center;gap:6px;padding:3.5px 0;font-size:11px}
+.rdr b{font-weight:700!important}.rdr span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700!important}.rdr small{font-size:9px;color:#3F7FB5;white-space:nowrap}
+.rdr .lo{text-align:right;color:#3F7FB5;font-weight:700!important}.rdr .hi{text-align:right;color:#C9412F;font-weight:700!important}
+/* Kacheln im Pixel-Stil */
+.ep .eptiles{grid-template-columns:repeat(5,1fr)!important;gap:10px 6px!important;margin-top:14px!important}
+.ep .tl2 .qi{width:min(56px,14vw)!important;height:min(56px,14vw)!important;background:var(--rc);border:2.5px solid #111!important;border-bottom-width:4.5px!important;border-radius:24%!important}
+.ep .tl2 .qi svg{width:28px;height:28px;stroke-width:2.5;stroke-linecap:square;stroke-linejoin:miter;shape-rendering:crispEdges}
+.ep .tl2 .qi .mono{font-size:16px;font-weight:700!important}
+.ep .tl2:active .qi{background:#111!important;border-bottom-width:2.5px!important;transform:translateY(2px)}
+.ep .tl2 small{font-size:9.5px!important;color:#111}
+.ep .epa{margin-top:auto!important;background:var(--rc);border:2.5px solid #111!important;border-bottom-width:4.5px!important;border-radius:14px!important;padding:9px 14px!important}
+.ep .epa small{color:var(--ro);font-weight:700!important}.ep .epa b{font-weight:700!important}
+.ep .eptiles+.epfc+.epa{margin-top:auto!important}
+.ep.f1 #epW{font-size:clamp(54px,19vw,84px)!important}.ep.f2 .eptiles{gap:7px 6px!important;margin-top:10px!important}.ep.f2 .tl2 .qi{width:min(50px,12.5vw)!important;height:min(50px,12.5vw)!important}
+.ep.f3 .epa span{display:none}.ep.f3 .rwx .i small{display:none}.ep.f4 .tl2 small{display:none}.ep.f5 .epa{display:none}
+@media (min-width:760px){.ep .eptiles{grid-template-columns:repeat(6,1fr)!important}}
 .epbrf{display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:6px;height:36px;padding:0 14px 0 12px;border:1.5px solid #111!important;border-radius:18px!important;background:#fff;color:#111;font:inherit;font-size:14px;font-weight:700}
 .brf{position:fixed;inset:0;z-index:75;font-family:"Assistent Mono",ui-monospace,monospace;background:#fff;color:#111;display:none;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 18px) 20px calc(env(safe-area-inset-bottom,0px) + 100px);box-sizing:border-box;max-width:640px;margin:0 auto}
 .brf.on{display:flex}
@@ -759,15 +812,24 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 4.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 5.0<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="brf" id="brf" role="dialog" aria-label="Briefing"></div>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
-  <div class="ept"><span class="epl">Assistent</span><span class="epr"><button class="epbrf" id="epBrf"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h8"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>Briefing</button><button class="epset" id="epSet" aria-label="Einstellungen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></span></div>
-  <div class="epm"><div class="epml"><h1 id="epG">Hallo.</h1><div class="epd" id="epD"></div><button class="epw" id="epW" aria-label="Wecker öffnen"></button>
-    <div class="eptiles" id="epF"></div></div></div>
-  <div class="epfc" id="epFc"></div>
-  <button class="epe" id="epE"></button>
+  <div class="rw" id="rw">
+    <div class="rwt"><span class="rwb"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="rwg"></span>
+      <button class="rtab on" data-rt="home">Home</button><button class="rtab" data-rt="agenda">Agenda</button><button class="rtab" data-rt="wetter">Wetter</button><button class="rtab rbr" id="epBrf">Briefing</button>
+      <span class="rwl"></span><button class="rset" id="epSet" aria-label="Einstellungen"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="square"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3.5M12 18v3.5M2.5 12H6M18 12h3.5M5.3 5.3l2.4 2.4M16.3 16.3l2.4 2.4M5.3 18.7l2.4-2.4M16.3 7.7l2.4-2.4"/></svg></button></div>
+    <div class="rp" id="rpHome">
+      <div class="rblk"><button class="epw" id="epW" aria-label="Wecker öffnen"></button><div class="epd" id="epD"></div><h1 id="epG" hidden></h1></div><div class="rstr"></div>
+      <button class="rwx" id="rwWx"></button>
+      <button class="epe" id="epE"></button>
+    </div>
+    <div class="rp" id="rpAgenda" hidden></div>
+    <div class="rp" id="rpWetter" hidden></div>
+  </div>
+  <div class="eptiles" id="epF"></div>
+  <div class="epfc" id="epFc" hidden></div>
   <button class="epa" id="epA"></button>
   <div class="epf" hidden><button data-epapps><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><rect x="3.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="2.5"/></svg>Apps</button><button data-epassist>Assistent<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button></div>
 </section>
@@ -865,7 +927,7 @@ function landscapeOld(){
   try{P&&P.updateBar&&P.updateBar()}catch(e){}
 }
 function landscape(){try{P&&P.updateBar&&P.updateBar()}catch(e){}}
-window.skyTop=function(){let ep=false;try{ep=epVisible}catch(_){}if(document.documentElement.classList.contains('aqua'))return{color:'#9AC0E7',dark:true,nav:'#5682B9'};if(document.documentElement.classList.contains('glass'))return{color:'#F3F4F6',dark:false,nav:'#DFE2E6'};if(ep||document.documentElement.classList.contains('epaper'))return{color:'#FFFFFF',dark:false,nav:'#FFFFFF'};return{color:document.body.classList.contains('mdopen')?'#9AD6FB':'#86CEFA',dark:false}};
+window.skyTop=function(){let ep=false;try{ep=epVisible}catch(_){}if(document.documentElement.classList.contains('aqua'))return{color:'#9AC0E7',dark:true,nav:'#5682B9'};if(document.documentElement.classList.contains('glass'))return{color:'#F3F4F6',dark:false,nav:'#DFE2E6'};if(ep)return{color:'#B9B5A9',dark:false,nav:'#B9B5A9'};if(document.documentElement.classList.contains('epaper'))return{color:'#EFEBDC',dark:false,nav:'#EFEBDC'};return{color:document.body.classList.contains('mdopen')?'#9AD6FB':'#86CEFA',dark:false}};
 
 /* ================= Uhr ================= */
 (function buildClock(){
@@ -1827,6 +1889,20 @@ const EPI={
  car:'<path d="M5 16V11l2-4.5h10L19 11v5M3.5 16h17M7 19v-3M17 19v-3"/><circle cx="8" cy="13" r=".7"/><circle cx="16" cy="13" r=".7"/>',
  cloud:'<path d="M7 18h10a4 4 0 0 0 .5-8 6 6 0 0 0-11.5 1.5A3.3 3.3 0 0 0 7 18z"/>',
  board:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h4v4H7zM14 8h3M14 11h3M7 15h10"/>',
+ book:'<path d="M4 5h7v15H4zM13 5h7v15h-7z"/><path d="M6.5 9h2M6.5 12h2M15.5 9h2M15.5 12h2"/>',
+ tv:'<rect x="3" y="7" width="18" height="12"/><path d="M8 3l4 4 4-4M7 11h6M7 14h4"/>',
+ heart:'<path d="M12 20l-8-7.5V7l3-3h2.5L12 6.5 14.5 4H17l3 3v5.5z"/>',
+ key:'<circle cx="8" cy="12" r="4"/><path d="M12 12h9M17 12v4M20.5 12v3"/>',
+ game:'<rect x="3" y="8" width="18" height="9" rx="2"/><path d="M7 11v3M5.5 12.5h3M15.5 11.5h.5M18 13.5h.5"/>',
+ mic:'<rect x="9" y="3" width="6" height="11" rx="2"/><path d="M5.5 11v1.5a6.5 6.5 0 0 0 13 0V11M12 19v2.5M8.5 21.5h7"/>',
+ chart:'<path d="M4 4v16h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/>',
+ bolt:'<path d="M13 3L5 13.5h6L10 21l8-10.5h-6z"/>',
+ house:'<path d="M3.5 11L12 4l8.5 7M5.5 9.5V20h13V9.5M10 20v-6h4v6"/>',
+ lang:'<path d="M3 6h9M7.5 4v2M5 6c.5 4 3 6.5 6 7.5M10 6c-.5 3.5-3 6.5-6 8"/><path d="M13 20l3.5-9 3.5 9M14.3 17h4.4"/>',
+ wallet:'<rect x="3" y="6" width="18" height="13" rx="1.5"/><path d="M3 10h18M15.5 14.5h2.5"/>',
+ pen:'<path d="M4 20l1-4.5L16.5 4l3.5 3.5L8.5 19z"/><path d="M14 6.5l3.5 3.5"/>',
+ run:'<circle cx="14.5" cy="5" r="1.8"/><path d="M6 12l3.5-3 3.5 1 2 3 3.5 1M13 10l-2 5 3 2.5V21M11 15l-2.5 2.5H5"/>',
+ list:'<rect x="4" y="3.5" width="16" height="17"/><path d="M8 8h.5M11 8h5M8 12h.5M11 12h5M8 16h.5M11 16h5"/>',
  apps:'<rect x="3.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="2.5"/>'
 };
 const EPRULES=[[/telefon|dialer|phone/i,'phone'],[/threema|signal/i,'lockchat'],[/whatsapp|messag|sms|telegram|chat/i,'chat'],[/kamera|camera/i,'camera'],
@@ -1835,7 +1911,12 @@ const EPRULES=[[/telefon|dialer|phone/i,'phone'],[/threema|signal/i,'lockchat'],
  [/kalender|calendar/i,'cal'],[/einstellung|settings/i,'gear'],[/youtube|netflix|video|mediathek|zdf|ard/i,'play'],[/foto|photo|galerie|gallery|bilder/i,'photo'],
  [/amazon|shop|ebay|einkauf|kaufland|lidl|rewe/i,'cart'],[/db |db navigator|bahn|vrn|ticket/i,'train'],[/sekret|notiz|note|keep|docs/i,'note'],[/graduier/i,'stairs'],
  [/zeitung|news|tagesschau|heute|spiegel|feedly/i,'news'],[/bank|sparkasse|volksbank|paypal|finanz/i,'bank'],[/uhr|clock|wecker/i,'clock'],[/rechner|calculator/i,'calc'],
- [/kontakt|contacts/i,'contact'],[/dateien|files|drive|dropbox/i,'files'],[/vw|volkswagen|we connect|auto|charge|laden/i,'car']];
+ [/kontakt|contacts/i,'contact'],[/dateien|files|drive|dropbox/i,'files'],[/vw|volkswagen|we connect|auto|charge|laden/i,'car'],
+ [/leser|kindle|buch|book|tolino|onleihe|libby|pocket$|readwise/i,'book'],[/videotext|teletext|tv|fernseh|magenta|waipu|zattoo/i,'tv'],[/health|gesund|fit|puls|herz/i,'heart'],
+ [/passwor|authent|bitwarden|1password|keepass|schlüssel/i,'key'],[/spiel|game|play games|chess|schach/i,'game'],[/recorder|aufnahme|diktier|plaud|wispr|voice/i,'mic'],
+ [/aktie|depot|trade|statist|analytics|numbers/i,'chart'],[/pv|solar|energie|strom|tibber|shelly|fronius|sma/i,'bolt'],[/home assistant|smart ?home|hue|homematic|alexa/i,'house'],
+ [/übersetz|translate|deepl|leo|duolingo|vokabel/i,'lang'],[/wallet|pay|geldbörse|karte/i,'wallet'],[/zeichn|draw|sketch|canva|paint/i,'pen'],[/sport|strava|komoot|lauf|wander|run/i,'run'],
+ [/aufgabe|todo|to-do|tasks|planer|wochenstapel|einkaufsliste|orivo/i,'list']];
 function epIcon(name,pkg){const s=String(name||'')+' '+String(pkg||'');for(const [re,k] of EPRULES)if(re.test(s))return '<svg data-k="'+k+'" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+EPI[k]+'</svg>';
   const m=String(name||'?').replace(/[^A-Za-zÄÖÜäöü0-9 ]/g,'').trim().split(/\s+/);const t=(m.length>1?m[0][0]+m[1][0]:String(m[0]||'?').slice(0,2)).toUpperCase();
   return '<b class="mono">'+esc(t)+'</b>'}
@@ -2209,17 +2290,52 @@ async function openWeek(){
 }
 
 const cap1=t=>t?t.charAt(0).toUpperCase()+t.slice(1):t;
+/* ---------- Fenster-Widget: Reiter, Wetterzeile, Agenda, Wetter ---------- */
+let rTab='home',rAg=null,rAgAt=0;
+const RWI=(k,sz)=>'<svg width="'+sz+'" height="'+sz+'" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="miter" shape-rendering="crispEdges">'+(WXI[k]||WXI.cloud||'')+'</svg>';
+const rwTxt=c=>{const t=(typeof WTXT!=='undefined'&&WTXT[c])||'';return t?t.charAt(0).toUpperCase()+t.slice(1):'Wetter'};
+function rwRel(dd,e){
+  if(e.allDay||!e.tStart)return dd===0?'heute':dd===1?'morgen':'in '+dd+' Tagen';
+  const a=e.tStart.split(':'),n=new Date(),m=dd*1440+(+a[0]*60+ +a[1])-(n.getHours()*60+n.getMinutes());
+  if(m<=0)return 'läuft';if(m<60)return 'in '+m+' Min';if(m<24*60)return 'in '+Math.round(m/60)+' Std';const d=Math.round(m/1440);return 'in '+d+(d===1?' Tag':' Tagen')}
+async function rwAgenda(){
+  if(Date.now()-rAgAt<120000&&rAg)return;rAgAt=Date.now();
+  try{const a=ymd(new Date()),b=plusDays(13);const r=await Promise.race([Promise.resolve(P.call('kalender','rangeBrief',a,b)),new Promise(x=>setTimeout(()=>x(null),3500))]);if(r){rAg=r;if(epVisible&&rTab==='agenda')rwPaint(weather())}}catch(_){}
+}
+function rwPaint(w){
+  const n=new Date(),cur=w&&w.data&&w.data.current,day=w&&w.data&&w.data.daily,hr=w&&w.data&&w.data.hourly,td=ymd(n);
+  let i0=day&&day.time?day.time.indexOf(td):-1;if(i0<0)i0=0;
+  const night=cur?cur.is_day===0:false,kind=cur?wxKind(cur.weather_code):'cloud';
+  document.querySelectorAll('#rw .rtab[data-rt]').forEach(b=>b.classList.toggle('on',b.dataset.rt===rTab));
+  $('rpHome').hidden=rTab!=='home';$('rpAgenda').hidden=rTab!=='agenda';$('rpWetter').hidden=rTab!=='wetter';
+  /* Home: Wetterzeile */
+  $('rwWx').innerHTML=cur?RWI(kind,34)+'<span class="t">'+Math.round(cur.temperature_2m)+'°C</span><span class="i"><b>'+esc(rwTxt(cur.weather_code))+'</b>'+(day?'<span>'+Math.round(day.temperature_2m_min[i0])+'° – '+Math.round(day.temperature_2m_max[i0])+'°</span>':'')+'<small>'+esc(w.place||'')+' · <em>'+(cur.precipitation||0).toLocaleString('de-DE')+' mm</em> · '+Math.round(cur.wind_speed_10m||0)+' km/h</small></span>':RWI('cloud',30)+'<span class="i" style="text-align:left"><b>Wetter</b><small>Tippen, um den Standort freizugeben</small></span>';
+  if(rTab==='agenda'){
+    rwAgenda();const rows=[];
+    if(rAg){Object.keys(rAg).sort().forEach(d=>{const dd=Math.round((new Date(d+'T12:00:00')-new Date(td+'T12:00:00'))/864e5);(rAg[d]||[]).forEach(e=>{if(dd===0&&!e.allDay&&e.tStart&&(e.tEnd||e.tStart)<two(n.getHours())+':'+two(n.getMinutes()))return;rows.push({dd,e,d})})})}
+    else if(D.kal){(D.kal.today||[]).forEach(e=>rows.push({dd:0,e,d:td}));(D.kal.tomorrow||[]).forEach(e=>rows.push({dd:1,e,d:plusDays(1)}))}
+    rows.sort((a,b)=>a.dd-b.dd||String(a.e.allDay||!a.e.tStart?'00:00':a.e.tStart).localeCompare(String(b.e.allDay||!b.e.tStart?'00:00':b.e.tStart)));
+    const lab=r=>(r.dd===0?'Heute':r.dd===1?'Morgen':WD[new Date(r.d+'T12:00:00').getDay()]+' '+(+r.d.slice(8))+'.'+(+r.d.slice(5,7))+'.')+' '+(r.e.allDay||!r.e.tStart?'ganztägig':r.e.tStart);
+    $('rpAgenda').innerHTML='<div class="rhd"><b><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="square"><rect x="3.5" y="5" width="17" height="15.5"/><path d="M3.5 10h17M8.5 3v4M15.5 3v4"/></svg>'+n.getDate()+'. '+MON[n.getMonth()].slice(0,3)+'. '+n.getFullYear()+'</b>'+(cur?'<b>'+Math.round(cur.temperature_2m)+'°C</b>':'')+'</div><div class="rstr"></div>'+
+      (rows.length?'<div class="rag">'+rows.slice(0,6).map((r,i)=>'<button class="rar'+(i===0?' rnx':'')+'" data-ag><span class="l"><b>'+esc(r.e.title)+'</b><span>'+lab(r)+'</span></span><span class="w">'+rwRel(r.dd,r.e)+'</span></button>').join('')+'</div>':'<div class="rem">In den nächsten zwei Wochen steht kein Termin an.</div>');
+  }
+  if(rTab==='wetter'){
+    if(!cur){$('rpWetter').innerHTML='<div class="rhd"><b>Wetter</b></div><div class="rstr"></div><button class="rem" data-wx style="width:100%">Tippen, um den Standort freizugeben</button>';return}
+    let hh='';if(hr&&hr.time){const nowK=td+'T'+two(n.getHours())+':00';let h0=hr.time.indexOf(nowK);if(h0<0)h0=0;for(let i=h0+1;i<hr.time.length&&i<=h0+11;i+=2){const rp=hr.precipitation_probability?hr.precipitation_probability[i]:0;hh+='<div>'+hr.time[i].slice(11,16)+RWI(wxKind(hr.weather_code[i]),20)+'<b>'+Math.round(hr.temperature_2m[i])+'°</b><small>'+(rp>=20?rp+'%':'&nbsp;')+'</small></div>'}}
+    let dl='';if(day&&day.time)for(let i=i0+1;i<day.time.length&&i<=i0+6;i++){const dt=new Date(day.time[i]+'T12:00:00'),mm=day.precipitation_sum?day.precipitation_sum[i]:0;dl+='<div class="rdr"><b>'+WD[dt.getDay()]+'</b>'+RWI(wxKind(day.weather_code[i]),18)+'<span>'+esc(rwTxt(day.weather_code[i]))+'</span><small>'+(mm?mm.toLocaleString('de-DE')+' mm':'')+'</small><span class="lo">'+Math.round(day.temperature_2m_min[i])+'°</span><span class="hi">'+Math.round(day.temperature_2m_max[i])+'°</span></div>'}
+    $('rpWetter').innerHTML='<div class="rhd"><b>'+RWI(kind,24).replace('stroke="#111"','')+Math.round(cur.temperature_2m)+'°C</b><span class="x">'+esc(rwTxt(cur.weather_code))+(day?' <span class="hi">'+Math.round(day.temperature_2m_max[i0])+'°</span> <span class="lo">'+Math.round(day.temperature_2m_min[i0])+'°</span>':'')+'<small>'+esc(w.place||'')+' · '+(cur.precipitation||0).toLocaleString('de-DE')+' mm · '+Math.round(cur.wind_speed_10m||0)+' km/h</small></span></div><div class="rstr"></div>'+(hh?'<div class="rhr" data-wx>'+hh+'</div>':'')+(dl?'<div class="rdl" data-wx>'+dl+'</div>':'');
+  }
+}
 function epRender(){
   const el=$('ep');if(!el)return;
   const n=new Date(),p=part(n.getHours()),w=weather();
   const cur=w&&w.data&&w.data.current;
-  $('epG').innerHTML=esc(GREET[p])+',<br>'+esc(NAME)+'.';
-  $('epD').textContent=n.getDate()+'. '+MON[n.getMonth()]+' '+n.getFullYear();
+  $('epD').textContent=WDL[n.getDay()]+', '+n.getDate()+'. '+MON[n.getMonth()]+' · '+GREET[p]+(NAME?', '+NAME:'');
   try{$('epF').innerHTML=epTilesHTML()}catch(_){}
-  try{epForecast()}catch(_){}
   $('epW').textContent=two(n.getHours())+':'+two(n.getMinutes());
   const ev=epNextEvent();
-  $('epE').innerHTML=ev?'<b>'+esc(ev.e.title)+'</b><span>'+ev.day+' · '+(ev.e.allDay||!ev.e.tStart?'ganztägig':ev.e.tStart+(ev.e.tEnd?'–'+ev.e.tEnd:''))+(ev.e.loc?' · '+esc(ev.e.loc):'')+'</span>':'<b>Keine Termine</b><span>Heute und morgen ist der Kalender frei</span>';
+  $('epE').innerHTML=ev?'<span class="l"><b>'+esc(ev.e.title)+'</b><span>'+ev.day+' '+(ev.e.allDay||!ev.e.tStart?'ganztägig':ev.e.tStart)+(ev.e.loc?' · '+esc(ev.e.loc):'')+'</span></span><span class="w">'+rwRel(ev.day==='Morgen'?1:0,ev.e)+'</span>':'<span class="l"><b>Keine Termine</b><span>Heute und morgen ist der Kalender frei</span></span>';
+  try{rwPaint(w)}catch(_){}
   let nx=null;try{nx=dayPlan().now[0]}catch(_){}
   const f=fState();
   let cc=null;try{cc=f?null:companionCard()}catch(_){}
@@ -2267,7 +2383,11 @@ $('ep').addEventListener('click',e=>{
     return}
   if(e.target.closest('[data-epapps]')){try{P.Launcher.openDrawer()}catch(_){}return}
   if(e.target.closest('[data-epassist]')){epHide();try{P.Native&&P.Native.haptic()}catch(_){}return}
-  if(e.target.closest('#epE')){epHide();try{P.showTab('kalender')}catch(_){}return}
+  {const rt=e.target.closest('#rw .rtab[data-rt]');if(rt){rTab=rt.dataset.rt;try{P.Native&&P.Native.haptic()}catch(_){}epRender();return}}
+  if(e.target.closest('#epE')){rTab='agenda';epRender();return}
+  if(e.target.closest('#rwWx')){rTab='wetter';epRender();return}
+  if(e.target.closest('[data-ag]')||e.target.closest('#rpAgenda')){try{P.showTab('kalender')}catch(_){}return}
+  if(e.target.closest('#rpWetter')){try{P.showTab('wetter')}catch(_){}return}
   if(e.target.closest('#epA')&&$('epA').dataset.act){companionOpen($('epA').dataset.act);return}
   if(e.target.closest('#epA')){if(fState()){try{P.Fokus.open()}catch(_){}}else startNext();return}
   if(e.target.closest('#epB')||e.target.closest('#epW')){try{P.Launcher.openClock()}catch(_){}return}

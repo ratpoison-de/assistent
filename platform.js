@@ -6,7 +6,9 @@
   window.ASSISTENT_PLATFORM=plat;
   /* Design: nur noch E-Paper */
   try{
-    document.documentElement.classList.add('epaper');if(plat==='android')document.documentElement.classList.add('nat');
+    document.documentElement.classList.add('epaper');
+    /* Start und Hülle zeigen Farbe (Orange-Akzent); die übrigen Bereiche bleiben einfarbig auf warmem Papier */
+    if(/(^|\/)(index\.html|start\.html)?$/.test(location.pathname))document.documentElement.classList.add('col');if(plat==='android')document.documentElement.classList.add('nat');
     var add=function(){if(document.getElementById('epcss'))return;var l=document.createElement('link');l.id='epcss';l.rel='stylesheet';l.href='epaper.css';document.head.appendChild(l)};
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add);else add();
   }catch(e){}
