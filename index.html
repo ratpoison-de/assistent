@@ -227,7 +227,7 @@ function showTab(t,payload){
   for(const x of TABS)frame(x).classList.toggle('on',x===t);
   /* Wechsel wie flüssiges Glas: der alte Bereich löst sich auf, der neue taucht aus der Unschärfe auf */
   try{const nf=frame(t);if(prevT&&prevT!==nf&&loaded[t]){for(const f of document.querySelectorAll('.frames iframe'))f.classList.remove('lq','lqo');
-    void nf.offsetWidth;nf.classList.add('lq');prevT.classList.add('lqo');clearTimeout(window.__lq);window.__lq=setTimeout(()=>{nf.classList.remove('lq');prevT.classList.remove('lqo')},560)}}catch(e){}
+    void nf.offsetWidth;nf.classList.add('lq');prevT.classList.add('lqo');clearTimeout(window.__lq);window.__lq=setTimeout(()=>{nf.classList.remove('lq');prevT.classList.remove('lqo')},300)}}catch(e){}
   document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
   syncBar();
   ensure(t).then(()=>{call(t,'onShow');syncBar();

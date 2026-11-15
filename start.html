@@ -626,19 +626,16 @@ body.epon .ep{background:#FFFFFF!important;padding:8px 6px calc(10px + env(safe-
 .ep .rtab{position:relative;z-index:1;transition:color .28s ease}
 .ep .rtab.on{background:none!important;color:#fff!important}
 .rwt{position:relative}
-.rind{position:absolute;top:50%;left:0;height:19px;margin-top:-9.5px;width:0;background:#111;border-radius:4px;pointer-events:none;transition:left .46s cubic-bezier(.3,1.45,.45,1),width .46s cubic-bezier(.3,1.45,.45,1)}
-.rind.mv{animation:rindSq .46s cubic-bezier(.3,1,.4,1)}
-@keyframes rindSq{0%{transform:scale(1)}35%{transform:scale(1.22,.74);border-radius:9px}70%{transform:scale(.96,1.08)}100%{transform:scale(1)}}
-.rp.lqp{animation:lqPane .5s cubic-bezier(.2,1,.3,1) both;transform-origin:50% 0}
-@keyframes lqPane{0%{opacity:0;transform:scale(.94) translateY(8px);filter:blur(12px)}55%{opacity:1;transform:scale(1.012);filter:blur(1px)}100%{opacity:1;transform:none;filter:none}}
-.rw.lqh{transition:height .46s cubic-bezier(.3,1.3,.4,1);will-change:height}
-@media (prefers-reduced-motion:reduce){.rind,.rw.lqh{transition:none}.rind.mv,.rp.lqp{animation:none}}
+.rind{position:absolute;top:50%;left:0;height:19px;margin-top:-9.5px;width:60px;background:#111;border-radius:4px;pointer-events:none;transform-origin:0 50%;transition:transform .34s cubic-bezier(.3,1.35,.45,1);will-change:transform}
+.rp.lqp{animation:lqPane .32s cubic-bezier(.2,.9,.3,1) both;transform-origin:50% 0;will-change:transform,opacity}
+@keyframes lqPane{0%{opacity:0;transform:translate3d(0,10px,0) scale(.97)}60%{opacity:1;transform:translate3d(0,-1px,0) scale(1.004)}100%{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.rind{transition:none}.rp.lqp{animation:none}}
 .rwl{flex:1;min-width:6px;height:15px;background:repeating-linear-gradient(180deg,#111 0 1.5px,transparent 1.5px 3.5px)}
 .ep .rset{flex:none;display:grid;place-items:center;width:22px;height:22px}
 .rp{display:flex;flex-direction:column}.rp[hidden]{display:none}
 .rblk{background:#fff;padding:8px 12px 10px;text-align:center}
-.ep #epW{display:block;width:100%;margin:0;text-align:center!important;font-size:clamp(62px,23vw,104px)!important;line-height:1;font-weight:700!important;letter-spacing:.02em;color:transparent!important;background:repeating-linear-gradient(180deg,var(--ro) 0 3px,rgba(255,74,0,.16) 3px 5px)!important;-webkit-background-clip:text!important;background-clip:text!important}
-.ep .epd{margin:2px 0 0;font-size:11.5px;color:var(--ro);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ep #epW{display:block;width:100%;margin:0;text-align:center!important;font-size:clamp(62px,23vw,104px)!important;line-height:1;font-weight:700!important;letter-spacing:.02em;color:transparent!important;background:repeating-linear-gradient(180deg,#111 0 3px,rgba(17,17,17,.16) 3px 5px)!important;-webkit-background-clip:text!important;background-clip:text!important}
+.ep .epd{margin:2px 0 0;font-size:11.5px;color:#111;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rstr{height:8px;background:linear-gradient(180deg,var(--ro) 0 3px,var(--rc) 3px 4.5px,var(--ro) 4.5px 6px,var(--rc) 6px 7px,var(--ro) 7px 8px)}
 .ep .rwx{display:flex;align-items:center;gap:8px;width:100%;padding:10px 12px 9px!important}
 .rwx svg{flex:none}.rwx .t{font-size:30px;font-weight:700!important;line-height:1;letter-spacing:-.02em}
@@ -648,7 +645,7 @@ body.epon .ep{background:#FFFFFF!important;padding:8px 6px calc(10px + env(safe-
 .ep .epe{display:flex!important;flex-direction:row!important;align-items:center;gap:10px;background:none!important;color:#111!important;border-radius:0!important;border-top:1.5px solid #111!important;margin:0 12px;width:auto!important;padding:10px 0 11px!important}
 .epe .l{flex:1;min-width:0;border-left:3px solid #111;padding-left:8px;display:flex;flex-direction:column;gap:2px}
 .ep .epe b{font-size:13.5px;font-weight:700!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ep .epe span{font-size:10px;font-weight:700!important;opacity:1;color:#111}
-.epe .w{flex:none;font-size:13px;font-weight:700!important;color:var(--ro);white-space:nowrap}
+.epe .w{flex:none;font-size:13px;font-weight:700!important;color:#111;white-space:nowrap}
 .rhd{background:#fff;color:#111;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px}
 .rhd b{font-size:17px;font-weight:700!important;display:flex;align-items:center;gap:7px;white-space:nowrap}.rhd svg *{stroke:#111}
 .rhd .x{text-align:right;font-size:11.5px;font-weight:700!important;line-height:1.35;min-width:0}.rhd .x small{display:block;font-size:9.5px;font-weight:400!important}.rhd .x .hi{color:#C9412F}.rhd .x .lo{color:#3F7FB5}
@@ -656,7 +653,7 @@ body.epon .ep{background:#FFFFFF!important;padding:8px 6px calc(10px + env(safe-
 .ep .rar{display:flex;align-items:center;gap:10px;padding:7px 0;width:100%;border-bottom:1px solid #DDDDDD!important}.ep .rar:last-child{border-bottom:0!important}
 .rar .l{flex:1;min-width:0;border-left:3px solid #111;padding-left:8px;display:flex;flex-direction:column;gap:1px}
 .rar b{font-size:12.5px;font-weight:700!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rar span{font-size:9.5px;font-weight:700!important}
-.rar .w{flex:none;font-size:10.5px;color:var(--rm);white-space:nowrap}.rar.rnx b{font-size:13.5px}.rar.rnx .w{color:var(--ro);font-size:13px;font-weight:700!important}
+.rar .w{flex:none;font-size:10.5px;color:var(--rm);white-space:nowrap}.rar.rnx b{font-size:13.5px}.rar.rnx .w{color:#111;font-size:13px;font-weight:700!important}
 .rem{padding:16px 12px;font-size:12px;color:var(--rm);text-align:center}
 .rhr{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;padding:8px 8px 6px;border-bottom:1.5px solid #111}
 .rhr div{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:9px}.rhr b{font-size:12px;font-weight:700!important}.rhr small{font-size:8.5px;color:#3F7FB5}
@@ -683,7 +680,7 @@ body.epon .ep{background:#FFFFFF!important;padding:8px 6px calc(10px + env(safe-
 .ep .tl2:active .qi{background:#111!important;border-bottom-width:2.5px!important;transform:translateY(2px)}
 .ep .tl2 small{font-size:9.5px!important;color:#111}
 .ep .epa{margin-top:auto!important;background:var(--rc);border:2.5px solid #111!important;border-bottom-width:4.5px!important;border-radius:14px!important;padding:9px 14px!important}
-.ep .epa small{color:var(--ro);font-weight:700!important}.ep .epa b{font-weight:700!important}
+.ep .epa small{color:#111;font-weight:700!important}.ep .epa b{font-weight:700!important}
 .ep .eptiles+.epfc+.epa{margin-top:auto!important}
 .ep.f1 #epW{font-size:clamp(54px,19vw,84px)!important}.ep.f2 .eptiles{gap:7px 6px!important;margin-top:10px!important}.ep.f2 .tl2 .qi{width:min(50px,12.5vw)!important;height:min(50px,12.5vw)!important}
 .ep.f3 .epa span{display:none}.ep.f3 .rwx .i small{display:none}.ep.f4 .tl2 small{display:none}.ep.f5 .epa{display:none}
@@ -832,7 +829,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 5.4<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 5.5<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="brf" id="brf" role="dialog" aria-label="Briefing"></div>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
@@ -2316,16 +2313,11 @@ let rTab='home',rAg=null,rAgAt=0,rPrev='home';
 /* Wechsel wie flüssiges Glas: Markierung gleitet und dehnt sich, Inhalt taucht aus der Unschärfe auf, das Fenster federt auf die neue Höhe */
 function rwSwitch(t){
   if(t===rTab){epRender();return}
-  const rw=$('rw'),h0=rw.offsetHeight;rTab=t;epRender();
-  try{const pane=$(t==='home'?'rpHome':t==='agenda'?'rpAgenda':'rpWetter'),ind=$('rInd');
-    pane.classList.remove('lqp');void pane.offsetWidth;pane.classList.add('lqp');
-    ind.classList.remove('mv');void ind.offsetWidth;ind.classList.add('mv');
-    rw.style.height='';const h1=rw.offsetHeight;
-    if(h0!==h1){rw.style.height=h0+'px';void rw.offsetHeight;rw.classList.add('lqh');rw.style.height=h1+'px';
-      clearTimeout(rw.__t);rw.__t=setTimeout(()=>{rw.classList.remove('lqh');rw.style.height='';try{epFit()}catch(_){}},520)}
-  }catch(_){}
+  rTab=t;epRender();
+  try{const pane=$(t==='home'?'rpHome':t==='agenda'?'rpAgenda':'rpWetter');pane.classList.remove('lqp');void pane.offsetWidth;pane.classList.add('lqp');
+    clearTimeout(pane.__t);pane.__t=setTimeout(()=>pane.classList.remove('lqp'),380)}catch(_){}
 }
-function rwInd(){try{const b=document.querySelector('#rw .rtab.on[data-rt]'),i=$('rInd');if(b&&i){i.style.left=b.offsetLeft+'px';i.style.width=b.offsetWidth+'px'}}catch(_){}}
+function rwInd(){try{const b=document.querySelector('#rw .rtab.on[data-rt]'),i=$('rInd');if(b&&i){i.style.transform='translate3d('+b.offsetLeft+'px,0,0) scaleX('+(b.offsetWidth/60)+')'}}catch(_){}}
 const RWI=(k,sz)=>'<svg width="'+sz+'" height="'+sz+'" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="miter" shape-rendering="crispEdges">'+(WXI[k]||WXI.cloud||'')+'</svg>';
 const rwTxt=c=>{const t=(typeof WTXT!=='undefined'&&WTXT[c])||'';return t?t.charAt(0).toUpperCase()+t.slice(1):'Wetter'};
 function rwRel(dd,e){

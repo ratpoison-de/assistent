@@ -102,10 +102,10 @@ html.epaper body.onstart{background:#FFFFFF!important}
 html.epaper:not(.col){filter:grayscale(1)}
 /* Startbildschirm am Handy: die Leiste sitzt im Fenster-Widget, unten bleibt frei */
 @media (max-width:899px){html.epaper body.onstart .tabs,html.epaper body.onstart .magic{display:none!important}html.epaper body.onstart .frames{bottom:0!important}}
-/* Bereichswechsel wie flüssiges Glas */
-html.epaper .frames iframe.lq{animation:lqIn .52s cubic-bezier(.2,1,.3,1) both;transform-origin:50% 55%;z-index:2;will-change:transform,filter,opacity}
-html.epaper .frames iframe.lqo{visibility:visible!important;animation:lqOut .34s cubic-bezier(.4,0,.8,.4) both;transform-origin:50% 55%;z-index:1;pointer-events:none}
-@keyframes lqIn{0%{opacity:0;transform:scale(.9);filter:blur(16px);border-radius:44px}50%{opacity:1;transform:scale(1.014);filter:blur(1.5px);border-radius:18px}100%{opacity:1;transform:none;filter:blur(0);border-radius:0}}
-@keyframes lqOut{0%{opacity:1;transform:none;filter:blur(0)}100%{opacity:0;transform:scale(1.07);filter:blur(14px)}}
-html.epaper body .tab{transition:background .32s ease,color .32s ease,flex-grow .4s cubic-bezier(.3,1.4,.45,1)}
+/* Bereichswechsel: leicht – nur Deckkraft und Skalierung, keine Unschärfe */
+html.epaper .frames iframe.lq{animation:lqIn .26s cubic-bezier(.2,.9,.3,1) both;transform-origin:50% 50%;z-index:2;will-change:transform,opacity}
+html.epaper .frames iframe.lqo{visibility:visible!important;animation:lqOut .18s ease-out both;z-index:1;pointer-events:none;will-change:opacity}
+@keyframes lqIn{0%{opacity:0;transform:translate3d(0,0,0) scale(.965)}100%{opacity:1;transform:translate3d(0,0,0) scale(1)}}
+@keyframes lqOut{0%{opacity:1}100%{opacity:0}}
+html.epaper body .tab{transition:background .2s ease,color .2s ease}
 @media (prefers-reduced-motion:reduce){html.epaper .frames iframe.lq,html.epaper .frames iframe.lqo{animation:none}}
