@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
-<meta name="theme-color" content="#EFEBDC">
+<meta name="theme-color" content="#FFFFFF">
 <style>
 :root{--tab:72px;--sb:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -286,7 +286,7 @@ function syncBar(){
   try{let ep=false;try{ep=!!call('start','epIsOn')}catch(e){}document.body.classList.toggle('onstart',active==='start'&&ep)}catch(e){}
   if(!N||!N.setBars)return;
   let c='#FFFFFF',dark=false;
-  let nav=document.documentElement.classList.contains('epaper')?'#EFEBDC':'#F1F2F5';if(document.documentElement.classList.contains('epaper'))c='#EFEBDC';
+  let nav=document.documentElement.classList.contains('epaper')?'#FFFFFF':'#F1F2F5';if(document.documentElement.classList.contains('epaper'))c='#FFFFFF';
   if(document.documentElement.classList.contains('glass')){c='#F3F4F6';nav='#DFE2E6';dark=false}
   if(document.documentElement.classList.contains('aqua')){c='#9AC0E7';nav='#5682B9';dark=true}
   if(active==='start'){const s=call('start','skyTop');if(s){c=s.color;dark=s.dark;if(s.nav)nav=s.nav}}

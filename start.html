@@ -616,7 +616,7 @@ body.epon{overflow:hidden}
 .epr{gap:8px!important}
 @media (min-width:760px){body.epon .ep>*{width:100%;max-width:680px;margin-left:auto!important;margin-right:auto!important}}
 /* ===== Retro-Fenster: Home · Agenda · Wetter ===== */
-body.epon .ep{background:#B9B5A9!important;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px))!important;--rc:#EFEBDC;--ro:#E8622A;--rm:#4A463E}
+body.epon .ep{background:#FFFFFF!important;padding:8px 6px calc(10px + env(safe-area-inset-bottom,0px))!important;--rc:#F3EFE2;--ro:#FF4A00;--rm:#4A463E}
 .rw{flex:none;background:var(--rc);border:2.5px solid #111;border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
 .rwt{display:flex;align-items:center;gap:3px;height:30px;padding:0 6px;border-bottom:2.5px solid #111;background:var(--rc)}
 .rwb{display:inline-flex;gap:4px;flex:none;margin-right:2px}.rwb i{width:11px;height:11px;border:2px solid #111;border-radius:2px;display:block}
@@ -628,7 +628,7 @@ body.epon .ep{background:#B9B5A9!important;padding:14px 16px calc(14px + env(saf
 .ep .rset{flex:none;display:grid;place-items:center;width:22px;height:22px}
 .rp{display:flex;flex-direction:column}.rp[hidden]{display:none}
 .rblk{background:#111;padding:8px 12px 10px;text-align:center}
-.ep #epW{display:block;width:100%;margin:0;text-align:center!important;font-size:clamp(62px,23vw,104px)!important;line-height:1;font-weight:700!important;letter-spacing:.02em;color:transparent!important;background:repeating-linear-gradient(180deg,var(--ro) 0 3px,rgba(232,98,42,.18) 3px 5px)!important;-webkit-background-clip:text!important;background-clip:text!important}
+.ep #epW{display:block;width:100%;margin:0;text-align:center!important;font-size:clamp(62px,23vw,104px)!important;line-height:1;font-weight:700!important;letter-spacing:.02em;color:transparent!important;background:repeating-linear-gradient(180deg,var(--ro) 0 3px,rgba(255,74,0,.2) 3px 5px)!important;-webkit-background-clip:text!important;background-clip:text!important}
 .ep .epd{margin:2px 0 0;font-size:11.5px;color:var(--ro);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rstr{height:8px;background:linear-gradient(180deg,var(--ro) 0 3px,var(--rc) 3px 4.5px,var(--ro) 4.5px 6px,var(--rc) 6px 7px,var(--ro) 7px 8px)}
 .ep .rwx{display:flex;align-items:center;gap:8px;width:100%;padding:10px 12px 9px!important}
@@ -667,8 +667,8 @@ body.epon .ep{background:#B9B5A9!important;padding:14px 16px calc(14px + env(saf
 .ep.f3 .rnav span{display:none}
 @media (min-width:900px){.rnav{display:none}}
 /* Kacheln im Pixel-Stil */
-.ep .eptiles{grid-template-columns:repeat(5,1fr)!important;gap:10px 6px!important;margin-top:14px!important}
-.ep .tl2 .qi{width:min(56px,14vw)!important;height:min(56px,14vw)!important;background:var(--rc);border:2.5px solid #111!important;border-bottom-width:4.5px!important;border-radius:24%!important}
+.ep .eptiles{grid-template-columns:repeat(5,1fr)!important;gap:10px 4px!important;margin-top:14px!important;padding:0 2px}
+.ep .tl2 .qi{width:min(62px,15.5vw)!important;height:min(62px,15.5vw)!important;background:var(--rc);border:2.5px solid #111!important;border-bottom-width:4.5px!important;border-radius:24%!important}
 .ep .tl2 .qi svg{width:28px;height:28px;stroke-width:2.5;stroke-linecap:square;stroke-linejoin:miter;shape-rendering:crispEdges}
 .ep .tl2 .qi .mono{font-size:16px;font-weight:700!important}
 .ep .tl2:active .qi{background:#111!important;border-bottom-width:2.5px!important;transform:translateY(2px)}
@@ -823,7 +823,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 5.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 5.2<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="brf" id="brf" role="dialog" aria-label="Briefing"></div>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
@@ -939,7 +939,7 @@ function landscapeOld(){
   try{P&&P.updateBar&&P.updateBar()}catch(e){}
 }
 function landscape(){try{P&&P.updateBar&&P.updateBar()}catch(e){}}
-window.skyTop=function(){let ep=false;try{ep=epVisible}catch(_){}if(document.documentElement.classList.contains('aqua'))return{color:'#9AC0E7',dark:true,nav:'#5682B9'};if(document.documentElement.classList.contains('glass'))return{color:'#F3F4F6',dark:false,nav:'#DFE2E6'};if(ep)return{color:'#B9B5A9',dark:false,nav:'#B9B5A9'};if(document.documentElement.classList.contains('epaper'))return{color:'#EFEBDC',dark:false,nav:'#EFEBDC'};return{color:document.body.classList.contains('mdopen')?'#9AD6FB':'#86CEFA',dark:false}};
+window.skyTop=function(){let ep=false;try{ep=epVisible}catch(_){}if(document.documentElement.classList.contains('aqua'))return{color:'#9AC0E7',dark:true,nav:'#5682B9'};if(document.documentElement.classList.contains('glass'))return{color:'#F3F4F6',dark:false,nav:'#DFE2E6'};if(ep||document.documentElement.classList.contains('epaper'))return{color:'#FFFFFF',dark:false,nav:'#FFFFFF'};return{color:document.body.classList.contains('mdopen')?'#9AD6FB':'#86CEFA',dark:false}};
 
 /* ================= Uhr ================= */
 (function buildClock(){
