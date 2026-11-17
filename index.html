@@ -232,6 +232,8 @@ function showTab(t,payload){
   syncBar();
   ensure(t).then(()=>{call(t,'onShow');syncBar();
     if(payload&&payload.task)call('woche','openTaskById',payload.task);
+    if(payload&&payload.list!=null)call('woche','openList',payload.list);
+    if(payload&&payload.plan)call('woche','startPlanning');
     if(payload&&payload.card)call('pinnwand','openCardById',payload.card);
     if(payload&&(payload.msgid||payload.compose||payload.triage))call('mail','openFromShell',payload);
     if(payload&&payload.newEvent)call('kalender','newEventFrom',payload.newEvent);
@@ -290,7 +292,7 @@ function syncBar(){
   try{let ep=false;try{ep=!!call('start','epIsOn')}catch(e){}document.body.classList.toggle('onstart',active==='start'&&ep)}catch(e){}
   if(!N||!N.setBars)return;
   let c='#FFFFFF',dark=false;
-  let nav=document.documentElement.classList.contains('epaper')?'#FFFFFF':'#F1F2F5';if(document.documentElement.classList.contains('epaper'))c='#FFFFFF';
+  let nav='#F1F2F5';if(document.documentElement.classList.contains('dl')){c='#F2F2F7';nav='#F2F2F7'}
   if(document.documentElement.classList.contains('glass')){c='#F3F4F6';nav='#DFE2E6';dark=false}
   if(document.documentElement.classList.contains('aqua')){c='#9AC0E7';nav='#5682B9';dark=true}
   if(active==='start'){const s=call('start','skyTop');if(s){c=s.color;dark=s.dark;if(s.nav)nav=s.nav}}

@@ -1,0 +1,171 @@
+/* Assistent – Design „Drei Listen“ (wie iOS-Erinnerungen)
+   Hellgrauer Grund, weiße Karten, farbige Kacheln, runde Häkchen, Systemschrift.
+   Wird von platform.js als letztes Stylesheet in jede Seite geladen (html.dl). */
+html.dl{
+  --bg:#F2F2F7;--card:#FFFFFF;--ink:#000000;--mute:#8A8A8E;--line:#D8D8DC;--soft:#FFFFFF;--soft2:#E9E9EE;
+  --accent:#007AFF;--accent-2:#3395FF;--accent-ink:#FFFFFF;--accent-soft:#E5F0FF;--grad:#007AFF;
+  --danger:#FF3B30;--ok:#34C759;--warn:#FF9500;
+  --v:#007AFF;--v2:#3395FF;--vd:#0062CC;--lav:#E5F0FF;--lav2:#CCE2FF;--vgrad:#F2F2F7;
+  --green:#34C759;--yellow:#FFCC00;--blue:#007AFF;--pink:#FF2D55;--orange:#FF9500;--grey:#8A8A8E;--red:#FF3B30;
+  --shadow:none;--shadow-lift:0 16px 40px rgba(0,0,0,.18);--shadow-btn:none;--hs:none;--hs2:0 8px 20px rgba(0,122,255,.35);
+  --radius:14px;--scrim:rgba(0,0,0,.32);
+  --sky:#007AFF;--sky2:#3395FF;--vio:#007AFF;--bgs:#F2F2F7;--pap:#F2F2F7;--pbg:#F2F2F7;--ora:#FF9500;
+  --font:-apple-system,"SF Pro Text","Roboto","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+  --serif:var(--font);
+}
+html.dl,html.dl body{background:#F2F2F7!important;background-image:none!important;color:#000}
+html.dl body,html.dl body *:not(svg):not(path):not(code):not(pre){font-family:var(--font)!important}
+html.dl body *{text-shadow:none!important}
+
+/* ---------- Überschriften ---------- */
+html.dl .h-eyebrow,html.dl .eyebrow{color:#8A8A8E!important;font-weight:600!important}
+html.dl .h-big,html.dl h1{color:#000!important;font-weight:800!important;letter-spacing:-.02em!important;text-transform:none!important}
+html.dl .h-big em,html.dl h1 em{color:inherit!important;font-style:normal}
+html.dl h1::before{display:none!important}
+html.dl .h-mid,html.dl .sec-h h2{font-weight:700!important;letter-spacing:-.01em!important;color:#000!important}
+html.dl .greet{font-weight:800!important;letter-spacing:-.025em!important;color:#000!important;text-transform:none!important;line-height:1.08!important}
+html.dl .greet .hi{font-weight:800!important;color:#000!important}
+html.dl .lclock,html.dl .wxt b,html.dl .nx b,html.dl .en>b{font-weight:700!important;letter-spacing:-.02em!important}
+
+/* ---------- Karten: weiß auf Grau, ohne Schatten und Rahmen ---------- */
+html.dl .d-card,html.dl .card,html.dl .opt,html.dl .en,html.dl .nx,html.dl .wxc,html.dl .setting,html.dl .field,html.dl .qa label,html.dl .brf .bri,html.dl .group,html.dl .rowgrp{
+  background:#FFFFFF!important;border:0!important;border-radius:14px!important;box-shadow:none!important}
+html.dl .sheet,html.dl .lsh,html.dl .editor{background:#FFFFFF!important;border:0!important;border-radius:22px 22px 0 0!important;box-shadow:0 -10px 40px rgba(0,0,0,.12)!important}
+html.dl .sheet .setting,html.dl .sheet .opt,html.dl .lsh .opt,html.dl .editor .setting,html.dl .sheet .field,html.dl .editor .field{background:#F2F2F7!important}
+html.dl .scrim,html.dl .lsc{background:rgba(0,0,0,.32)!important}
+html.dl .grab,html.dl .lsh .gr{background:#D1D1D6!important}
+
+/* ---------- Knöpfe ---------- */
+html.dl .d-btn{background:#FFFFFF!important;color:#007AFF!important;border:0!important;border-radius:12px!important;font-weight:600!important;box-shadow:none!important}
+html.dl .sheet .d-btn,html.dl .editor .d-btn,html.dl .lsh .d-btn,html.dl .card .d-btn,html.dl .d-card .d-btn{background:#E9E9EE!important}
+html.dl .d-btn.primary,html.dl .btn.primary,html.dl #kdGo,html.dl #spGo,html.dl #nGo,html.dl .nxs{background:#007AFF!important;color:#FFFFFF!important;border:0!important;box-shadow:none!important}
+html.dl .d-btn.danger,html.dl .btn.danger{background:#FFEDEC!important;color:#FF3B30!important}
+html.dl .d-fab,html.dl .fab,html.dl .plus:not(.add .plus){background:#007AFF!important;color:#FFFFFF!important;border:0!important;border-radius:50%!important;box-shadow:0 8px 20px rgba(0,122,255,.35)!important}
+html.dl .d-fab{border-radius:29px!important}
+html.dl .d-ib.solid,html.dl .iconbtn,html.dl .sq{background:#FFFFFF!important;color:#007AFF!important;box-shadow:none!important;border:0!important}
+
+/* ---------- Chips, Segmente, Schalter ---------- */
+html.dl .d-chip,html.dl .chip,html.dl .when,html.dl .pill:not(.tab .pill){background:#FFFFFF!important;color:#000!important;border:0!important;box-shadow:none!important;border-radius:18px!important;font-weight:600!important}
+html.dl .sheet .chip,html.dl .editor .chip,html.dl .sheet .d-chip,html.dl .editor .d-chip,html.dl .card .d-chip{background:#E9E9EE!important}
+html.dl .d-chip.on,html.dl .chip.on,html.dl .chip.active,html.dl .on>.d-chip{background:#007AFF!important;color:#FFFFFF!important}
+html.dl .d-tag,html.dl .tag{background:#E9E9EE!important;color:#6C6C70!important;border:0!important;font-weight:600!important}
+html.dl .seg,html.dl .segs,html.dl .segctl{background:#E3E3E8!important;border:0!important;border-radius:10px!important;box-shadow:none!important}
+html.dl .seg button.on,html.dl .seg .on,html.dl .segs .on{background:#FFFFFF!important;color:#000!important;box-shadow:0 1px 4px rgba(0,0,0,.12)!important;border-radius:8px!important}
+html.dl .sw,html.dl .switch{background:#E5E5EA!important;border:0!important}
+html.dl .sw.on,html.dl .switch.on{background:#34C759!important}
+html.dl .sw::after,html.dl .switch::after{background:#FFFFFF!important;box-shadow:0 2px 4px rgba(0,0,0,.2)!important}
+
+/* ---------- Häkchen: rund, grauer Ring, farbig gefüllt ---------- */
+html.dl .ck,html.dl .check,html.dl .gck,html.dl .tcard i{border:1.8px solid #C4C4C8!important;background:#FFFFFF!important;border-radius:50%!important;box-shadow:none!important}
+html.dl .done .ck,html.dl .task.done .ck,html.dl .done .check,html.dl .task.done .check,html.dl .ck.on,html.dl .check.on,html.dl .on>.ck,html.dl .sel .check{background:var(--c,#007AFF)!important;border-color:var(--c,#007AFF)!important}
+html.dl .done .ck svg,html.dl .done .check svg{color:#fff!important;stroke:#fff}
+
+/* ---------- Hinweise ---------- */
+html.dl .d-toast,html.dl .toast{background:#1C1C1E!important;color:#FFFFFF!important;border-radius:14px!important}
+html.dl .d-toast button,html.dl .toast button{color:#64D2FF!important}
+html.dl .mk1,html.dl .mk2,html.dl .mk3{color:#007AFF!important}
+
+/* ---------- Startseite: Körbe als Drei-Listen-Kacheln ---------- */
+html.dl .trays{grid-template-columns:1fr 1fr!important;gap:12px!important;padding:0!important;margin:6px 0 20px!important}
+html.dl .tray{position:relative;height:88px;flex-direction:column!important;align-items:flex-start!important;justify-content:space-between!important;gap:0!important;
+  padding:12px 14px 10px 12px!important;border-radius:16px!important;color:#fff;transition:transform .12s}
+html.dl .tray:active{transform:scale(.97)}
+html.dl .tray.rose{background:#FF3B30!important}
+html.dl .tray.termin{background:#34C759!important}
+html.dl .tray.blue{background:#007AFF!important}
+html.dl .tray.white{background:#FF9500!important}
+html.dl .tray .tbox{width:30px!important;height:30px!important;max-width:none!important;aspect-ratio:auto!important;border-radius:50%!important;background:#FFFFFF!important;box-shadow:none!important;transform:none!important}
+html.dl .tray .well{display:none!important}
+html.dl .tray .front{position:absolute!important;inset:0!important;height:auto!important;border-radius:50%!important;background:none!important;display:grid!important;place-items:center!important}
+html.dl .tray .front::before{display:none!important}
+html.dl .tray .ico{margin:0!important;filter:none!important}
+html.dl .tray .ico svg{width:18px!important;height:18px!important}
+html.dl .tray.rose .ico{color:#FF3B30!important}
+html.dl .tray.termin .ico{color:#34C759!important}
+html.dl .tray.blue .ico{color:#007AFF!important}
+html.dl .tray.white .ico{color:#FF9500!important}
+html.dl .tray .tl{color:#FFFFFF!important;font-size:15px!important;font-weight:600!important;gap:0!important}
+html.dl .tray .tl em{position:absolute;top:10px;right:14px;background:none!important;color:#FFFFFF!important;font-size:26px!important;font-weight:700!important;padding:0!important;min-width:0!important;height:auto!important;display:block!important}
+
+/* ---------- Hülle: Leiste unten und Zauberknopf ---------- */
+html.dl .frames iframe{background:#F2F2F7!important}
+html.dl body .tabs{background:rgba(255,255,255,.94)!important;-webkit-backdrop-filter:blur(18px) saturate(1.6)!important;backdrop-filter:blur(18px) saturate(1.6)!important;border:0!important;
+  box-shadow:0 8px 28px rgba(0,0,0,.12),inset 0 0 0 .5px rgba(0,0,0,.06)!important}
+html.dl body .tab,html.dl body .tab svg{color:#8A8A8E!important}
+html.dl body .tab.on{background:#E5F0FF!important;color:#007AFF!important}
+html.dl body .tab.on svg{color:#007AFF!important}
+html.dl body .tab .bdg{background:#FF3B30!important;color:#FFFFFF!important;border:2px solid #FFFFFF!important}
+html.dl .magic{background:#007AFF!important;color:#FFFFFF!important;box-shadow:0 10px 24px -6px rgba(0,122,255,.6)!important}
+html.dl body .ldr{background:#F2F2F7!important}
+html.dl body .ldr .ls{background:#E3E3E8!important}
+html.dl body .ldr .lx{background:#FFFFFF!important;color:#8A8A8E!important}
+html.dl body .ldr .la .fv{color:#FF9500!important}
+html.dl body .ldr .lm,html.dl .lsh .o svg{color:#007AFF!important}
+html.dl body .fk{background:#F2F2F7!important}
+html.dl body .fk .ring circle.p{stroke:#007AFF!important}
+@media (min-width:900px){
+  html.dl body .tabs{background:#FFFFFF!important;box-shadow:inset -.5px 0 0 #D8D8DC!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  html.dl body .tabs::before{color:#000!important;font-weight:800!important}
+  html.dl body .tab{color:#000!important}
+  html.dl body .tab svg{color:#007AFF!important}
+  html.dl body .tab.on{background:#E5F0FF!important;color:#007AFF!important}
+}
+
+/* ---------- Startbildschirm im Launcher (früher E-Paper-Fenster) ---------- */
+html.dl body.epon .ep{background:#F2F2F7!important;color:#000!important;padding:10px 12px calc(12px + env(safe-area-inset-bottom,0px))!important;--rc:#FFFFFF;--ro:#FF9500;--rm:#8A8A8E}
+html.dl body .ep,html.dl body .ep *{font-weight:inherit}
+html.dl body .ep button{color:#000}
+html.dl body .ep .rw{background:#FFFFFF!important;border:0!important;border-radius:18px!important}
+html.dl body .ep .rwt{height:auto!important;padding:10px 10px 4px!important;border:0!important;background:#FFFFFF!important;gap:4px!important}
+html.dl body .ep .rwb,html.dl body .ep .rwg,html.dl body .ep .rind,html.dl body .ep .rstr{display:none!important}
+html.dl body .ep .rwl{background:none!important}
+html.dl body .ep .rtab{height:30px!important;line-height:30px!important;padding:0 12px!important;border-radius:15px!important;font-size:14px!important;font-weight:600!important;color:#8A8A8E!important;background:#F2F2F7!important;transition:background .2s,color .2s}
+html.dl body .ep .rtab.on{background:#007AFF!important;color:#FFFFFF!important}
+html.dl body .ep .rset{width:30px!important;height:30px!important;border-radius:50%!important;background:#F2F2F7!important}
+html.dl body .ep .rset svg *{stroke:#007AFF!important}
+html.dl body .ep .rblk{background:#FFFFFF!important;padding:6px 14px 12px!important}
+html.dl body .ep #epW{color:#000!important;background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;font-weight:700!important;letter-spacing:-.03em!important;font-variant-numeric:tabular-nums}
+html.dl body .ep .epd{color:#8A8A8E!important;font-size:14px!important;font-weight:500!important;letter-spacing:0!important}
+html.dl body .ep .rwx{border-top:.5px solid #D8D8DC!important;padding:12px 14px!important}
+html.dl body .ep .rwx .t{font-weight:700!important}
+html.dl body .ep .rwx .i b,html.dl body .ep .rwx .i span{font-weight:600!important}
+html.dl body .ep .epe{border-top:.5px solid #D8D8DC!important;margin:0 14px!important;padding:12px 0!important}
+html.dl body .ep .epe .l,html.dl body .ep .rar .l{border-left:3px solid #FF3B30!important;border-radius:2px}
+html.dl body .ep .epe b,html.dl body .ep .rar b{font-weight:600!important;color:#000!important}
+html.dl body .ep .epe span,html.dl body .ep .rar span{font-weight:500!important;color:#8A8A8E!important}
+html.dl body .ep .epe .w,html.dl body .ep .rar.rnx .w{color:#FF3B30!important;font-weight:600!important}
+html.dl body .ep .rhd,html.dl body .ep .rhr,html.dl body .ep .rdl,html.dl body .ep .rag{background:#FFFFFF!important;border-color:#D8D8DC!important}
+html.dl body .ep .rhd svg *{stroke:#007AFF!important}
+html.dl body .ep .rar{border-bottom:.5px solid #D8D8DC!important}
+html.dl body .ep .rhr{border-bottom:.5px solid #D8D8DC!important}
+/* Bereiche als farbige runde Symbole wie in den Listen */
+html.dl body .ep .rnav{border-top:.5px solid #D8D8DC!important;background:#FFFFFF!important;padding:10px 8px 10px!important}
+html.dl body .ep .rnav button{font-size:10.5px!important;font-weight:500!important;color:#3C3C43!important;gap:4px!important}
+html.dl body .ep .rnav .ni{max-width:38px!important;border:0!important;border-radius:50%!important;background:#8A8A8E!important}
+html.dl body .ep .rnav .ni svg{color:#FFFFFF!important;stroke:#FFFFFF;width:19px!important;height:19px!important;stroke-width:2.2!important;stroke-linecap:round!important;stroke-linejoin:round!important;shape-rendering:auto!important}
+html.dl body .ep .rnav [data-nav=woche] .ni{background:#34C759!important}
+html.dl body .ep .rnav [data-nav=kalender] .ni{background:#FF3B30!important}
+html.dl body .ep .rnav [data-nav=projekte] .ni{background:#007AFF!important}
+html.dl body .ep .rnav [data-nav=mail] .ni{background:#32ADE6!important}
+html.dl body .ep .rnav [data-nav=pinnwand] .ni{background:#FF9500!important}
+html.dl body .ep .rnav [data-nav=wetter] .ni{background:#5AC8FA!important}
+html.dl body .ep .rnav .mg .ni{background:#5856D6!important}
+html.dl body .ep .rnav button:active .ni{transform:scale(.92)!important}
+html.dl body .ep .rnav em{background:#FF3B30!important;color:#FFFFFF!important;border:2px solid #FFFFFF!important;line-height:11px!important}
+/* App-Kacheln: weiße Quadrate, blaue Symbole */
+html.dl body .ep .tl2 .qi{background:#FFFFFF!important;border:0!important;border-radius:16px!important}
+html.dl body .ep .tl2 .qi svg,html.dl body .ep .tl2 .qi svg *{stroke:#007AFF!important;stroke-linecap:round!important;stroke-linejoin:round!important;shape-rendering:auto!important}
+html.dl body .ep .tl2 .qi .mono{color:#007AFF!important;font-weight:700!important}
+html.dl body .ep .tl2:active .qi{background:#E5F0FF!important;transform:scale(.95)!important}
+html.dl body .ep .tl2 small{color:#3C3C43!important;font-size:11px!important;font-weight:500!important}
+html.dl body .ep .epa{background:#FFFFFF!important;border:0!important;border-radius:16px!important;padding:12px 16px!important}
+html.dl body .ep .epa small{color:#8A8A8E!important;font-weight:600!important;letter-spacing:.02em}
+html.dl body .ep .epa b{font-weight:700!important;color:#000!important}
+html.dl body .ep .epa span{color:#007AFF!important;font-weight:500!important}
+html.dl body .brf{background:#F2F2F7!important;color:#000!important}
+html.dl body .brf .brs{background:#007AFF!important;color:#fff!important;font-weight:600!important}
+html.dl body .brf .brl{border-bottom:.5px solid #D8D8DC!important;color:#8A8A8E!important;font-weight:600!important}
+html.dl body .brf .bri{border-bottom:.5px solid #D8D8DC!important}
+html.dl body .brf .bri .bx{border-radius:50%!important;border-color:#C4C4C8!important}
+html.dl body .brf .brx{border:0!important;background:#FFFFFF!important;color:#8A8A8E!important}
+html.dl body .epbrf,html.dl body .epset{border:0!important;background:#FFFFFF!important}

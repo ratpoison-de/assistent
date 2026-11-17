@@ -4,12 +4,11 @@
   var par=null;try{par=window.parent&&window.parent!==window?window.parent:null}catch(e){}
   var plat=(par&&par.ASSISTENT_PLATFORM)||(window.Native||(par&&par.Native)?'android':(window.AssistentDesktop?'windows':'web'));
   window.ASSISTENT_PLATFORM=plat;
-  /* Design: nur noch E-Paper */
+  /* Design: „Drei Listen“ (iOS-Erinnerungen) – wird als letztes Stylesheet in jede Seite geladen */
   try{
-    document.documentElement.classList.add('epaper');
-    /* Start und Hülle zeigen Farbe (Orange-Akzent); die übrigen Bereiche bleiben einfarbig auf warmem Papier */
+    document.documentElement.classList.add('dl');
     if(/(^|\/)(index\.html|start\.html)?$/.test(location.pathname))document.documentElement.classList.add('col');if(plat==='android')document.documentElement.classList.add('nat');
-    var add=function(){if(document.getElementById('epcss'))return;var l=document.createElement('link');l.id='epcss';l.rel='stylesheet';l.href='epaper.css';document.head.appendChild(l)};
+    var add=function(){if(document.getElementById('dlcss'))return;var l=document.createElement('link');l.id='dlcss';l.rel='stylesheet';l.href='dreilisten.css?v=57';document.head.appendChild(l)};
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add);else add();
   }catch(e){}
   if(plat!=='web')return;
