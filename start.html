@@ -718,9 +718,10 @@ body.epon .ep{background:#FFFFFF!important;padding:8px 6px calc(10px + env(safe-
 .bra{flex:none;display:flex;align-items:center;gap:12px;margin:12px 0 6px}
 .brav{position:relative;flex:none;width:92px;height:92px;padding:0;border:0;background:none;--rgb:rgba(0,0,0,.08)}
 .brrg{position:absolute;inset:0;width:100%;height:100%}.brrg circle:last-child{transition:stroke-dashoffset .9s cubic-bezier(.3,1,.4,1)}
-.brfa{position:absolute;inset:10px;display:block;animation:avBob 3.6s ease-in-out infinite}
-.brav .ave{transform-origin:55px 53px;animation:avBlink 4.8s infinite}
-.brav .ava{animation:avGlow 2.4s ease-in-out infinite}
+.brfa{position:absolute;inset:8px;display:block;border-radius:50%;overflow:hidden;background:#fff;animation:avBob 3.6s ease-in-out infinite}
+.brav .ave{transform-box:fill-box;transform-origin:center;animation:avBlink 4.8s infinite}
+.brav .ava{transform-origin:55px 110px;animation:avSway 5s ease-in-out infinite}
+@keyframes avSway{0%,100%{transform:rotate(0)}50%{transform:rotate(-2deg)}}
 .brav .avz{animation:avZ 2.6s ease-in-out infinite}.brav .avz.z2{animation-delay:.9s}
 .brav .avs{transform-origin:84px 29px;animation:avStar 1.6s ease-in-out infinite}
 .brav.hop .brfa{animation:avHop .7s cubic-bezier(.3,1.6,.5,1)}
@@ -730,8 +731,8 @@ body.epon .ep{background:#FFFFFF!important;padding:8px 6px calc(10px + env(safe-
 @keyframes avZ{0%{opacity:0;transform:translateY(4px)}40%{opacity:1}100%{opacity:0;transform:translateY(-6px)}}
 @keyframes avStar{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.25) rotate(18deg)}}
 @keyframes avHop{0%{transform:translateY(0) scale(1)}40%{transform:translateY(-12px) scale(1.06,.94)}100%{transform:none}}
-.brbub{position:relative;flex:1;min-width:0;display:grid;background:var(--card,#fff);border-radius:18px;border-top-left-radius:6px;padding:11px 13px;font-size:15px;line-height:1.38;color:var(--ink,#111);box-shadow:0 1px 0 rgba(0,0,0,.04)}
-.brbub::before{content:"";position:absolute;left:-7px;top:12px;border:7px solid transparent;border-right-color:var(--card,#fff);border-left:0}
+.brbub{position:relative;flex:1;min-width:0;display:grid;background:#fff;border:2px solid #111;border-radius:18px;border-top-left-radius:6px;padding:11px 13px;font-size:15px;line-height:1.38;color:var(--ink,#111);box-shadow:0 1px 0 rgba(0,0,0,.04)}
+.brbub::before{content:"";position:absolute;left:-8px;top:16px;width:13px;height:13px;background:#fff;border-left:2px solid #111;border-bottom:2px solid #111;transform:rotate(45deg)}
 .brbub .bgh,.brbub .bty{grid-area:1/1}.brbub .bgh{visibility:hidden}
 .brst{flex:none;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0 2px}
 .brst span{background:var(--card,#fff);border-radius:12px;padding:7px 4px 6px;text-align:center;font-size:11px;color:var(--mute,#555);line-height:1.2;min-width:0}
@@ -875,7 +876,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 5.9<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 6.0<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="brf" id="brf" role="dialog" aria-label="Briefing"></div>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
@@ -1769,29 +1770,51 @@ function openRef(){
   draw();
 }
 /* ================= Briefing: persönlich, mit Avatar, auf einer Seite ohne Scrollen ================= */
-const AVS=[{n:'Ozean',c:'#3A7BFF',d:'#1F4FC4',k:'#BFD5FF'},{n:'Minze',c:'#2FBF8F',d:'#178060',k:'#BFF0DE'},{n:'Sonne',c:'#FF9F1C',d:'#C66F00',k:'#FFE1B3'},{n:'Flieder',c:'#9B6BFF',d:'#6B3FD1',k:'#E2D4FF'},{n:'Kiesel',c:'#7D8794',d:'#4B535E',k:'#DDE1E6'}];
+/* Avatar im Tusche-Stil: schwarze Linien, schwarze Flächen mit feiner Körnung, Punktaugen – eigene Figuren */
+const AVS=[{n:'Bob'},{n:'Dutt'},{n:'Locken'},{n:'Mütze'},{n:'Brille'}];
 function avIdx(){let i=0;try{i=+localStorage.getItem('planer.avatar')||0}catch(_){}return ((i%AVS.length)+AVS.length)%AVS.length}
-/* Eigene Figur „Assi“: runder Kopf, Augen blinzeln, Ausdruck je nach Tageszeit und Lage */
 function avSVG(mood,i){
-  const a=AVS[i];
-  const eyes=mood==='sleepy'?'<path d="M37 55q6 4 12 0M61 55q6 4 12 0" stroke="#1A1A1A" stroke-width="3.4" fill="none" stroke-linecap="round"/>'
-    :'<g class="ave"><ellipse cx="43" cy="53" rx="4.6" ry="'+(mood==='busy'?4:5.6)+'" fill="#1A1A1A"/><ellipse cx="67" cy="53" rx="4.6" ry="'+(mood==='busy'?4:5.6)+'" fill="#1A1A1A"/><circle cx="44.6" cy="51" r="1.5" fill="#fff"/><circle cx="68.6" cy="51" r="1.5" fill="#fff"/></g>';
-  const brow=mood==='busy'?'<path d="M36 44l12 2.5M74 44l-12 2.5" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round"/>':'';
-  const mouth={happy:'<path d="M44 66q11 10 22 0" stroke="#1A1A1A" stroke-width="3.4" fill="none" stroke-linecap="round"/>',
-    proud:'<path d="M42 64q13 15 26 0z" fill="#1A1A1A"/><path d="M48 70q7 4 14 0" stroke="#FF7A8A" stroke-width="3" fill="none" stroke-linecap="round"/>',
-    calm:'<path d="M46 67q9 5 18 0" stroke="#1A1A1A" stroke-width="3.2" fill="none" stroke-linecap="round"/>',
-    busy:'<path d="M47 68h16" stroke="#1A1A1A" stroke-width="3.2" stroke-linecap="round"/>',
-    sleepy:'<ellipse cx="55" cy="68" rx="4" ry="3" fill="#1A1A1A"/>'}[mood]||'';
-  const extra=mood==='sleepy'?'<text x="80" y="30" font-size="13" font-weight="700" fill="'+a.d+'" class="avz">z</text><text x="89" y="20" font-size="10" font-weight="700" fill="'+a.d+'" class="avz z2">z</text>':
-    mood==='proud'?'<path d="M84 22l2.4 5 5.4.6-4 3.7 1.1 5.3-4.9-2.7-4.9 2.7 1.1-5.3-4-3.7 5.4-.6z" fill="#FFC83D" class="avs"/>':'';
-  return '<svg viewBox="0 0 110 110" width="100%" height="100%" aria-hidden="true">'+
-    '<path d="M55 12c26 0 41 15 41 40 0 27-15 46-41 46S14 79 14 52c0-25 15-40 41-40z" fill="'+a.c+'"/>'+
-    '<path d="M55 12c26 0 41 15 41 40 0 6-1 11-2.5 16C88 40 74 26 52 24 35 23 22 30 16 42 20 23 34 12 55 12z" fill="#fff" opacity=".18"/>'+
-    '<ellipse cx="55" cy="58" rx="30" ry="25" fill="'+a.k+'"/>'+
-    '<ellipse cx="34" cy="64" rx="5" ry="3.2" fill="#FF8FA0" opacity=".55"/><ellipse cx="76" cy="64" rx="5" ry="3.2" fill="#FF8FA0" opacity=".55"/>'+
-    '<path d="M55 12V5" stroke="'+a.d+'" stroke-width="3" stroke-linecap="round"/><circle cx="55" cy="5" r="4" fill="'+a.d+'" class="ava"/>'+
-    brow+eyes+mouth+extra+'</svg>';
+  const K='#111',L='stroke="'+K+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"',G='url(#avg'+i+')';
+  /* Körnung: unregelmäßige weiße Pünktchen auf Schwarz */
+  let dots='';const pts=[[3,4],[11,2],[17,9],[6,13],[14,15],[2,18],[19,19],[9,7]];for(const p of pts)dots+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r=".55" fill="#fff" opacity=".75"/>';
+  const defs='<defs><pattern id="avg'+i+'" width="21" height="21" patternUnits="userSpaceOnUse"><rect width="21" height="21" fill="'+K+'"/>'+dots+'</pattern></defs>';
+  /* Körper: Rollkragen bzw. Kragen */
+  const body=i===3?'<path d="M22 112c1-17 13-27 33-27s32 10 33 27" fill="#fff" '+L+'/><path d="M45 86c3 5 17 5 20 0" fill="none" '+L+'/>'
+    :i===1?'<path d="M22 112c1-17 13-27 33-27s32 10 33 27" fill="#fff" '+L+'/><path d="M44 85l11 11 11-11" fill="none" '+L+'/>'
+    :'<path d="M22 112c1-17 13-27 33-27s32 10 33 27" fill="#fff" '+L+'/><path d="M46 84h18v6c-3 3-15 3-18 0z" fill="#fff" '+L+'/>';
+  const neck='<path d="M49 74v10M61 74v10" '+L+'/>';
+  const head='<path d="M55 33c13 0 21 9 21 22 0 14-8 23-21 23S34 69 34 55c0-13 8-22 21-22z" fill="#fff" '+L+'/>';
+  /* Haare je Figur */
+  const hairB=[ /* hinter dem Kopf */
+    '<path d="M31 56c-3-21 8-31 24-31s27 10 24 31c-1 10 1 17 3 21H28c2-4 4-11 3-21z" fill="'+G+'" '+L+'/>',
+    '<circle cx="55" cy="22" r="9" fill="'+G+'" '+L+'/>',
+    '<path d="M30 60c-6-4-5-14 1-17-3-9 5-17 13-15 4-7 18-7 22 0 8-2 16 6 13 15 6 3 7 13 1 17 2 6-4 11-9 9H39c-5 2-11-3-9-9z" fill="'+G+'" '+L+'/>',
+    '',
+    ''][i];
+  const hairF=[ /* über der Stirn */
+    '<path d="M34 50c2-11 10-17 21-17s19 6 21 17c-6-3-12-8-15-13-3 6-13 11-27 13z" fill="'+G+'" '+L+'/>',
+    '<path d="M34 52c0-13 9-20 21-20s21 7 21 20c-4-6-12-10-21-10s-17 4-21 10z" fill="'+G+'" '+L+'/>',
+    '<path d="M35 48c3-9 11-14 20-14s17 5 20 14c-4-2-7-5-9-8-3 4-8 5-11 2-3 3-9 4-12 1-2 3-5 4-8 5z" fill="'+G+'" '+L+'/>',
+    '<path d="M32 50c0-15 10-24 23-24s23 9 23 24z" fill="'+G+'" '+L+'/><path d="M30 50h50v7H30z" fill="#fff" '+L+'/><path d="M36 50v7M42 50v7M48 50v7M54 50v7M60 50v7M66 50v7M72 50v7" stroke="'+K+'" stroke-width="1.6"/><circle cx="55" cy="22" r="5" fill="#fff" '+L+'/>',
+    '<path d="M34 51c0-12 9-19 21-19s21 7 21 19c-7-2-17-5-26-11-3 4-8 8-16 11z" fill="'+G+'" '+L+'/><path d="M53 33c-1-5 1-9 5-11" fill="none" '+L+'/>'][i];
+  const glasses=i===4?'<circle cx="46" cy="58" r="7" fill="none" '+L+'/><circle cx="64" cy="58" r="7" fill="none" '+L+'/><path d="M53 58h4" '+L+'/>':'';
+  /* Gesicht je Stimmung */
+  const ey=i===3?61:58;
+  const eyes=mood==='sleepy'?'<path d="M43 '+ey+'q3 2.5 6 0M61 '+ey+'q3 2.5 6 0" fill="none" stroke="'+K+'" stroke-width="2.4" stroke-linecap="round"/>'
+    :'<g class="ave"><circle cx="46" cy="'+ey+'" r="2.7" fill="'+K+'"/><circle cx="64" cy="'+ey+'" r="2.7" fill="'+K+'"/></g>';
+  const bw=ey-(i===3?5:8),brow=mood==='busy'?'<path d="M41 '+bw+'l8 2M69 '+bw+'l-8 2" stroke="'+K+'" stroke-width="2.4" stroke-linecap="round"/>':'';
+  const my=ey+11;
+  const mouth={happy:'<path d="M49 '+my+'q6 5 12 0" fill="none" stroke="'+K+'" stroke-width="2.4" stroke-linecap="round"/>',
+    proud:'<path d="M48 '+(my-1)+'q7 8 14 0z" fill="'+K+'"/>',
+    calm:'<path d="M52 '+my+'q3 2 6 0" fill="none" stroke="'+K+'" stroke-width="2.4" stroke-linecap="round"/>',
+    busy:'<path d="M51 '+(my+1)+'h8" stroke="'+K+'" stroke-width="2.4" stroke-linecap="round"/>',
+    sleepy:'<circle cx="55" cy="'+(my+1)+'" r="2" fill="none" stroke="'+K+'" stroke-width="2"/>'}[mood]||'';
+  const extra=mood==='sleepy'?'<text x="72" y="38" font-size="12" font-weight="700" fill="'+K+'" class="avz">z</text><text x="80" y="30" font-size="9" font-weight="700" fill="'+K+'" class="avz z2">z</text>'
+    :mood==='proud'?'<path d="M84 22v10M79 27h10M80.5 23.5l7 7M87.5 23.5l-7 7" stroke="'+K+'" stroke-width="2" stroke-linecap="round" class="avs"/>'
+    :mood==='busy'?'<path d="M84 38q3-4 1-8" fill="none" stroke="'+K+'" stroke-width="2" stroke-linecap="round" class="avs"/>':'';
+  return '<svg viewBox="14 11 82 82" width="100%" height="100%" aria-hidden="true">'+defs+'<g class="ava">'+hairB+body+neck+head+hairF+glasses+brow+eyes+mouth+'</g>'+extra+'</svg>';
 }
+window.avSVG=avSVG;
 let brT=0;
 function closeBriefing(){clearTimeout(brT);brT=0;$('brf').classList.remove('on')}
 function openBriefing(keep){
@@ -1828,7 +1851,7 @@ function openBriefing(keep){
   let ne=ev.length,nt=tk.length;
   const paint=()=>{
     el.innerHTML='<div class="brh"><p>Briefing · '+WD[n.getDay()]+', '+n.getDate()+'. '+MON[n.getMonth()]+' · '+hm+'</p><button class="brx" id="brX" aria-label="Schließen">✕</button></div>'+
-      '<div class="bra"><button class="brav m-'+mood+'" id="brAv" aria-label="Avatar wechseln" style="--ac:'+AVS[ai].c+'"><svg class="brrg" viewBox="0 0 80 80"><circle cx="40" cy="40" r="'+R+'" fill="none" stroke="var(--rgb)" stroke-width="5"/><circle cx="40" cy="40" r="'+R+'" fill="none" stroke="'+AVS[ai].c+'" stroke-width="5" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+(C*(1-prog)).toFixed(1)+'" transform="rotate(-90 40 40)"/></svg><span class="brfa">'+avSVG(mood,ai)+'</span></button>'+
+      '<div class="bra"><button class="brav m-'+mood+'" id="brAv" aria-label="Avatar wechseln"><svg class="brrg" viewBox="0 0 80 80"><circle cx="40" cy="40" r="'+R+'" fill="none" stroke="var(--rgb)" stroke-width="4"/><circle cx="40" cy="40" r="'+R+'" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+(C*(1-prog)).toFixed(1)+'" transform="rotate(-90 40 40)"/></svg><span class="brfa">'+avSVG(mood,ai)+'</span></button>'+
       '<div class="brbub" id="brBub"><span class="bgh">'+esc(say)+'</span><span class="bty" id="brTy"></span></div></div>'+
       '<div class="brst"><span><b>'+tk.length+'</b>offen</span><span><b>'+doneToday+'</b>erledigt</span><span><b>'+ev.length+'</b>'+(ev.length===1?'Termin':'Termine')+'</span><span><b>'+(tk.length?(mins>=60?Math.floor(mins/60)+':'+pad(Math.round(mins%60/5)*5%60)+' h':mins+' Min'):'–')+'</b>Zeitbedarf</span></div>'+
       '<div class="brb" id="brB">'+
