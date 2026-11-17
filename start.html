@@ -714,6 +714,20 @@ body.epon .ep{background:#FFFFFF!important;padding:8px 6px calc(10px + env(safe-
 .bri i{flex:none;font-style:normal;font-weight:700;min-width:52px;font-size:14px}.bri span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bri small{flex:none;font-size:12px;color:#555}
 .bri.nx span{font-weight:700}.bri .bx{flex:none;align-self:center;width:15px;height:15px;min-width:0;border:1.5px solid #111;border-radius:4px}
 .brm{flex:none;font-size:13px;color:#555;padding:6px 0}
+html body .ep .epa.mod,html.dl body .ep .epa.mod{flex-direction:row!important;align-items:center;gap:10px;padding:8px 12px 8px 8px!important;text-align:left}
+.epa.mod .mav{flex:none;width:58px;height:58px;border-radius:50%;overflow:hidden;background:#fff;border:2px solid #111}
+.epa.mod .mbub{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+html body .ep .epa.mod .mt,html.dl body .ep .epa.mod .mt{opacity:1!important;color:#111!important;font-weight:500!important}
+html.dl body .ep .epa.mod .ms{opacity:1!important}
+.epa.mod .mt{font-size:14px;line-height:1.35;color:#111;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.epa.mod .ms{font-size:12px;font-weight:700;color:var(--accent,#007AFF)}
+.epa.mnew .mav{animation:modPop .5s cubic-bezier(.3,1.6,.5,1)}.epa.mnew .mbub{animation:modIn .35s ease-out}
+.epa.mnew .ave{transform-box:fill-box;transform-origin:center;animation:avBlink .9s ease-in-out 1}
+@keyframes modPop{0%{transform:scale(.85)}60%{transform:scale(1.06)}100%{transform:none}}
+@keyframes modIn{0%{opacity:0;transform:translate3d(-6px,0,0)}100%{opacity:1;transform:none}}
+.ep.f3 .epa.mod .mav{width:46px;height:46px}.ep.f3 .epa.mod .mt{-webkit-line-clamp:2;font-size:13px}.ep.f4 .epa.mod .ms{display:none}
+.ep.f5 .epa.mod{display:flex!important}.ep.f5 .epa.mod .mav{width:40px;height:40px}.ep.f5 .epa.mod .mt{-webkit-line-clamp:2;font-size:12.5px}
+@media (prefers-reduced-motion:reduce){.epa.mnew .mav,.epa.mnew .mbub,.epa.mnew .ave{animation:none}}
 .brh p{margin:0;font-size:13px;color:var(--mute,#555);letter-spacing:.01em;align-self:center}
 .bra{flex:none;display:flex;align-items:center;gap:12px;margin:12px 0 6px}
 .brav{position:relative;flex:none;width:92px;height:92px;padding:0;border:0;background:none;--rgb:rgba(0,0,0,.08)}
@@ -876,7 +890,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 6.0<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 6.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="brf" id="brf" role="dialog" aria-label="Briefing"></div>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
@@ -2501,6 +2515,43 @@ function rwPaint(w){
 let epChg=true;
 function setH(el,h){if(el&&el.__h!==h){el.innerHTML=h;el.__h=h;epChg=true}}
 function setT(el,t){if(el&&el.__t!==t){el.textContent=t;el.__t=t;epChg=true}}
+/* ---------- Moderation durch den Tag: derselbe Avatar wie im Briefing ----------
+   Akkuschonend: keine Dauer-Animation, kein eigener Zeitgeber. Aktualisiert wird nur im vorhandenen Minutentakt
+   und nach dem Laden; das DOM ändert sich nur, wenn sich der Text ändert (höchstens alle 15 Minuten ein neuer Tipp). */
+function modMsg(){
+  const n=new Date(),h=n.getHours(),hm=two(h)+':'+two(n.getMinutes()),slot=Math.floor((h*60+n.getMinutes())/15),w=D.woche,k=D.kal;
+  const nm=NAME?', '+NAME:'';
+  let done=0;try{done=(JSON.parse(localStorage.getItem(DL_KEY)||'{}')[ymd(n)]||[]).length}catch(_){}
+  const open=w?w.open.length:0;
+  let nx=null;try{nx=dayPlan().now[0]}catch(_){}
+  const nxs=nx?(nx.kind==='s'?'S':nx.size):'';
+  const f=fState();
+  if(f)return{mood:'busy',t:'Du bist im Fokus: „'+f.title+'“. Ich halte dir den Rücken frei.',s:'Fokus öffnen',act:''};
+  const run=k?(k.today||[]).find(e=>!e.allDay&&e.tStart&&e.tEnd&&e.tStart<=hm&&e.tEnd>hm):null;
+  if(run)return{mood:'calm',t:'Gerade läuft „'+run.title+'“ bis '+run.tEnd+'. Danach bin ich wieder für dich da.',s:'Kalender',act:'cal'};
+  if(h>=22||h<5){let ev=false;try{ev=!cpToday().evening}catch(_){}const t=k&&(k.tomorrow||[]).find(e=>!e.allDay&&e.tStart);
+    return{mood:'sleepy',t:'Zeit runterzufahren'+nm+'.'+(t?' Morgen um '+t.tStart+': „'+t.title+'“.':'')+' Gute Nacht!',s:ev&&h>=22?'Noch kurz zurückblicken':'Briefing',act:ev&&h>=22?'evening':'brief'}}
+  let st=null;try{st=companionState()}catch(_){}
+  if(st&&st.kind==='soon'){let fit=null;try{fit=dayPlan().now.find(u=>estMin(u.kind==='s'?'S':u.size)<=Math.max(5,st.m-5))}catch(_){}
+    return{mood:st.m<=15?'busy':'calm',t:'In '+st.m+' Min: „'+st.e.title+'“'+(st.e.loc?' ('+st.e.loc+')':'')+'.'+(fit?' Bis dahin passt „'+fit.text+'“.':' Zeit zum Durchatmen.'),s:fit?'▶ Jetzt starten':'Kalender',act:fit?'start':'cal'}}
+  if(st&&st.kind==='morning'){const ev=k?k.today:[],first=ev.find(e=>!e.allDay&&e.tStart);
+    return{mood:'happy',t:'Guten Morgen'+nm+'! '+(ev.length?ev.length+(ev.length===1?' Termin':' Termine')+(first?', der erste um '+first.tStart:'')+'.':'Heute ist der Kalender frei.')+' '+(open?open+(open===1?' Aufgabe wartet.':' Aufgaben warten.'):''),s:'Tag kurz planen',act:'morning'}}
+  if(st&&st.kind==='evening')return{mood:'calm',t:'Der Tag ist fast rum'+nm+'. '+(done?done+(done===1?' Sache':' Dinge')+' geschafft'+(open?', '+open+' offen':'')+'. ':(open?open+(open===1?' Aufgabe ist':' Aufgaben sind')+' noch offen. ':''))+'Fünf Minuten Rückblick?',s:'Tag abschließen',act:'evening'};
+  if(st&&st.kind==='week')return{mood:'calm',t:'Die Woche ist geschafft. Lass uns kurz zurückschauen und die nächste planen.',s:'Wochenrückblick',act:'week'};
+  if(!open&&w)return{mood:'proud',t:'Alles erledigt für heute'+nm+'. Stark! Gönn dir was.',s:'Briefing',act:'brief'};
+  /* tagsüber: alle 15 Minuten ein anderer, passender Impuls */
+  const tips=[];
+  if(nx)tips.push({mood:'calm',t:'Als Nächstes: „'+nx.text+'“ – '+estLabel(nxs)+'.',s:'▶ Starten',act:'start'});
+  if(done)tips.push({mood:done>=3?'happy':'calm',t:'Schon '+done+' erledigt, noch '+open+'. '+(done>=3?'Läuft richtig gut!':'Weiter so!'),s:nx?'▶ „'+nx.text+'“':'Briefing',act:nx?'start':'brief'});
+  if(h>=12&&h<14)tips.push({mood:'calm',t:'Mittagszeit. Eine kurze Pause macht den Nachmittag leichter.',s:'Briefing',act:'brief'});
+  if(!energy())tips.push({mood:'calm',t:'Wie viel Energie hast du gerade? Dann schlage ich passende Aufgaben vor.',s:'Energie angeben',act:'energy'});
+  if(open>=6)tips.push({mood:'busy',t:open+' Aufgaben sind offen. Nimm dir nur die nächste vor – der Rest wartet.',s:nx?'▶ „'+nx.text+'“':'Briefing',act:nx?'start':'brief'});
+  if(!tips.length)return{mood:'calm',t:GREET[part(h)]+nm+'. Ich bin da, wenn du mich brauchst.',s:'Briefing',act:'brief'};
+  return tips[slot%tips.length];
+}
+function modHTML(m){
+  return '<span class="mav" data-brief aria-label="Briefing öffnen">'+avSVG(m.mood,avIdx())+'</span><span class="mbub"><span class="mt">'+esc(m.t)+'</span><span class="ms">'+esc(m.s)+'</span></span>';
+}
 function epRender(){
   const el=$('ep');if(!el)return;
   const n=new Date(),p=part(n.getHours()),w=weather();
@@ -2514,11 +2565,13 @@ function epRender(){
   try{rwPaint(w)}catch(_){}
   let nx=null;try{nx=dayPlan().now[0]}catch(_){}
   const f=fState();
-  let cc=null;try{cc=f?null:companionCard()}catch(_){}
-  $('epA').dataset.act=cc?cc.act:'';
-  if(cc)setH($('epA'),'<small>'+esc(cc.lab)+'</small><b>'+esc(cc.t)+'</b><span>'+esc(cc.s)+'</span>');
-  else setH($('epA'),f?'<small>Fokus läuft</small><b>'+esc(f.title)+'</b>':nx?'<small>Nächste Aufgabe'+(gtdCtx()?' · '+ctxName(gtdCtx()):'')+'</small><b>'+esc(nx.text)+'</b><span>'+(nx.kind==='s'?'S':nx.size)+' · '+estLabel(nx.kind==='s'?'S':nx.size)+' · ▶ starten</span>':'<small>Nächste Aufgabe</small><b>Nichts offen</b><span>Gönn dir eine Pause</span>');
-  {const a=$('epA'),hd=!cc&&!f&&!nx&&!D.woche;if(a.classList.contains('hidden')!==hd){a.classList.toggle('hidden',hd);epChg=true}}
+  /* Moderator statt der bisherigen Karte */
+  {let m=null;try{m=modMsg()}catch(_){}
+   if(m){const a=$('epA');a.dataset.act=m.act;const h=modHTML(m);if(a.__h!==h){const first=!a.__h;a.innerHTML=h;a.__h=h;epChg=true;a.classList.remove('hidden','mnew');if(!first){void a.offsetWidth;a.classList.add('mnew')}}a.classList.add('mod')}}
+  let cc=null;
+  if(false)setH($('epA'),'<small>'+esc(cc.lab)+'</small><b>'+esc(cc.t)+'</b><span>'+esc(cc.s)+'</span>');
+  else if(false)setH($('epA'),f?'<small>Fokus läuft</small><b>'+esc(f.title)+'</b>':nx?'<small>Nächste Aufgabe'+(gtdCtx()?' · '+ctxName(gtdCtx()):'')+'</small><b>'+esc(nx.text)+'</b><span>'+(nx.kind==='s'?'S':nx.size)+' · '+estLabel(nx.kind==='s'?'S':nx.size)+' · ▶ starten</span>':'<small>Nächste Aufgabe</small><b>Nichts offen</b><span>Gönn dir eine Pause</span>');
+
   const code=cur?cur.weather_code:2,night=cur?!cur.is_day:false;
   if(epChg){epChg=false;requestAnimationFrame(()=>epFit())}
 }
@@ -2573,7 +2626,12 @@ $('ep').addEventListener('click',e=>{
   if(e.target.closest('#rwWx')){rwSwitch('wetter');return}
   if(e.target.closest('[data-ag]')||e.target.closest('#rpAgenda')){try{P.showTab('kalender')}catch(_){}return}
   if(e.target.closest('#rpWetter')){try{P.showTab('wetter')}catch(_){}return}
-  if(e.target.closest('#epA')&&$('epA').dataset.act){companionOpen($('epA').dataset.act);return}
+  if(e.target.closest('#epA [data-brief]')){openBriefing();return}
+  if(e.target.closest('#epA')){const ac=$('epA').dataset.act;
+    if(ac==='brief'){openBriefing();return}
+    if(ac==='start'){startNext();return}
+    if(ac==='energy'){try{companionOpen('morning')}catch(_){openBriefing()}return}
+    if(ac){companionOpen(ac);return}}
   if(e.target.closest('#epA')){if(fState()){try{P.Fokus.open()}catch(_){}}else startNext();return}
   if(e.target.closest('#epB')||e.target.closest('#epW')){try{P.Launcher.openClock()}catch(_){}return}
 });
