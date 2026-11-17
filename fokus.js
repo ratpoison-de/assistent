@@ -123,17 +123,24 @@ function paint(){
   $('fkB').innerHTML=o.over?B('done','Erledigt','primary')+B('plus5','+5 Min')+B('stop','Beenden'):
     B(o.paused?'resume':'pause',o.paused?'Weiter':'Pause')+B('plus5','+5 Min')+B('done','Erledigt','primary');
 }
+/* Sekundentakt nur, wenn die Fokus-Ansicht offen ist; sonst reicht alle 15 s ein Blick (Startseite zeigt Minuten) */
 function loop(){
-  clearInterval(tick);
-  tick=setInterval(()=>{
+  clearTimeout(tick);
+  const step=()=>{
+    tick=null;
     try{cur=ENG.state()}catch(e){cur=null}
     apply();
-    if(!cur){clearInterval(tick);tick=null;hide();refreshStart();return}
-    if(el&&el.classList.contains('on'))paint();
+    if(!cur){hide();refreshStart();return}
+    const open=!!(el&&el.classList.contains('on'));
+    if(document.hidden){tick=setTimeout(step,30000);return}
+    if(open)paint();
     refreshStart();
-  },1000);
+    tick=setTimeout(step,open?1000:15000);
+  };
+  tick=setTimeout(step,1000);
 }
-function show(){if(!el)build();try{cur=ENG.state()}catch(e){cur=null}if(!cur)return false;paint();el.classList.add('on');try{N&&N.setBars(document.documentElement.classList.contains('aqua')?'#9AC0E7':document.documentElement.classList.contains('glass')?'#F3F4F6':document.documentElement.classList.contains('dl')?'#F2F2F7':'#86CEFA',true)}catch(_){}loop();return true}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&tick){loop()}});
+function show(){if(!el)build();try{cur=ENG.state()}catch(e){cur=null}if(!cur)return false;paint();el.classList.add('on');loop();try{N&&N.setBars(document.documentElement.classList.contains('aqua')?'#9AC0E7':document.documentElement.classList.contains('glass')?'#F3F4F6':document.documentElement.classList.contains('dl')?'#F2F2F7':'#86CEFA',true)}catch(_){}loop();return true}
 function hide(){if(!el||!el.classList.contains('on'))return false;el.classList.remove('on');try{window.updateBar&&updateBar()}catch(_){}return true}
 
 window.Fokus={

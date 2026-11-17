@@ -16,7 +16,9 @@ function loadCfg(){try{return Object.assign({owner:'ratpoison-de',repo:'assisten
 let cfg=loadCfg();
 function saveCfg(){try{localStorage.setItem(CK,JSON.stringify(cfg))}catch(e){}}
 function loadBase(){try{return JSON.parse(localStorage.getItem(BK)||'null')}catch(e){return null}}
-function saveBase(b){try{localStorage.setItem(BK,JSON.stringify(b))}catch(e){}}
+/* Grundstand nur schreiben, wenn er sich wirklich geändert hat (die Datei ist groß) */
+let baseStr=null;
+function saveBase(b){try{const s=JSON.stringify(b);if(baseStr===null)baseStr=localStorage.getItem(BK);if(s===baseStr)return;localStorage.setItem(BK,s);baseStr=s}catch(e){}}
 
 /* ---------- Hilfen ---------- */
 function stable(x){if(x===undefined)return'u';if(x===null||typeof x!=='object')return JSON.stringify(x);if(Array.isArray(x))return'['+x.map(stable).join(',')+']';return'{'+Object.keys(x).sort().filter(k=>x[k]!==undefined).map(k=>JSON.stringify(k)+':'+stable(x[k])).join(',')+'}'}
@@ -99,10 +101,13 @@ async function readLocal(){const o={};for(const k in SLOTS){try{const v=await SL
 
 /* ---------- GitHub ---------- */
 function api(path){return cfg.api.replace(/\/$/,'')+'/repos/'+encodeURIComponent(cfg.owner)+'/'+encodeURIComponent(cfg.repo)+path}
-async function gh(method,path,body){
-  let r;
-  try{r=await fetch(api(path),{method,cache:'no-store',headers:Object.assign({Authorization:'Bearer '+cfg.token,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'},body?{'Content-Type':'application/json'}:{}),body:body?JSON.stringify(body):undefined})}
+let lastEtag='';
+async function gh(method,path,body,extra){
+  let r;lastEtag='';
+  try{r=await fetch(api(path),{method,cache:'no-store',headers:Object.assign({Authorization:'Bearer '+cfg.token,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'},body?{'Content-Type':'application/json'}:{},extra||{}),body:body?JSON.stringify(body):undefined})}
   catch(e){throw{code:'offline'}}
+  if(r.status===304)return{__same:true};
+  try{lastEtag=r.headers.get('ETag')||''}catch(e){}
   if(r.status===404)return null;
   if(r.status===401)throw{code:'token'};
   if(r.status===403){const t=await r.text();throw{code:/rate limit/i.test(t)?'rate':'rechte'}}
@@ -110,16 +115,25 @@ async function gh(method,path,body){
   if(!r.ok)throw{code:'http',status:r.status};
   return r.status===204?{}:r.json();
 }
-async function getFile(p){
-  const j=await gh('GET','/contents/'+p);if(!j)return null;
+/* Datendatei mit ETag abfragen: Hat sich auf GitHub nichts geändert, antwortet GitHub mit 304
+   (wenige Bytes, zählt nicht gegen das Limit) statt die ganze Datei erneut zu schicken. */
+let rcache=null;
+async function getFile(p,cond){
+  const useC=cond&&rcache&&rcache.path===p&&rcache.etag;
+  const j=await gh('GET','/contents/'+p,null,useC?{'If-None-Match':rcache.etag}:null);
+  if(j&&j.__same)return{text:rcache.text,sha:rcache.sha,same:true};
+  const etag=lastEtag;
+  if(!j){if(cond)rcache=null;return null}
   if(Array.isArray(j))throw{code:'http'};
   let text;
   if(j.content&&j.encoding==='base64')text=b64d(j.content);
   else{const bl=await gh('GET','/git/blobs/'+j.sha);text=bl?b64d(bl.content):''}
+  if(cond)rcache=etag?{path:p,etag,text,sha:j.sha}:null;
   return{text,sha:j.sha};
 }
 async function putFile(p,text,sha,msg){
   const j=await gh('PUT','/contents/'+p,Object.assign({message:msg,content:b64e(text)},sha?{sha}:{}));
+  if(rcache&&rcache.path===p)rcache=null;
   return j&&j.content&&j.content.sha;
 }
 const dataPath=()=>(cfg.dir?cfg.dir.replace(/^\/|\/$/g,'')+'/':'')+FILE;
@@ -144,6 +158,10 @@ function refreshFrames(list){
 
 /* ---------- Abgleich ---------- */
 let running=false,again=false,timer=0,lastErr='',lastSnap='';
+/* Energiesparen: Abfragen werden seltener, solange sich nichts ändert */
+const PULL_MIN=2*60000,PULL_MAX=15*60000,MIRROR_EVERY=15*60000;
+let pullDelay=PULL_MIN,pullT=0,lastPull=0,lastMirror=0,busyDelay=4000,imgOk=false;
+function armPull(){clearTimeout(pullT);pullT=setTimeout(()=>{if(document.hidden||navigator.onLine===false){armPull();return}sync('pull')},pullDelay)}
 const listeners=[];
 function status(){return{on:cfg.on&&!!cfg.token,last:cfg.last||0,by:cfg.by||'',err:lastErr,running}}
 function emit(){for(const f of listeners)try{f(status())}catch(e){}try{sh('start','onSync',status())}catch(e){}}
@@ -152,12 +170,15 @@ function schedule(ms){clearTimeout(timer);timer=setTimeout(()=>sync('auto'),ms)}
 async function sync(reason,mode){
   if(!cfg.on||!cfg.token)return status();
   if(running){again=true;return status()}
-  running=true;emit();
+  running=true;emit();lastPull=Date.now();let changed=false;
   try{
-    if(PLAT==='android')try{sh('kalender','gMirror')}catch(e){}
+    /* Google-Termine fürs Handy spiegeln: liest viele Monate Kalender – höchstens alle 15 Minuten */
+    if(PLAT==='android'&&(reason==='start'||reason==='manual'||reason==='connect'||Date.now()-lastMirror>MIRROR_EVERY)){lastMirror=Date.now();try{sh('kalender','gMirror')}catch(e){}}
     for(let tries=0;tries<4;tries++){
       const L=await readLocal();
-      const rf=await getFile(dataPath());
+      const rf=await getFile(dataPath(),true);
+      /* Nichts Neues auf GitHub und hier nichts geändert → fertig, ohne alles neu zu verrechnen */
+      if(rf&&rf.same&&!mode&&lastSnap&&imgOk){const sL=stable(L);if(sL===lastSnap&&loadBase()){cfg.last=Date.now();saveCfg();lastErr='';break}}
       const remote=rf?parse(rf.text,null):null;
       const R=remote&&remote.slots?remote.slots:undefined;
       let B=loadBase();
@@ -175,7 +196,8 @@ async function sync(reason,mode){
       /* Bereiche, die sich hier ändern würden, aber gerade bearbeitet werden → später */
       const touch=Object.keys(SLOTS).filter(k=>!eq(res[k],L[k]));
       const frames=[...new Set(touch.flatMap(k=>SLOTS[k].frames))];
-      if(touch.some(k=>SLOTS[k].frames.some(busy))){lastErr='';running=false;schedule(4000);emit();return status()}
+      if(touch.some(k=>SLOTS[k].frames.some(busy))){lastErr='';running=false;schedule(busyDelay);busyDelay=Math.min(busyDelay*2,60000);emit();return status()}
+      busyDelay=4000;if(touch.length||!rf||!rf.same||!R||!eq(res,R))changed=true;
       if(!R||!eq(res,R)){
         try{const sha=await putFile(dataPath(),JSON.stringify({app:'assistent',v:1,updated:new Date().toISOString(),by:DEVICE,slots:res}),rf&&rf.sha,'Abgleich von '+DEVICE);if(!sha)throw{code:'http'}}
         catch(e){if(e&&e.code==='konflikt'){continue}throw e}
@@ -185,12 +207,14 @@ async function sync(reason,mode){
       saveBase(res);mode=undefined;
       lastSnap=stable(await readLocal());
       if(touch.length)refreshFrames(frames);
-      await syncImages(res);
+      /* Fotos nur prüfen, wenn sich die Pinnwand geändert hat oder beim letzten Mal etwas fehlte */
+      if(!imgOk||!eq(res.pinnwand,B&&B.pinnwand))imgOk=await syncImages(res);
       cfg.last=Date.now();saveCfg();lastErr='';
       break;
     }
   }catch(e){lastErr=(e&&e.code)||'fehler'}
   running=false;emit();
+  pullDelay=changed||lastErr?PULL_MIN:Math.min(pullDelay*2,PULL_MAX);armPull();
   if(again){again=false;schedule(1500)}
   return status();
 }
@@ -199,19 +223,20 @@ async function sync(reason,mode){
 async function syncImages(res){
   const ids=new Set();
   try{for(const b of (res.pinnwand&&res.pinnwand.boards)||[])for(const c of b.cards||[])if(c.photo)ids.add(String(c.photo))}catch(e){}
-  if(!ids.size)return;
+  if(!ids.size)return true;let ok=true;
   let up=parse(localStorage.getItem(IK),[]);const upS=new Set(up);
   let have=[];try{have=(await dkeys('img')).map(String)}catch(e){}
   const haveS=new Set(have);let got=false;
   for(const id of ids){
     if(haveS.has(id)&&!upS.has(id)){
-      try{const data=await dget('img',id);if(typeof data==='string'){try{await putFile(imgPath(id),data,null,'Foto '+id)}catch(e){if(!(e&&e.code==='konflikt'))throw e}upS.add(id)}}catch(e){if(e&&e.code==='offline')break}
+      try{const data=await dget('img',id);if(typeof data==='string'){try{await putFile(imgPath(id),data,null,'Foto '+id)}catch(e){if(!(e&&e.code==='konflikt'))throw e}upS.add(id)}}catch(e){ok=false;if(e&&e.code==='offline')break}
     }else if(!haveS.has(id)){
-      try{const f=await getFile(imgPath(id));if(f&&f.text){await dput('img',id,f.text);upS.add(id);got=true}}catch(e){if(e&&e.code==='offline')break}
+      try{const f=await getFile(imgPath(id));if(f&&f.text){await dput('img',id,f.text);upS.add(id);got=true}}catch(e){ok=false;if(e&&e.code==='offline')break}
     }
   }
   try{localStorage.setItem(IK,JSON.stringify([...upS]))}catch(e){}
   if(got)refreshFrames(['pinnwand']);
+  return ok;
 }
 
 /* Änderungen auf diesem Gerät erkennen */
@@ -221,9 +246,10 @@ async function watch(){
 }
 /* Änderungen kommen als storage-Ereignis aus den Bereichen; die langsame Schleife fängt nur den Rest (Pinnwand-Datenbank) */
 let wT=0;window.addEventListener('storage',e=>{if(e.key&&e.key.indexOf('planer.sync')===0)return;clearTimeout(wT);wT=setTimeout(watch,900)});
-setInterval(watch,15000);
-setInterval(()=>{if(!document.hidden)sync('pull')},60000);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)schedule(800)});
+/* Änderungen kommen fast immer als storage-Ereignis; die Schleife ist nur das Netz darunter */
+setInterval(watch,45000);
+/* Zurück im Vordergrund: nur abfragen, wenn die letzte Abfrage über eine Minute her ist */
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-lastPull>60000){pullDelay=PULL_MIN;schedule(800)}});
 window.addEventListener('online',()=>schedule(500));
 setTimeout(()=>{watch();sync('start')},1500);
 

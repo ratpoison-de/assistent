@@ -845,7 +845,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 5.7<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 5.8<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="brf" id="brf" role="dialog" aria-label="Briefing"></div>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
@@ -978,7 +978,8 @@ function clock(){
   const d=new Date(),s=d.getSeconds(),m=d.getMinutes(),h=d.getHours()%12;
   hS.setAttribute('transform','rotate('+(s*6)+')');hM.setAttribute('transform','rotate('+(m*6)+')');hH.setAttribute('transform','rotate('+(h*30+m*0.5)+')');
   $('clock').setAttribute('aria-label','Es ist '+d.getHours()+':'+pad(m)+' Uhr');
-  if(ticking&&!document.hidden)raf=setTimeout(clock,1005-d.getMilliseconds());
+  /* Der Sekundenzeiger tickt nur, solange die Uhr wirklich sichtbar ist – sonst weckt er das Handy jede Sekunde */
+  if(ticking&&!document.hidden&&$('clock').offsetParent!==null&&(!window.isShownTab||isShownTab()))raf=setTimeout(clock,1005-d.getMilliseconds());
 }
 function startClock(){ticking=true;if(!raf)clock()}
 
@@ -1433,7 +1434,7 @@ window.onResumeLight=function(){startClock();launcherUI();if(Date.now()-lastLoad
 window.onWeather=function(){render()};
 window.handleBack=function(){if(sheet.classList.contains('on')){closeSheet();return true}if($('brf').classList.contains('on')){closeBriefing();return true}if(epVisible)return false;if(document.body.classList.contains('mdopen')){document.body.classList.remove('mdopen');try{P.updateBar()}catch(_){}return true}if(isHM()&&EP_ON()&&!epVisible){epShow();return true}return false};
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&ticking)startClock()});
-setInterval(()=>{if(!document.hidden)render()},60000);
+setInterval(()=>{if(window.isShownTab?isShownTab():!document.hidden)render()},60000);
 /* ================= Kleine Dinge: Energie, Größen, Schritte, Fokus ================= */
 function isHM(){try{return homeMode}catch(e){return false}}
 const ENERGY={wenig:{l:'Wenig',h:'ca. 40 Min',m:40},mittel:{l:'Mittel',h:'ca. 1½ Std',m:90},viel:{l:'Viel',h:'so viel, wie geht',m:1e9}};
@@ -2473,7 +2474,8 @@ function L(){try{return P&&P.Launcher&&P.Launcher.on?P.Launcher:null}catch(e){re
 let homeMode=false;
 const two=n=>String(n).padStart(2,'0');
 function lclock(){const n=new Date();$('lclock').textContent=two(n.getHours())+':'+two(n.getMinutes());if(epVisible)epRender()}
-(function tickL(){lclock();setTimeout(tickL,60500-Date.now()%60000)})();
+(function tickL(){if((homeMode||epVisible)&&!document.hidden)lclock();setTimeout(tickL,60500-Date.now()%60000)})();
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&(homeMode||epVisible))lclock()});
 function favsHTML(){
   const f=L()?L().favs():[];
   return (f.length?'<div class="lzL">'+f.map(x=>'<button class="lzA" data-app="'+esc(x.k)+'">'+esc(x.name)+'</button>').join('')+'</div>'

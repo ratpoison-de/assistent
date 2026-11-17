@@ -882,7 +882,8 @@ window.handleBack=function(){
 };
 let lastShow=0;
 window.onShow=function(){if(status&&status.loggedIn&&Date.now()-lastShow>45000){lastShow=Date.now();refresh(true)}};
-window.onResumeApp=function(){if(status&&status.loggedIn){refresh(true)}};
+/* Rückkehr in die App: die ganze Liste nur laden, wenn Mail gerade offen ist – sonst reicht die Zahl der Ungelesenen */
+window.onResumeApp=function(){if(!(status&&status.loggedIn))return;if(window.isShownTab&&!isShownTab()){updateBadge();return}lastShow=Date.now();refresh(true)};
 window.openFromShell=async function(p){if(p&&p.msgid)window.openByMsgId(p.msgid);else if(p&&p.compose)openComposer(p.compose);
   else if(p&&p.triage){if(cur.role!=='inbox'||filter!=='all')switchFolder(folders.find(f=>f.role==='inbox')||{name:'INBOX',role:'inbox',label:'Posteingang'});for(let i=0;i<80&&loading;i++)await new Promise(r=>setTimeout(r,100));if(!items.length)await refresh(true);for(let i=0;i<80&&loading;i++)await new Promise(r=>setTimeout(r,100));startTriage()}};
 let lastBrief=0;
@@ -897,7 +898,7 @@ window.briefing=async function(){
   const map=i=>({from:nameOf(i.from),subject:i.subject||'(ohne Betreff)',vip:isVip(i.from&&i.from.addr),date:i.date,msgid:i.msgid,attach:!!i.attach});
   return {loggedIn:true,user:cfg.user,unread:unread==null?un.length:unread,vip:un.filter(i=>isVip(i.from&&i.from.addr)).map(map),latest:un.slice(0,4).map(map),recent:list.slice(0,3).map(map),error:err};
 };
-setInterval(()=>{if(status&&status.loggedIn&&!document.hidden)updateBadge()},180000);
+setInterval(()=>{if(status&&status.loggedIn&&!document.hidden)updateBadge()},600000);
 window.ready=init();
 })();
 </script>

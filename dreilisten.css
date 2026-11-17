@@ -169,3 +169,7 @@ html.dl body .brf .bri{border-bottom:.5px solid #D8D8DC!important}
 html.dl body .brf .bri .bx{border-radius:50%!important;border-color:#C4C4C8!important}
 html.dl body .brf .brx{border:0!important;background:#FFFFFF!important;color:#8A8A8E!important}
 html.dl body .epbrf,html.dl body .epset{border:0!important;background:#FFFFFF!important}
+
+/* Energiesparen auf dem Handy: keine Live-Unschärfe hinter Leisten (muss bei jedem Bild neu berechnet werden) */
+html.nat body .tabs{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:#FFFFFF!important}
+html.nat body .lt{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:#FFFFFF!important}

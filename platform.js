@@ -4,11 +4,17 @@
   var par=null;try{par=window.parent&&window.parent!==window?window.parent:null}catch(e){}
   var plat=(par&&par.ASSISTENT_PLATFORM)||(window.Native||(par&&par.Native)?'android':(window.AssistentDesktop?'windows':'web'));
   window.ASSISTENT_PLATFORM=plat;
+  /* Energiesparen: Ist diese Seite gerade wirklich zu sehen? (App im Vordergrund und dieser Bereich aktiv) */
+  window.isShownTab=function(){
+    if(document.hidden)return false;
+    try{var fe=window.frameElement;if(fe&&par&&typeof par.activeTab==='function')return par.activeTab()===String(fe.id||'').replace(/^f-/,'')}catch(e){}
+    return true;
+  };
   /* Design: „Drei Listen“ (iOS-Erinnerungen) – wird als letztes Stylesheet in jede Seite geladen */
   try{
     document.documentElement.classList.add('dl');
     if(/(^|\/)(index\.html|start\.html)?$/.test(location.pathname))document.documentElement.classList.add('col');if(plat==='android')document.documentElement.classList.add('nat');
-    var add=function(){if(document.getElementById('dlcss'))return;var l=document.createElement('link');l.id='dlcss';l.rel='stylesheet';l.href='dreilisten.css?v=57';document.head.appendChild(l)};
+    var add=function(){if(document.getElementById('dlcss'))return;var l=document.createElement('link');l.id='dlcss';l.rel='stylesheet';l.href='dreilisten.css?v=58';document.head.appendChild(l)};
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add);else add();
   }catch(e){}
   if(plat!=='web')return;
