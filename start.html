@@ -714,6 +714,15 @@ body.epon .ep{background:#FFFFFF!important;padding:8px 6px calc(10px + env(safe-
 .bri i{flex:none;font-style:normal;font-weight:700;min-width:52px;font-size:14px}.bri span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bri small{flex:none;font-size:12px;color:#555}
 .bri.nx span{font-weight:700}.bri .bx{flex:none;align-self:center;width:15px;height:15px;min-width:0;border:1.5px solid #111;border-radius:4px}
 .brm{flex:none;font-size:13px;color:#555;padding:6px 0}
+.ep .eptiles .epm{display:flex;align-items:center;gap:8px;min-width:0;align-self:stretch;background:#fff;border:0;border-radius:16px;padding:6px 10px 6px 6px;text-align:left;color:#111}
+.epm .mav{flex:none;width:52px;height:52px;border-radius:50%;overflow:hidden;background:#fff;border:2px solid #111}
+.epm .mbub{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+html body .ep .epm .mt,html.dl body .ep .epm .mt{font-size:12.5px;line-height:1.3;color:#111!important;font-weight:500!important;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+html body .ep .epm .ms,html.dl body .ep .epm .ms{font-size:11px;font-weight:700!important;color:var(--accent,#007AFF)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.epm[data-wide] .mav{width:56px;height:56px}.epm[data-wide] .mt{font-size:13.5px!important;-webkit-line-clamp:2!important}
+.epm.mnew .mav{animation:modPop .5s cubic-bezier(.3,1.6,.5,1)}.epm.mnew .mbub{animation:modIn .35s ease-out}.epm.mnew .ave{transform-box:fill-box;transform-origin:center;animation:avBlink .9s ease-in-out 1}
+.ep.f4 .epm .ms{display:none}.ep.f4 .epm .mav{width:44px;height:44px}
+@media (prefers-reduced-motion:reduce){.epm.mnew .mav,.epm.mnew .mbub,.epm.mnew .ave{animation:none}}
 html body .ep .epa.mod,html.dl body .ep .epa.mod{flex-direction:row!important;align-items:center;gap:10px;padding:8px 12px 8px 8px!important;text-align:left}
 .epa.mod .mav{flex:none;width:58px;height:58px;border-radius:50%;overflow:hidden;background:#fff;border:2px solid #111}
 .epa.mod .mbub{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
@@ -890,7 +899,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 6.1<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 6.2<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="brf" id="brf" role="dialog" aria-label="Briefing"></div>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
@@ -2549,6 +2558,8 @@ function modMsg(){
   if(!tips.length)return{mood:'calm',t:GREET[part(h)]+nm+'. Ich bin da, wenn du mich brauchst.',s:'Briefing',act:'brief'};
   return tips[slot%tips.length];
 }
+let epColsC=0;
+function epCols(){if(!epColsC){try{epColsC=getComputedStyle($('epF')).gridTemplateColumns.split(' ').filter(Boolean).length||5}catch(_){epColsC=5}}return epColsC}
 function modHTML(m){
   return '<span class="mav" data-brief aria-label="Briefing öffnen">'+avSVG(m.mood,avIdx())+'</span><span class="mbub"><span class="mt">'+esc(m.t)+'</span><span class="ms">'+esc(m.s)+'</span></span>';
 }
@@ -2557,7 +2568,14 @@ function epRender(){
   const n=new Date(),p=part(n.getHours()),w=weather();
   const cur=w&&w.data&&w.data.current;
   setT($('epD'),WDL[n.getDay()]+', '+n.getDate()+'. '+MON[n.getMonth()]+' · '+GREET[p]+(NAME?', '+NAME:''));
-  try{setH($('epF'),epTilesHTML())}catch(_){}
+  /* Kacheln + Moderator: der Avatar füllt die freien Plätze hinter der letzten Kachel (oder eine eigene Zeile) */
+  try{let m=null;try{m=modMsg()}catch(_){}
+    let th=epTilesHTML();
+    if(m){const cnt=(th.match(/class="tl2/g)||[]).length,cols=epCols(),rem=cnt%cols;let span=rem?cols-rem:cols;if(span<3)span=cols;
+      th+='<button class="epm" id="epM" data-act="'+m.act+'" style="grid-column:span '+span+'"'+(span>=cols?' data-wide="1"':'')+'>'+modHTML(m)+'</button>'}
+    const fe=$('epF'),chg=fe.__h&&fe.__h!==th&&m&&fe.__mt!==m.t;setH(fe,th);
+    if(m){fe.__mt=m.t;if(chg){const b=$('epM');if(b)b.classList.add('mnew')}}
+  }catch(_){}
   try{setH($('ep3'),ep3HTML())}catch(_){}
   {const e=$('epW'),t=two(n.getHours())+':'+two(n.getMinutes());if(e.__t!==t){e.textContent=t;e.__t=t}}
   const ev=epNextEvent();
@@ -2565,9 +2583,8 @@ function epRender(){
   try{rwPaint(w)}catch(_){}
   let nx=null;try{nx=dayPlan().now[0]}catch(_){}
   const f=fState();
-  /* Moderator statt der bisherigen Karte */
-  {let m=null;try{m=modMsg()}catch(_){}
-   if(m){const a=$('epA');a.dataset.act=m.act;const h=modHTML(m);if(a.__h!==h){const first=!a.__h;a.innerHTML=h;a.__h=h;epChg=true;a.classList.remove('hidden','mnew');if(!first){void a.offsetWidth;a.classList.add('mnew')}}a.classList.add('mod')}}
+  /* Die bisherige Karte entfällt: der Moderator sitzt jetzt im Kachelraster */
+  {const a=$('epA');if(!a.classList.contains('hidden')){a.classList.add('hidden');a.style.display='none';epChg=true}}
   let cc=null;
   if(false)setH($('epA'),'<small>'+esc(cc.lab)+'</small><b>'+esc(cc.t)+'</b><span>'+esc(cc.s)+'</span>');
   else if(false)setH($('epA'),f?'<small>Fokus läuft</small><b>'+esc(f.title)+'</b>':nx?'<small>Nächste Aufgabe'+(gtdCtx()?' · '+ctxName(gtdCtx()):'')+'</small><b>'+esc(nx.text)+'</b><span>'+(nx.kind==='s'?'S':nx.size)+' · '+estLabel(nx.kind==='s'?'S':nx.size)+' · ▶ starten</span>':'<small>Nächste Aufgabe</small><b>Nichts offen</b><span>Gönn dir eine Pause</span>');
@@ -2626,8 +2643,8 @@ $('ep').addEventListener('click',e=>{
   if(e.target.closest('#rwWx')){rwSwitch('wetter');return}
   if(e.target.closest('[data-ag]')||e.target.closest('#rpAgenda')){try{P.showTab('kalender')}catch(_){}return}
   if(e.target.closest('#rpWetter')){try{P.showTab('wetter')}catch(_){}return}
-  if(e.target.closest('#epA [data-brief]')){openBriefing();return}
-  if(e.target.closest('#epA')){const ac=$('epA').dataset.act;
+  if(e.target.closest('#epM [data-brief]')){openBriefing();return}
+  if(e.target.closest('#epM')){const ac=e.target.closest('#epM').dataset.act;
     if(ac==='brief'){openBriefing();return}
     if(ac==='start'){startNext();return}
     if(ac==='energy'){try{companionOpen('morning')}catch(_){openBriefing()}return}
@@ -2635,7 +2652,7 @@ $('ep').addEventListener('click',e=>{
   if(e.target.closest('#epA')){if(fState()){try{P.Fokus.open()}catch(_){}}else startNext();return}
   if(e.target.closest('#epB')||e.target.closest('#epW')){try{P.Launcher.openClock()}catch(_){}return}
 });
-addEventListener('resize',()=>{if(epVisible)epRender()});
+addEventListener('resize',()=>{epColsC=0;if(epVisible)epRender()});
 
 /* ================= Startbildschirm (Launcher) ================= */
 function L(){try{return P&&P.Launcher&&P.Launcher.on?P.Launcher:null}catch(e){return null}}
