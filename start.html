@@ -634,7 +634,7 @@ body.epon .ep{background:#FFFFFF!important;padding:8px 6px calc(10px + env(safe-
 .ep .rset{flex:none;display:grid;place-items:center;width:22px;height:22px}
 .rp{display:flex;flex-direction:column}.rp[hidden]{display:none}
 .rblk{background:#fff;padding:8px 12px 10px;text-align:center}
-.ep #epW{display:block;width:100%;margin:0;text-align:center!important;font-size:clamp(62px,23vw,104px)!important;line-height:1;font-weight:700!important;letter-spacing:.02em;color:transparent!important;background:repeating-linear-gradient(180deg,#111 0 3px,rgba(17,17,17,.16) 3px 5px)!important;-webkit-background-clip:text!important;background-clip:text!important}
+.ep #epW{display:block;width:100%;margin:0;white-space:nowrap;font-variant-numeric:tabular-nums;text-align:center!important;font-size:clamp(62px,23vw,104px)!important;line-height:1;font-weight:700!important;letter-spacing:.02em;color:transparent!important;background:repeating-linear-gradient(180deg,#111 0 3px,rgba(17,17,17,.16) 3px 5px)!important;-webkit-background-clip:text!important;background-clip:text!important}
 .ep .epd{margin:2px 0 0;font-size:11.5px;color:#111;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rstr{height:8px;background:linear-gradient(180deg,var(--ro) 0 3px,var(--rc) 3px 4.5px,var(--ro) 4.5px 6px,var(--rc) 6px 7px,var(--ro) 7px 8px)}
 .ep .rwx{display:flex;align-items:center;gap:8px;width:100%;padding:10px 12px 9px!important}
@@ -671,6 +671,7 @@ body.epon .ep{background:#FFFFFF!important;padding:8px 6px calc(10px + env(safe-
 .rnav em{position:absolute;top:-4px;right:0;min-width:15px;height:15px;padding:0 3px;border:1.5px solid #111;border-radius:8px;background:var(--ro);font-style:normal;font-size:9px;font-weight:700;line-height:12px;text-align:center}
 .rnav span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .ep.f3 .rnav span{display:none}
+.ep .rnav{display:none!important}
 @media (min-width:900px){.rnav{display:none}}
 /* Kacheln im Pixel-Stil */
 .ep .eptiles{grid-template-columns:repeat(5,1fr)!important;gap:10px 4px!important;margin-top:14px!important;padding:0 2px}
@@ -900,7 +901,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 6.4<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 6.5<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="brf" id="brf" role="dialog" aria-label="Briefing"></div>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
@@ -2532,7 +2533,7 @@ async function rwAgenda(){
 }
 const RNAV=[['woche','Woche'],['kalender','Kalender'],['projekte','Projekte'],['mail','Mail'],['pinnwand','Pinnwand'],['wetter','Wetter']];
 function rwNav(){
-  const el=$('rwNav');if(!el)return;let h='';
+  const el=$('rwNav');if(!el||getComputedStyle(el).display==='none')return;let h='';
   for(const [t,n] of RNAV){let svg='',bd='';try{const b=P.document.querySelector('.tab[data-t="'+t+'"]');svg=b.querySelector('svg').outerHTML;const g=b.querySelector('.bdg');if(g&&g.textContent.trim()&&getComputedStyle(g).display!=='none')bd='<em>'+esc(g.textContent.trim())+'</em>'}catch(_){}
     h+='<button data-nav="'+t+'" aria-label="'+n+'"><span class="ni">'+svg+'</span>'+bd+'<span>'+n+'</span></button>'}
   let ms='';try{ms=P.document.getElementById('magic').querySelector('svg').outerHTML}catch(_){}
@@ -2643,10 +2644,15 @@ function ep3HTML(){
 $('ep3').addEventListener('click',e=>{const b=e.target.closest('[data-ep3]');if(!b||!P)return;try{P.Native&&P.Native.haptic()}catch(_){}
   P.showTab('woche',b.dataset.ep3==='plan'?{plan:true}:{list:+b.dataset.ep3})});
 /* Startbildschirm passgenau: Stufenweise verdichten, bis nichts mehr überläuft */
-function epFit(){const el=$('ep');if(!el||!epVisible)return;
+let ckKey='';
+/* Uhr so groß, dass sie die Breite des Fensters füllt (nur neu gemessen, wenn sich die Breite ändert) */
+function clockFit(){const e=$('epW');if(!e||!epVisible)return;const box=e.parentElement,bs=getComputedStyle(box),av=box.clientWidth-parseFloat(bs.paddingLeft)-parseFloat(bs.paddingRight)-6,k=av+'|'+e.textContent.length;if(!av||k===ckKey)return;ckKey=k;
+  e.style.setProperty('font-size','100px','important');const r=document.createRange();r.selectNodeContents(e);const tw=r.getBoundingClientRect().width;
+  if(!tw)return;const fs=Math.max(60,Math.min(100*av/tw,window.innerHeight*.3));e.style.setProperty('font-size',fs.toFixed(1)+'px','important')}
+function epFit(){const el=$('ep');if(!el||!epVisible)return;clockFit();
   el.classList.remove('f1','f2','f3','f4','f5');
   for(const c of ['f1','f2','f3','f4','f5']){if(el.scrollHeight<=el.clientHeight+1)break;el.classList.add(c)}}
-addEventListener('resize',()=>setTimeout(epFit,50));
+addEventListener('resize',()=>{ckKey='';setTimeout(epFit,50)});
 /* Windows und Web haben keinen Launcher: dort ist der ruhige Startbildschirm einfach die Startseite */
 function EPW(){try{return !L()}catch(_){return true}}
 function epShow(){epChg=true;
