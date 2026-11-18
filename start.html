@@ -714,7 +714,8 @@ body.epon .ep{background:#FFFFFF!important;padding:8px 6px calc(10px + env(safe-
 .bri i{flex:none;font-style:normal;font-weight:700;min-width:52px;font-size:14px}.bri span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bri small{flex:none;font-size:12px;color:#555}
 .bri.nx span{font-weight:700}.bri .bx{flex:none;align-self:center;width:15px;height:15px;min-width:0;border:1.5px solid #111;border-radius:4px}
 .brm{flex:none;font-size:13px;color:#555;padding:6px 0}
-.ep .eptiles .epm{display:flex;align-items:center;gap:8px;min-width:0;align-self:stretch;background:#fff;border:0;border-radius:16px;padding:6px 10px 6px 6px;text-align:left;color:#111}
+.epmw{margin-top:10px}.epmw:empty{display:none}
+.ep .epmw .epm{width:100%;display:flex;align-items:center;gap:8px;min-width:0;background:#fff;border:0;border-radius:16px;padding:8px 14px 8px 8px;font-family:inherit;margin:0!important;text-align:left;color:#111}
 .epm .mav{flex:none;width:52px;height:52px;border-radius:50%;overflow:hidden;background:#fff;border:2px solid #111}
 .epm .mbub{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 html body .ep .epm .mt,html.dl body .ep .epm .mt{font-size:12.5px;line-height:1.3;color:#111!important;font-weight:500!important;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
@@ -899,7 +900,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 6.2<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 6.3<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="brf" id="brf" role="dialog" aria-label="Briefing"></div>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
@@ -917,6 +918,7 @@ body.epon .scrim{z-index:79}
     <div class="rnav" id="rwNav"></div>
   </div>
   <div class="ep3" id="ep3"></div>
+  <div class="epmw" id="epMw"></div>
   <div class="eptiles" id="epF"></div>
   <div class="epfc" id="epFc" hidden></div>
   <button class="epa" id="epA"></button>
@@ -2568,13 +2570,12 @@ function epRender(){
   const n=new Date(),p=part(n.getHours()),w=weather();
   const cur=w&&w.data&&w.data.current;
   setT($('epD'),WDL[n.getDay()]+', '+n.getDate()+'. '+MON[n.getMonth()]+' · '+GREET[p]+(NAME?', '+NAME:''));
-  /* Kacheln + Moderator: der Avatar füllt die freien Plätze hinter der letzten Kachel (oder eine eigene Zeile) */
+  /* Kacheln; der Moderator sitzt direkt unter den drei Feldern (Priorität/Woche/Monat), über deren volle Breite */
+  try{setH($('epF'),epTilesHTML())}catch(_){}
   try{let m=null;try{m=modMsg()}catch(_){}
-    let th=epTilesHTML();
-    if(m){const cnt=(th.match(/class="tl2/g)||[]).length,cols=epCols(),rem=cnt%cols;let span=rem?cols-rem:cols;if(span<3)span=cols;
-      th+='<button class="epm" id="epM" data-act="'+m.act+'" style="grid-column:span '+span+'"'+(span>=cols?' data-wide="1"':'')+'>'+modHTML(m)+'</button>'}
-    const fe=$('epF'),chg=fe.__h&&fe.__h!==th&&m&&fe.__mt!==m.t;setH(fe,th);
-    if(m){fe.__mt=m.t;if(chg){const b=$('epM');if(b)b.classList.add('mnew')}}
+    const mw=$('epMw'),mh=m?'<button class="epm" id="epM" data-wide="1" data-act="'+m.act+'">'+modHTML(m)+'</button>':'';
+    const chg=mw.__h&&mw.__h!==mh&&m&&mw.__mt!==m.t;setH(mw,mh);
+    if(m){mw.__mt=m.t;if(chg){const b=$('epM');if(b)b.classList.add('mnew')}}
   }catch(_){}
   try{setH($('ep3'),ep3HTML())}catch(_){}
   {const e=$('epW'),t=two(n.getHours())+':'+two(n.getMinutes());if(e.__t!==t){e.textContent=t;e.__t=t}}
