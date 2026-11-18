@@ -900,7 +900,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 6.3<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 6.4<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="brf" id="brf" role="dialog" aria-label="Briefing"></div>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
@@ -1840,6 +1840,47 @@ function avSVG(mood,i){
   return '<svg viewBox="14 11 82 82" width="100%" height="100%" aria-hidden="true">'+defs+'<g class="ava">'+hairB+body+neck+head+hairF+glasses+brow+eyes+mouth+'</g>'+extra+'</svg>';
 }
 window.avSVG=avSVG;
+/* Avatar-Moderator für die Bereiche: liefert Text und Figur an avatar.js */
+window.modFor=function(area){
+  const n=new Date(),h=n.getHours(),hm=two(h)+':'+two(n.getMinutes()),nm=NAME?', '+NAME:'';let m=null;
+  const until=t=>{const a=t.split(':'),x=+a[0]*60+ +a[1]-(h*60+n.getMinutes());return x<=0?'jetzt':x<60?'in '+x+' Min':'in '+Math.floor(x/60)+' Std'+(x%60?' '+x%60+' Min':'')};
+  if(area==='kalender'){const k=D.kal;if(!k)return null;
+    const td=(k.today||[]).slice().sort((a,b)=>String(a.tStart||'').localeCompare(String(b.tStart||'')));
+    const run=td.find(e=>!e.allDay&&e.tStart&&e.tEnd&&e.tStart<=hm&&e.tEnd>hm);
+    const up=td.filter(e=>!e.allDay&&e.tStart&&e.tStart>hm),tm=(k.tomorrow||[]).find(e=>!e.allDay&&e.tStart);
+    if(run)m={mood:'calm',t:'Gerade läuft „'+run.title+'“ bis '+run.tEnd+'.'+(up.length?' Danach: „'+up[0].title+'“ um '+up[0].tStart+'.':''),s:'',act:''};
+    else if(up.length){const mi=until(up[0].tStart);m={mood:/Min$/.test(mi)&&!/Std/.test(mi)&&parseInt(mi.replace(/\D/g,''))<=15?'busy':'calm',t:'Als Nächstes: „'+up[0].title+'“ um '+up[0].tStart+' – '+mi+'.'+(up.length>1?' Danach noch '+(up.length-1)+(up.length===2?' Termin':' Termine')+' heute.':''),s:'',act:''}}
+    else if(tm)m={mood:h>=21?'sleepy':'calm',t:'Heute steht nichts mehr an'+nm+'. Morgen um '+tm.tStart+': „'+tm.title+'“.',s:'Briefing',act:'brief'};
+    else m={mood:'happy',t:'Heute und morgen ist dein Kalender frei. Zeit für das Wichtige aus deiner Woche.',s:'Zur Woche',act:'tab:woche'};
+  }
+  else if(area==='projekte'){const pr=D.proj;let inb=[];try{inb=gInbox()}catch(_){}const stuck=(pr&&pr.stuck)||[];
+    if(inb.length)m={mood:inb.length>=5?'busy':'calm',t:(inb.length===1?'Eine Sache liegt':inb.length+' Dinge liegen')+' in deinem Eingang. Lass sie uns kurz klären – eins nach dem anderen.',s:'Eingang klären',act:'start:openClarifyNow'};
+    else if(stuck.length)m={mood:'calm',t:'Bei „'+stuck[0].name+'“ fehlt ein nächster Schritt. Was wäre der kleinste, den du tun kannst?'+(stuck.length>1?' ('+stuck.length+' Projekte betroffen)':''),s:'',act:''};
+    else if(pr)m={mood:'proud',t:'Eingang leer, jedes Projekt hat einen nächsten Schritt. Sauber'+nm+'!',s:'',act:''};
+    else return null;
+  }
+  else if(area==='pinnwand'){const b=D.pin;if(!b)return null;
+    if(b.plans&&b.plans.length){const p=b.plans[0],dd=Math.round((new Date(p.date+'T12:00:00')-new Date(ymd(n)+'T12:00:00'))/864e5);
+      m={mood:'calm',t:'Bald dran: „'+p.title+'“ '+(dd<=0?'heute':dd===1?'morgen':'in '+dd+' Tagen')+(p.time?' um '+p.time:'')+'.'+(b.openItems?' Auf deinen Karten sind noch '+b.openItems+' Punkte offen.':''),s:'',act:''}}
+    else if(b.openItems)m={mood:b.openItems>=8?'busy':'calm',t:'Auf deinen Karten sind noch '+b.openItems+' Punkte offen. Was erledigt ist, darf runter von der Pinnwand.',s:'',act:''};
+    else m={mood:'happy',t:'Deine Pinnwand ist aufgeräumt. Halte hier Ideen, Fotos und Pläne fest – Aufgaben gehören in die Woche.',s:'Zur Woche',act:'tab:woche'};
+  }
+  else if(area==='wetter'){const w=weather(),d=w&&w.data&&w.data.daily,c=w&&w.data&&w.data.current;if(!d||!c)return null;
+    let i=d.time.indexOf(ymd(n));if(i<0)i=0;const j=h>=18&&d.time.length>i+1?i+1:i,day=j===i?'Heute':'Morgen';
+    const mn=Math.round(d.temperature_2m_min[j]),mx=Math.round(d.temperature_2m_max[j]),rp=d.precipitation_probability_max?d.precipitation_probability_max[j]:0,code=d.weather_code[j],txt=(WTXT[code]||'').replace(/^./,x=>x.toUpperCase());
+    let tip='';
+    if(mn<=1)tip='Glätte möglich – plane morgens etwas mehr Zeit ein.';
+    else if(rp>=60)tip='Schirm einpacken'+(day==='Morgen'?' für morgen':'')+'!';
+    else if(mx>=26)tip='Viel trinken und Schatten suchen.';
+    else if(code<=2&&rp<30)tip='Gutes Wetter für eine Runde an der frischen Luft.';
+    else if(rp>=35)tip='Ab und zu Regen möglich – eine Jacke schadet nicht.';
+    m={mood:mn<=1||rp>=60?'busy':code<=2?'happy':'calm',t:day+' '+mn+'–'+mx+'°'+(txt?', '+txt:'')+(rp>=20?' ('+rp+'% Regen)':'')+'. '+tip,s:'',act:''};
+  }
+  if(!m)return null;
+  return{html:'<span class="mav" data-brief aria-label="Briefing öffnen">'+avSVG(m.mood,avIdx())+'</span><span class="mbub"><span class="mt">'+esc(m.t)+'</span><span class="ms">'+esc(m.s)+'</span></span>',act:m.act};
+};
+window.openClarifyNow=()=>{try{openClarify()}catch(_){}};
+
 let brT=0;
 function closeBriefing(){clearTimeout(brT);brT=0;$('brf').classList.remove('on')}
 function openBriefing(keep){
