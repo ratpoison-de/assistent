@@ -14,11 +14,13 @@
     '@media (prefers-reduced-motion:reduce){.avm.mnew .mav{animation:none}}';
   var st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
   function render(){
+    /* Am Handy sitzt der Avatar in der Leiste unten (Hülle); hier nur am PC */
+    if(window.innerWidth<900){var x=document.getElementById('avm');if(x)x.style.display='none';return}
     var r=null;try{r=P.call('start','modFor',area)}catch(e){}
     var el=document.getElementById('avm');
     if(!r){if(el)el.style.display='none';return}
     if(!el){el=document.createElement('button');el.id='avm';el.className='avm';el.type='button';
-      var m=document.querySelector('main');if(!m)return;m.parentNode.insertBefore(el,m);
+      var m=document.querySelector('main'),tb=document.getElementById('topbar');if(m)m.parentNode.insertBefore(el,m);else if(tb)tb.parentNode.insertBefore(el,tb.nextSibling);else return;
       el.addEventListener('click',function(e){
         var face=e.target.closest('[data-brief]'),a=el.dataset.act||'';
         if(face||a==='brief'){try{P.showTab('start');setTimeout(function(){P.call('start','openBriefing')},60)}catch(_){}return}

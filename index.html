@@ -148,6 +148,18 @@ html body.ep .ldr .lg,html body.ep .ldr .lm{color:#111}
 html body.ep .ldr .lx{background:#fff;box-shadow:none;border:2px solid #111;color:#111}
 html body.ep .lsh{font-family:"Assistent Mono",ui-monospace,monospace}
 html body.ep .lsh .o svg{color:#111}
+/* Avatar-Leiste: auf dem Handy in allen Bereichen ganz unten über der Leiste – einheitlich für alle Seiten */
+.avbar{position:fixed;left:12px;right:12px;bottom:calc(var(--tab) + var(--sb) + 2px);height:66px;display:flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border:0;border-radius:18px;background:#fff;box-shadow:0 8px 26px -12px rgba(20,30,60,.28),inset 0 0 0 .5px rgba(0,0,0,.07);z-index:10;text-align:left;font:inherit;color:#111;cursor:pointer}
+.avbar[hidden]{display:none}
+.avbar .mav{flex:none;width:52px;height:52px;border-radius:50%;overflow:hidden;background:#fff;border:2px solid #111}
+.avbar .mbub{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.avbar .mt{font-size:13.5px;line-height:1.3;color:#111;font-weight:500;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.avbar .ms{font-size:12px;font-weight:700;color:#007AFF}.avbar .ms:empty{display:none}
+.avbar.mnew .mav{animation:avbPop .5s cubic-bezier(.3,1.6,.5,1)}@keyframes avbPop{0%{transform:scale(.85)}60%{transform:scale(1.06)}100%{transform:none}}
+body.avon .frames{bottom:calc(var(--tab) + var(--sb) + 74px)}
+body.kbup .avbar{display:none}body.kbup.avon .frames{bottom:calc(var(--tab) + var(--sb))}
+@media (min-width:900px){.avbar{display:none!important}body.avon .frames{bottom:0}}
+@media (prefers-reduced-motion:reduce){.avbar.mnew .mav{animation:none}}
 </style>
 </head>
 <body>
@@ -160,6 +172,7 @@ html body.ep .lsh .o svg{color:#111}
   <iframe id="f-pinnwand" title="Pinnwand"></iframe>
   <iframe id="f-wetter" title="Wetter"></iframe>
 </div>
+<button class="avbar" id="avBar" type="button" hidden></button>
 <nav class="tabs" id="tabs">
   <button class="tab" data-t="start"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9v11h13V9"/><path d="M10 20v-5.5h4V20"/></svg></span>Start</button>
   <button class="tab" data-t="woche"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 7h14M5 12h10M5 17h6"/></svg></span>Woche</button>
@@ -221,6 +234,7 @@ function ensure(t){
 function call(t,fn,...a){try{const w=frame(t).contentWindow;if(w&&typeof w[fn]==='function')return w[fn](...a)}catch(e){}}
 function showTab(t,payload){
   if(!TABS.includes(t))return;
+  setTimeout(()=>{try{window.avUpdate&&avUpdate()}catch(e){}},0);
   if(active&&active!==t&&loaded[active])call(active,'onHide');
   active=t;try{localStorage.setItem('planer.tab',t)}catch(e){}
   const prevT=document.querySelector('.frames iframe.on');
@@ -346,5 +360,31 @@ window.onResumeApp=(function(f){let last=Date.now();return function(){const n=Da
 </script>
 <script src="launcher.js"></script>
 <script src="fokus.js"></script>
+<script>
+/* Avatar-Leiste: Text und Figur liefert die Startseite. Kein eigener Zeitgeber – aktualisiert beim Bereichswechsel,
+   beim Zurückkehren und wenn die Startseite neu zeichnet; das DOM ändert sich nur bei neuem Text. */
+(function(){
+  const bar=document.getElementById('avBar');if(!bar)return;let h0=window.innerHeight;
+  window.avUpdate=function(){
+    if(window.innerWidth>=900){bar.hidden=true;document.body.classList.remove('avon');return}
+    let r=null;try{r=call('start','modFor',active==='start'?'home':active)}catch(e){}
+    if(!r){if(!bar.hidden){bar.hidden=true;document.body.classList.remove('avon')}return}
+    bar.dataset.act=r.act||'';
+    if(bar.__h!==r.html){const first=!bar.__h;bar.innerHTML=r.html;bar.__h=r.html;if(!first){bar.classList.remove('mnew');void bar.offsetWidth;bar.classList.add('mnew')}}
+    if(bar.hidden){bar.hidden=false;document.body.classList.add('avon')}
+  };
+  bar.addEventListener('click',e=>{try{N&&N.haptic&&N.haptic()}catch(_){}
+    const a=bar.dataset.act||'';
+    if(e.target.closest('[data-brief]')||a==='brief'){showTab('start');setTimeout(()=>call('start','openBriefing'),80);return}
+    if(a.indexOf('tab:')===0){showTab(a.slice(4));return}
+    if(a==='woche:plan'){showTab('woche',{plan:true});return}
+    if(a.indexOf('start:')===0){showTab('start');const f=a.slice(6);setTimeout(()=>call('start',f),80);return}
+    if(a.indexOf('home:')===0){showTab('start');const f=a.slice(5);setTimeout(()=>call('start','modAct',f),80);return}
+    if(a){showTab('start');setTimeout(()=>call('start','modAct',a),80)}
+  });
+  addEventListener('resize',()=>{const kb=window.innerHeight<h0*.75;document.body.classList.toggle('kbup',kb);if(!kb)h0=Math.max(h0,window.innerHeight);avUpdate()});
+  setTimeout(avUpdate,1500);
+})();
+</script>
 </body>
 </html>
