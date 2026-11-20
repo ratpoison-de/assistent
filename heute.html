@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#B9D1EC">
+<title>Heute · Assistent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+/* Tagesansicht: ein ruhiges Fenster über See und Bergen. Daten kommen bei jedem Aufruf frisch aus dem Abgleich (GitHub). */
+:root{
+  --ink:#1C1C1E;--mute:#8A8A8E;--line:rgba(60,60,67,.12);--panel:rgba(118,118,128,.10);--win:rgba(255,255,255,.86);
+  --blue:#2F6FDE;--orange:#E8890C;--red:#D81E1E;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;--mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-family:var(--sans);color:var(--ink);background:#9DBCDD;-webkit-font-smoothing:antialiased;min-height:100vh;
+  padding:max(24px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(28px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));
+  display:flex;justify-content:center;align-items:flex-start}
+/* Landschaft: Himmel, Bergkette, See mit Spiegelung – selbst gezeichnet */
+.scene{position:fixed;inset:0;z-index:-1;overflow:hidden;background:linear-gradient(180deg,#9FC0E6 0%,#BCD3EE 28%,#D7E4F2 47%,#C9DAEC 52%,#9DBCDD 60%,#7FA5CC 78%,#6D97C1 100%)}
+.scene svg{position:absolute;left:0;top:0;width:100%;height:100%}
+.win{width:100%;max-width:700px;margin-top:clamp(0px,6vh,70px);background:var(--win);-webkit-backdrop-filter:blur(24px) saturate(1.4);backdrop-filter:blur(24px) saturate(1.4);
+  border-radius:16px;box-shadow:0 30px 80px -20px rgba(20,40,80,.45),0 0 0 .5px rgba(0,0,0,.08);overflow:hidden}
+.bar{display:flex;align-items:center;gap:8px;padding:10px 12px}
+.lights{display:flex;gap:7px;margin-right:6px}.lights i{width:12px;height:12px;border-radius:50%;display:block}
+.lights i:nth-child(1){background:#FF5F57}.lights i:nth-child(2){background:#FEBC2E}.lights i:nth-child(3){background:#D8D8D8}
+.tb{display:inline-flex;align-items:center;justify-content:center;height:30px;min-width:30px;padding:0 8px;border:0;border-radius:15px;background:rgba(255,255,255,.75);box-shadow:0 0 0 .5px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05);color:#333;font:inherit;font-size:13px;cursor:pointer}
+.tb.add{background:var(--blue);color:#fff;width:30px;padding:0}
+.tb:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.nav{display:inline-flex;align-items:center;height:30px;border-radius:15px;background:rgba(255,255,255,.75);box-shadow:0 0 0 .5px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05)}
+.nav button{height:30px;border:0;background:none;font:inherit;font-size:13px;color:#333;padding:0 10px;cursor:pointer}
+.nav .t{color:var(--mute);border-left:1px solid var(--line);border-right:1px solid var(--line);padding:0 12px}
+.nav .t.on{color:var(--blue);font-weight:600}
+.sp{flex:1}
+.body{padding:30px clamp(18px,8vw,64px) 40px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--mute);text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.eyebrow b{color:var(--blue)}
+.streak{margin-left:auto;font-size:12px;font-weight:600;color:#A0522D;background:rgba(232,137,12,.12);border-radius:8px;padding:3px 7px;letter-spacing:0;text-transform:none}
+h1{margin:6px 0 4px;font-size:clamp(24px,5.5vw,30px);font-weight:700;letter-spacing:-.02em;display:flex;align-items:baseline;gap:8px}
+h1 span{font-size:18px;color:var(--mute);font-weight:500;letter-spacing:.1em}
+.sum{font-size:13.5px;line-height:1.6;color:#3A3A3C}
+.sum .g{white-space:nowrap}
+.sum .ic{display:inline-grid;place-items:center;width:14px;height:14px;border-radius:3px;font-size:9px;color:#fff;vertical-align:-2px;margin-right:3px}
+.sum b{font-weight:600}
+.panel{margin-top:22px;background:var(--panel);border-radius:12px;padding:12px 18px 14px}
+.sec{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;font-weight:600;letter-spacing:.08em;color:#6E6E73;text-transform:uppercase;margin:4px 0 6px;cursor:pointer;user-select:none;background:none;border:0;width:100%;padding:0;font-family:inherit}
+.sec small{color:#AEAEB2;font-weight:600;margin-left:6px}
+.sec svg{transition:transform .2s}.sec.closed svg{transform:rotate(180deg)}
+.sec+.sec,.list+.sec{margin-top:16px}
+.list.closed{display:none}
+.earlier{font-size:15px;color:var(--mute);padding:3px 0}
+.ev{display:flex;align-items:baseline;gap:8px;padding:3px 0;font-size:15px;min-width:0}
+.ev .tm{font-family:var(--mono);font-size:14px;font-weight:600;flex:none;font-variant-numeric:tabular-nums}
+.ev .tm.ad{font-family:var(--sans);font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+.ev .dot{color:#C7C7CC;flex:none}
+.ev .ti{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ev.past{opacity:.45}
+.ev.now .ti{font-weight:600}
+.rm{display:flex;gap:10px;padding:6px 0}
+.rm .c{flex:none;width:18px;height:18px;border-radius:50%;border:1.6px solid currentColor;margin-top:1px}
+.rm .tx{min-width:0}
+.rm .tx div{font-size:15px;line-height:1.35}
+.rm .meta{font-size:11.5px;color:var(--mute);margin-top:2px;display:flex;flex-wrap:wrap;gap:10px}
+.rm .meta .tag{display:inline-flex;align-items:center;gap:4px}.rm .meta .tag::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
+.empty{font-size:14px;color:var(--mute);padding:4px 0}
+.note{margin:24px 0 12px;font-size:15px;line-height:1.5}
+.chk{display:flex;align-items:flex-start;gap:9px;padding:4px 0;font-size:14.5px;line-height:1.4}
+.chk i{flex:none;width:15px;height:15px;border-radius:4px;border:1.4px solid #C7C7CC;margin-top:2px;display:grid;place-items:center}
+.chk.on i{background:var(--blue);border-color:var(--blue)}
+.chk.on i::after{content:"";width:8px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+.chk.on span{color:#AEAEB2;text-decoration:line-through}
+.chk .hash{font-style:normal;background:rgba(216,30,160,.12);color:#A0187C;border-radius:6px;padding:0 5px;margin-left:4px;font-size:13px}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px clamp(18px,8vw,64px) 16px;border-top:1px solid var(--line);font-size:12px;color:var(--mute)}
+.foot button{border:0;background:none;color:var(--blue);font:inherit;cursor:pointer;padding:0}
+.setup{padding:4px 0}
+.setup p{font-size:14.5px;line-height:1.55;margin:10px 0;color:#3A3A3C;max-width:58ch}
+.setup input{width:100%;height:42px;border-radius:10px;border:1px solid #D1D1D6;padding:0 12px;font:inherit;font-size:15px;margin:6px 0 10px;background:#fff}
+.setup .row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{height:40px;padding:0 16px;border-radius:10px;border:0;background:var(--blue);color:#fff;font:inherit;font-weight:600;font-size:14px;cursor:pointer}
+.btn.ghost{background:rgba(118,118,128,.12);color:var(--ink)}
+.err{color:var(--red);font-size:13.5px}
+.skel{height:14px;border-radius:7px;background:linear-gradient(90deg,rgba(0,0,0,.06),rgba(0,0,0,.1),rgba(0,0,0,.06));margin:10px 0;animation:sk 1.2s infinite}
+@keyframes sk{0%{opacity:.6}50%{opacity:1}100%{opacity:.6}}
+@media (max-width:520px){.body{padding:22px 18px 30px}.bar .search{display:none}.win{margin-top:4px}}
+@media (prefers-reduced-motion:reduce){.skel{animation:none}.sec svg{transition:none}}
+</style>
+</head>
+<body>
+<div class="scene" aria-hidden="true">
+  <svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <linearGradient id="m1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6E93BD"/><stop offset="1" stop-color="#5F86B3"/></linearGradient>
+      <linearGradient id="m2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4E78A6"/><stop offset="1" stop-color="#406C9C"/></linearGradient>
+      <linearGradient id="fog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D7E4F2" stop-opacity="0"/><stop offset="1" stop-color="#D7E4F2" stop-opacity=".9"/></linearGradient>
+    </defs>
+    <path d="M0 140 Q 220 110 420 150 T 1000 120" stroke="#fff" stroke-opacity=".35" stroke-width="10" fill="none"/>
+    <path d="M120 230 Q 380 205 600 235" stroke="#fff" stroke-opacity=".22" stroke-width="7" fill="none"/>
+    <path d="M0 520 L0 430 C 70 400 120 370 170 380 C 230 392 260 450 330 455 C 380 458 420 470 470 500 L470 520 Z" fill="url(#m1)" opacity=".75"/>
+    <path d="M560 520 L600 470 C 650 430 700 380 760 360 C 820 340 880 380 930 395 C 960 404 985 420 1000 425 L1000 520 Z" fill="url(#m2)"/>
+    <path d="M0 470 L1000 470 L1000 525 L0 525 Z" fill="url(#fog)"/>
+    <path d="M0 525 L470 525 C 420 545 380 556 330 560 C 260 565 230 610 170 618 C 120 624 70 600 0 575 Z" fill="#7FA5CC" opacity=".5"/>
+    <path d="M560 525 L1000 525 L1000 610 C 985 615 960 625 930 630 C 880 640 820 670 760 660 C 700 650 650 600 600 570 Z" fill="#5E89B4" opacity=".55"/>
+    <g stroke="#fff" stroke-opacity=".18" stroke-width="2"><path d="M80 700h220M520 760h300M200 860h260M640 900h220"/></g>
+  </svg>
+</div>
+
+<main class="win" aria-live="polite">
+  <div class="bar">
+    <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
+    <button class="tb add" id="bAdd" aria-label="Im Assistenten öffnen" title="Im Assistenten öffnen"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+    <span class="nav"><button id="bPrev" aria-label="Vorheriger Tag">‹</button><button class="t" id="bToday">Heute</button><button id="bNext" aria-label="Nächster Tag">›</button></span>
+    <span class="sp"></span>
+    <button class="tb search" id="bReload" aria-label="Neu laden" title="Neu laden"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2.2" stroke-linecap="round"><path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v5h-5"/></svg></button>
+    <button class="tb" id="bCal" aria-label="Kalender im Assistenten" title="Kalender im Assistenten"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01"/></svg></button>
+  </div>
+  <div class="body" id="body">
+    <div class="eyebrow">Lädt …</div>
+    <div class="skel" style="width:46%;height:26px"></div><div class="skel" style="width:80%"></div>
+    <div class="panel"><div class="skel" style="width:60%"></div><div class="skel" style="width:72%"></div><div class="skel" style="width:52%"></div></div>
+  </div>
+  <div class="foot" id="foot"></div>
+</main>
+
+<script>
+(function(){
+"use strict";
+/* ---------- Grundlagen ---------- */
+const $=id=>document.getElementById(id);
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parseD=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const addS=(s,n)=>{const d=parseD(s);d.setDate(d.getDate()+n);return ymd(d)};
+const dd=(a,b)=>Math.round((parseD(b)-parseD(a))/864e5);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const WD=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+const MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const CATS={schule:'#2F6FDE',familie:'#2E9E5B',privat:'#8E4EC6',wichtig:'#D81E1E',geburtstag:'#E8890C',sonst:'#7A7A7A'};
+const CTX={schule:['Schule','#2F6FDE'],zuhause:['Zuhause','#2E9E5B'],telefon:['Telefon','#E8890C'],computer:['Computer','#00A3BF'],besorgung:['Besorgungen','#D8318A']};
+const CK='planer.sync.cfg',CACHE='planer.heute.cache';
+
+/* Zugang: derselbe Schlüssel wie im Assistenten im Browser (gleiche Adresse, gleicher Speicher). Er verlässt das Gerät nur Richtung GitHub. */
+function cfg(){let c={};try{c=JSON.parse(localStorage.getItem(CK)||'{}')||{}}catch(e){}return Object.assign({owner:'ratpoison-de',repo:'assistent-daten',dir:'assistent',api:'https://api.github.com'},c)}
+
+/* ---------- Kalender-Wiederholungen (wie im Assistenten) ---------- */
+function* iterStarts(ev,to){
+  const iv=Math.max(1,ev.interval||1),st=ev.start;
+  if(!ev.repeat||ev.repeat==='none'){if(st<=to)yield st;return}
+  const until=ev.until||'9999-12-31',d0=parseD(st);
+  for(let i=0,g=0;g<20000;g++,i++){
+    let s;
+    if(ev.repeat==='daily')s=addS(st,i*iv);
+    else if(ev.repeat==='weekly')s=addS(st,i*7*iv);
+    else if(ev.repeat==='weekly2')s=addS(st,i*14);
+    else if(ev.repeat==='monthly'){const d=new Date(d0.getFullYear(),d0.getMonth()+i*iv,1);if(d0.getDate()>new Date(d.getFullYear(),d.getMonth()+1,0).getDate())continue;d.setDate(d0.getDate());s=ymd(d)}
+    else if(ev.repeat==='yearly'){const d=new Date(d0.getFullYear()+i*iv,d0.getMonth(),d0.getDate());if(d.getMonth()!==d0.getMonth())continue;s=ymd(d)}
+    else return;
+    if(s>to||s>until)return;yield s;
+  }
+}
+function eventsOn(S,day){
+  const out=[];
+  for(const ev of ((S.kalender&&S.kalender.events)||[])){
+    if(!ev||!ev.start)continue;const len=Math.max(0,dd(ev.start,ev.end||ev.start)),ex=new Set(ev.ex||[]);
+    for(const s of iterStarts(ev,day)){if(ex.has(s)||addS(s,len)<day)continue;const i=dd(s,day);if(i<0||i>len)continue;
+      out.push({title:ev.title||'(ohne Titel)',allDay:!!ev.allDay||(len>0&&i>0&&i<len),tStart:i===0?ev.tStart:'',tEnd:i===len?ev.tEnd:'',color:CATS[ev.cat]||'#7A7A7A',loc:ev.loc})}
+  }
+  const g=S.google;
+  if(g&&g.events){const hid=new Set((g.hidden||[]).map(String)),cal={};for(const c of g.cals||[])cal[String(c.id)]=c;
+    for(const e of g.events){if(hid.has(String(e.cal))||e.start>day||e.end<day)continue;const len=Math.max(0,dd(e.start,e.end)),i=dd(e.start,day);
+      out.push({title:e.title||'(ohne Titel)',allDay:!!e.allDay||(len>0&&i>0&&i<len),tStart:i===0?e.tStart:'',tEnd:i===len?e.tEnd:'',color:e.color||(cal[String(e.cal)]&&cal[String(e.cal)].color)||'#4285F4',loc:e.loc})}}
+  const pin=S.pinnwand;
+  if(pin&&pin.boards)for(const b of pin.boards)for(const c of b.cards||[])if(c.type==='plan'&&!c.done&&c.date===day)out.push({title:c.title||'Termin',allDay:!c.time,tStart:c.time||'',tEnd:'',color:'#7A5AF8',loc:c.place});
+  out.sort((a,b)=>(a.allDay?'0':'1'+(a.tStart||'')).localeCompare(b.allDay?'0':'1'+(b.tStart||''))||a.title.localeCompare(b.title));
+  return out;
+}
+
+/* ---------- Daten holen: bei jedem Aufruf frisch von GitHub ---------- */
+let S=null,stamp=0,day=ymd(new Date()),closed={};
+try{closed=JSON.parse(localStorage.getItem('planer.heute.closed')||'{}')||{}}catch(e){}
+async function fetchData(){
+  const c=cfg();if(!c.token)return{need:true};
+  const path=(c.dir?c.dir.replace(/^\/|\/$/g,'')+'/':'')+'daten.json';
+  let r;try{r=await fetch(c.api.replace(/\/$/,'')+'/repos/'+encodeURIComponent(c.owner)+'/'+encodeURIComponent(c.repo)+'/contents/'+path.split('/').map(encodeURIComponent).join('/'),
+    {cache:'no-store',headers:{Authorization:'Bearer '+c.token,Accept:'application/vnd.github.raw+json','X-GitHub-Api-Version':'2022-11-28'}})}
+  catch(e){return{err:'offline'}}
+  if(r.status===401)return{err:'token'};
+  if(r.status===403)return{err:'rechte'};
+  if(r.status===404)return{err:'leer'};
+  if(!r.ok)return{err:'http'};
+  try{const j=await r.json();return{slots:j.slots||{},t:j.t||j.at||Date.now()}}catch(e){return{err:'format'}}
+}
+
+/* ---------- Darstellung ---------- */
+const ERR={offline:'Keine Verbindung. Gezeigt wird der zuletzt geladene Stand.',token:'Der Zugangsschlüssel wird von GitHub abgelehnt. Bitte neu eingeben.',rechte:'Der Zugangsschlüssel darf das Daten-Repo nicht lesen.',leer:'Im Daten-Repo liegt noch kein Stand. Synchronisiere einmal im Assistenten.',http:'GitHub antwortet gerade nicht. Später noch einmal versuchen.',format:'Der Stand auf GitHub ist nicht lesbar.'};
+function tasksFor(S,d){
+  const W=(S.woche&&S.woche.tasks)||[],today=ymd(new Date());
+  const open=W.filter(t=>!t.done&&t.date&&(t.date===d||(d===today&&t.date<d)));
+  open.sort((a,b)=>(b.prio?1:0)-(a.prio?1:0)||(a.date<b.date?-1:a.date>b.date?1:0)||(a.order||0)-(b.order||0));
+  const done=W.filter(t=>t.done&&t.doneAt&&ymd(new Date(t.doneAt))===d).sort((a,b)=>a.doneAt-b.doneAt);
+  return{open,done,overdue:open.filter(t=>t.date<d).length};
+}
+function streak(S){
+  const W=(S.woche&&S.woche.tasks)||[],days=new Set(W.filter(t=>t.doneAt).map(t=>ymd(new Date(t.doneAt))));
+  try{const lg=S.woche&&S.woche.log;if(Array.isArray(lg))for(const x of lg)if(x.at)days.add(ymd(new Date(x.at)))}catch(e){}
+  let n=0,d=ymd(new Date());if(!days.has(d))d=addS(d,-1);while(days.has(d)&&n<999){n++;d=addS(d,-1)}return n;
+}
+function mood(ev,tk,isToday){
+  const n=ev.length,o=tk.open.length,h=new Date().getHours(),late=ev.filter(e=>!e.allDay&&e.tStart&&e.tStart>='18:00').pop();
+  let a=n>=6?'Langer Tag':n>=3?'Gut gefüllter Tag':n?'Ruhiger Tag':'Freier Tag';
+  let b=o===0&&tk.done.length?'alles abgehakt':tk.done.length>=3?'gute Arbeit':o>=6?'eins nach dem anderen':'guter Tag';
+  let s=a+', '+b+'.';
+  if(late&&isToday&&h<20)s+=' '+late.title+' um '+late.tStart+'.';
+  else if(!isToday&&ev[0])s+=' Los geht es mit „'+ev[0].title+'“'+(ev[0].tStart?' um '+ev[0].tStart:'')+'.';
+  return s;
+}
+function render(info){
+  const body=$('body'),today=ymd(new Date()),isToday=day===today,now=new Date(),hm=pad(now.getHours())+':'+pad(now.getMinutes());
+  $('bToday').classList.toggle('on',isToday);
+  if(!S){body.innerHTML=setupHTML(info&&info.err);bindSetup();$('foot').innerHTML='';return}
+  const d=parseD(day),ev=eventsOn(S,day),tk=tasksFor(S,day);
+  const timed=ev.filter(e=>!e.allDay&&e.tStart),all=ev.filter(e=>e.allDay||!e.tStart);
+  const past=isToday?timed.filter(e=>(e.tEnd||e.tStart)<hm):[],rest=isToday?timed.filter(e=>(e.tEnd||e.tStart)>=hm):timed;
+  const next=isToday?rest.find(e=>e.tStart>=hm)||rest[0]:null,nowE=isToday?rest.find(e=>e.tStart<=hm&&(e.tEnd||e.tStart)>=hm):null;
+  const st=streak(S),rel=dd(today,day);
+  const lab=rel===0?'Heute':rel===1?'Morgen':rel===-1?'Gestern':'';
+  let h='<div class="eyebrow">'+WD[d.getDay()]+(lab?' <b>'+lab+'</b>':'')+(st>1?'<span class="streak" title="Tage in Folge mit erledigten Aufgaben">🔥 '+st+'</span>':'')+'</div>';
+  h+='<h1>'+d.getDate()+'. '+MON[d.getMonth()]+'<span>···</span></h1>';
+  const parts=[];
+  parts.push('<span class="g"><span class="ic" style="background:#D81E1E">▦</span><b>'+ev.length+(ev.length===1?' Termin':' Termine')+'</b>,</span>');
+  parts.push('<span class="g"><span class="ic" style="background:#2F6FDE">✓</span><b>'+tk.open.length+' '+(isToday?'heute fällig':'fällig')+'</b>'+(tk.overdue?' und':'.')+'</span>');
+  if(tk.overdue)parts.push('<span class="g"><span class="ic" style="background:#8B5A2B">●</span><b>'+tk.overdue+' überfällig.</b></span>');
+  if(next)parts.push('Als Nächstes: '+esc(next.title)+' um '+next.tStart+'.');
+  else if(nowE)parts.push('Gerade: '+esc(nowE.title)+'.');
+  h+='<div class="sum">'+parts.join(' ')+'</div>';
+  /* Termine */
+  h+='<div class="panel">';
+  const secH=(k,t,n)=>'<button class="sec'+(closed[k]?' closed':'')+'" data-k="'+k+'" aria-expanded="'+!closed[k]+'"><span>'+t+'<small>'+n+'</small></span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#AEAEB2" stroke-width="2.6" stroke-linecap="round"><path d="M6 15l6-6 6 6"/></svg></button>';
+  h+=secH('ev','Termine',ev.length)+'<div class="list'+(closed.ev?' closed':'')+'">';
+  if(!ev.length)h+='<div class="empty">Keine Termine.</div>';
+  for(const e of all)h+='<div class="ev"><span class="tm ad" style="color:'+e.color+'">ganztägig</span><span class="dot">·</span><span class="ti" style="color:'+e.color+'">'+esc(e.title)+'</span></div>';
+  if(past.length)h+='<div class="earlier">'+past.length+(past.length===1?' Termin':' Termine')+' vorbei</div>';
+  for(const e of rest)h+='<div class="ev'+(e===nowE?' now':'')+'"><span class="tm" style="color:'+e.color+'">'+e.tStart+'</span><span class="dot">·</span><span class="ti" style="color:'+e.color+'">'+esc(e.title)+(e.loc?' <span style="color:#AEAEB2">· '+esc(e.loc)+'</span>':'')+'</span></div>';
+  h+='</div>';
+  /* Aufgaben */
+  h+=secH('tk','Aufgaben',tk.open.length)+'<div class="list'+(closed.tk?' closed':'')+'">';
+  if(!tk.open.length)h+='<div class="empty">'+(tk.done.length?'Alles erledigt.':'Keine Aufgaben für diesen Tag.')+'</div>';
+  for(const t of tk.open){const cx=CTX[t.ctx],col=t.prio?'#D81E1E':cx?cx[1]:t.date<day?'#8B5A2B':'#E8890C',meta=[];
+    if(t.date<day)meta.push('<span style="color:#8B5A2B">überfällig seit '+parseD(t.date).getDate()+'.'+(parseD(t.date).getMonth()+1)+'.</span>');
+    if(t.prio)meta.push('<span class="tag" style="color:#D81E1E">Priorität</span>');
+    if(cx)meta.push('<span class="tag" style="color:'+cx[1]+'">'+cx[0]+'</span>');
+    const so=(t.steps||[]).filter(s=>!s.done).length;if(so)meta.push('<span>'+so+(so===1?' Schritt':' Schritte')+' offen</span>');
+    if(t.size)meta.push('<span>'+({S:'klein',M:'mittel',L:'groß'}[t.size]||t.size)+'</span>');
+    h+='<div class="rm"><span class="c" style="color:'+col+'"></span><span class="tx"><div>'+esc(t.text)+'</div>'+(meta.length?'<div class="meta">'+meta.join('')+'</div>':'')+'</span></div>'}
+  h+='</div></div>';
+  /* Tagesnotiz und Erledigtes */
+  h+='<p class="note">'+esc(mood(ev,tk,isToday))+'</p>';
+  for(const t of tk.done)h+='<div class="chk on"><i></i><span>'+esc(t.text).replace(/(#[\wäöüß-]+)/gi,'<em class="hash">$1</em>')+'</span></div>';
+  for(const t of tk.open.slice(0,3))h+='<div class="chk"><i></i><span>'+esc(t.text)+'</span></div>';
+  body.innerHTML=h;
+  body.querySelectorAll('.sec').forEach(b=>b.onclick=()=>{const k=b.dataset.k;closed[k]=!closed[k];try{localStorage.setItem('planer.heute.closed',JSON.stringify(closed))}catch(e){}render()});
+  const t=new Date(stamp||Date.now());
+  $('foot').innerHTML='<span>'+(info&&info.err?'<span class="err">'+esc(ERR[info.err]||'Fehler beim Laden.')+'</span>':'Stand '+pad(t.getHours())+':'+pad(t.getMinutes())+' Uhr · aus dem Assistenten')+'</span><span><button id="bOut">Zugang trennen</button></span>';
+  $('bOut').onclick=()=>{if(!confirmBox())return};
+}
+function confirmBox(){const f=$('foot');f.innerHTML='<span>Zugang auf diesem Gerät entfernen? Der Assistent im Browser verliert ihn ebenfalls.</span><span><button id="bY">Entfernen</button> · <button id="bN">Abbrechen</button></span>';
+  $('bY').onclick=()=>{try{const c=JSON.parse(localStorage.getItem(CK)||'{}');delete c.token;c.on=false;localStorage.setItem(CK,JSON.stringify(c));localStorage.removeItem(CACHE)}catch(e){}S=null;render()};
+  $('bN').onclick=()=>render();return false}
+function setupHTML(err){
+  return '<div class="eyebrow">Assistent</div><h1>Heute</h1><div class="setup">'+(err&&err!=='token'?'':'')+
+    '<p>Diese Seite zeigt deine Termine und Aufgaben des Tages aus dem Assistenten. Dafür braucht sie Lesezugriff auf dein Daten-Repo auf GitHub.</p>'+
+    '<p>Hast du den Assistenten in diesem Browser schon mit GitHub verbunden, lade die Seite einfach neu. Sonst gib hier denselben Zugangsschlüssel ein wie in der App. Er bleibt nur in diesem Browser gespeichert.</p>'+
+    (err?'<p class="err">'+esc(ERR[err]||'Fehler beim Laden.')+'</p>':'')+
+    '<label for="tok" style="font-size:13px;color:#6E6E73">Zugangsschlüssel (GitHub-Token)</label><input id="tok" type="password" autocomplete="off" placeholder="github_pat_…"><div class="row"><button class="btn" id="tokGo">Verbinden</button><a class="btn ghost" href="./" style="display:inline-flex;align-items:center;text-decoration:none">Assistent öffnen</a></div></div>';
+}
+function bindSetup(){const g=$('tokGo');if(!g)return;g.onclick=()=>{const v=$('tok').value.trim();if(!v)return;try{const c=JSON.parse(localStorage.getItem(CK)||'{}');c.token=v;localStorage.setItem(CK,JSON.stringify(c))}catch(e){}load()}}
+
+async function load(){
+  /* zuerst den zuletzt geladenen Stand zeigen, dann frisch holen */
+  if(!S){try{const c=JSON.parse(localStorage.getItem(CACHE)||'null');if(c&&c.slots&&cfg().token){S=c.slots;stamp=c.at;render()}}catch(e){}}
+  const r=await fetchData();
+  if(r.need){S=null;render();return}
+  if(r.err){if(r.err==='token'){S=null}render(r);return}
+  S=r.slots;stamp=Date.now();
+  try{localStorage.setItem(CACHE,JSON.stringify({at:stamp,slots:{woche:S.woche,kalender:S.kalender,google:S.google,pinnwand:S.pinnwand?{boards:(S.pinnwand.boards||[]).map(b=>({cards:(b.cards||[]).filter(c=>c.type==='plan')}))}:undefined}}))}catch(e){}
+  render();
+}
+$('bPrev').onclick=()=>{day=addS(day,-1);render()};
+$('bNext').onclick=()=>{day=addS(day,1);render()};
+$('bToday').onclick=()=>{day=ymd(new Date());render()};
+$('bReload').onclick=()=>load();
+$('bAdd').onclick=()=>{location.href='./'};
+$('bCal').onclick=()=>{location.href='./'};
+/* frisch bei jedem Aufruf und beim Zurückkehren in den Tab (kein Dauer-Abfragen) */
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(day<ymd(new Date()))day=ymd(new Date());load()}});
+load();
+})();
+</script>
+</body>
+</html>
