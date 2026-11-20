@@ -902,7 +902,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 6.7<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 6.8<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="brf" id="brf" role="dialog" aria-label="Briefing"></div>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
@@ -1517,7 +1517,7 @@ const STEPS=[
  [/einkauf|einkaufen/i,['Vorräte prüfen','Einkaufsliste schreiben','Einkaufen gehen','Einräumen']],
  [/elternbrief|brief|schreiben|text/i,['Stichpunkte sammeln','Ersten Entwurf schreiben','Gegenlesen','Abschicken oder drucken']]];
 const STEPS_DEF=['Ersten kleinen Schritt festlegen','Material bereitlegen','10 Minuten anfangen','Weitermachen','Zum Schluss prüfen'];
-function suggestSteps(t){for(const [re,l] of STEPS)if(re.test(t))return l;return STEPS_DEF}
+function suggestSteps(t){try{const k=P.KI&&P.KI.steps(t);if(k&&k.steps&&k.steps.length)return k.steps}catch(_){}for(const [re,l] of STEPS)if(re.test(t))return l;return STEPS_DEF}
 const ORD={S:0,M:1,L:2},NEXT={S:'M',M:'L',L:'S'};
 function estMin(s){try{return P.Fokus.minutes(s)}catch(_){return {S:10,M:20,L:55}[s]||10}}
 function estLabel(s){let l=null;try{l=P.Fokus.learned(s)}catch(_){}if(l)return'meist '+l+' Min';return s==='L'?'2 × 25 Min':'ca. '+estMin(s)+' Min'}

@@ -183,7 +183,10 @@ const TIPS=[
   'Alles, was dir durch den Kopf geht, gehört in den Eingang – geklärt wird später.',
   'Im Briefing siehst du Termine, Aufgaben, Mails und Wetter auf einer Seite.',
   'Termine stehen im Kalender, Aufgaben in der Woche, Ideen auf der Pinnwand.',
-  'Bei jedem Projekt hilft ein konkreter nächster Schritt. Je kleiner, desto besser.'];
+  'Bei jedem Projekt hilft ein konkreter nächster Schritt. Je kleiner, desto besser.',
+  'Tipp mich an und wähle „Frag mich etwas“: Schreib „Morgen 15 Uhr Zahnarzt“ – ich trage es ein.',
+  'Ich kann deinen Tag planen: Aufgaben kommen in die Lücken zwischen deinen Terminen.',
+  'Große Aufgabe? Sag „Zerlege …“ – ich mache kleine Schritte daraus.'];
 let tipI=Math.floor(Math.random()*TIPS.length);
 function tip(){tipI=(tipI+1)%TIPS.length;say(TIPS[tipI],'think',[['Noch ein Tipp',tip],['Danke!',()=>{setMood('happy',1500);hop()}]])}
 function intro(){
@@ -194,6 +197,7 @@ function menu(){
   const t=cur&&cur.t?cur.t:'Hallo! Wobei kann ich helfen?';
   const o=[];
   if(cur&&cur.s&&cur.act)o.push([cur.s.replace(/^▶\s*/,''),()=>runAct(cur.act)]);
+  if(window.KI){o.push(['Frag mich etwas ✨',()=>KI.open(lastArea||'start')]);if(!(cur&&cur.s&&/plan/i.test(cur.s)))o.push(['Plane meinen Tag',()=>KI.ask('Plane meinen Tag')])}
   o.push(['Briefing für heute',()=>runAct('brief')]);
   o.push(['Neue Aufgabe',()=>{showTab('start');setTimeout(()=>call('start','openAdd'),80)}]);
   o.push(['Gib mir einen Tipp',tip]);

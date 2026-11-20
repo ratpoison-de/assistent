@@ -191,7 +191,8 @@ html.dl .chip.on.k2{background:var(--red)!important}html.dl .chip.on.k1{backgrou
     <div class="eyebrow" id="eyebrow"></div>
     <h1>Meine Woche</h1>
   </div>
-  <button class="more" id="menu" aria-label="Einstellungen">
+  <button class="more" id="kiBtn" aria-label="KI-Assistent" title="KI: planen, zerlegen, eintragen"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M12 3.5l1.6 4.6 4.6 1.6-4.6 1.6L12 16l-1.6-4.7L5.8 9.7l4.6-1.6z"/><path d="M18.5 14.5l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"/></svg></button>
+  <button class="more" id="menu" aria-label="Einstellungen" style="margin-left:8px">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
   </button>
 </header>
@@ -914,12 +915,20 @@ window.completeStep=function(id,sid){const t=find(id);if(!t||!t.steps)return fal
 window.addTasks=function(list){let n=0;const bucket=bucketOf({date:today});for(const o of list||[]){if(!o||!o.text)continue;
   state.tasks.push({id:uid(),text:String(o.text).slice(0,300),date:o.date===null?null:(o.date||today),ctx:o.ctx||'',order:maxOrder(bucket)+1,done:false,repeat:'none',size:o.size||'',steps:(o.steps||[]).map(x=>({id:uid(),text:x,done:false}))});n++}
   state.tasks=state.tasks.filter(t=>!t.demo);save();render();return n};
+/* KI (ki.js in der Hülle): mehrere Aufgaben mit Datum, Kontext, Größe, Priorität und Schritten anlegen; Reihenfolge für heute setzen */
+window.kiAddTasks=function(list){const ids=[];for(const o of list||[]){if(!o||!o.text)continue;
+  const t={id:uid(),text:String(o.text).slice(0,300),date:o.date||null,ctx:o.ctx||'',done:false,repeat:REP[o.repeat]?o.repeat:'none',size:o.size||'',steps:(o.steps||[]).map(x=>({id:uid(),text:String(x).slice(0,200),done:false}))};
+  if(t.repeat!=='none'&&!t.date)t.date=today;t.order=maxOrder(bucketOf(t))+1;state.tasks.push(t);
+  if(o.prio){if(!t.date)setLevel(t,2);else if(inWeek(t))t.prio=true}ids.push(t.id)}
+  state.tasks=state.tasks.filter(t=>!t.demo);save();render();return ids};
+window.kiOrder=function(ids){(ids||[]).forEach((id,i)=>{const t=find(id);if(t)t.order=i});save();render();return true};
 window.togglePrio=function(id){const t=find(id);if(!t)return null;if(!t.prio&&!inWeek(t)){setLevel(t,2)}else{t.prio=!t.prio;save()}render();return t.prio};
 window.startPlanning=function(){startPlanning();return true};
 window.openList=function(k){openPane(+k||0);return true};
 window.onShow=function(){const r=localStorage.getItem('wochenstapel');if(r&&r!==JSON.stringify(state)){load();normalize()}render()};
 window.openTaskById=function(id){if(find(id))openTask(id)};
 
+$('#kiBtn').onclick=()=>{try{parent.KI&&parent.KI.open('woche')}catch(e){}};
 load();normalize();render();
 })();
 </script>

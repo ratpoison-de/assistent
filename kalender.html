@@ -784,6 +784,11 @@ window.importData=function(d){
   if(d.settings){for(const k of ['hol','fer','kw','cat'])if(k in d.settings)state.settings[k]=d.settings[k]}
   persist();render();return n;
 };
+/* KI (ki.js): Termine aus der Schnelleingabe anlegen – immer lokal, der Abgleich läuft über GitHub */
+window.addEvents=function(list){let n=0;for(const o of list||[]){if(!o||!o.title||!o.start)continue;
+  state.events.push({id:uid(),ex:[],title:String(o.title).slice(0,200),cat:CATS.some(c=>c.k===o.cat)?o.cat:'sonst',allDay:!!o.allDay,start:o.start,end:o.end||o.start,tStart:o.allDay?'':(o.tStart||''),tEnd:o.allDay?'':(o.tEnd||''),
+    repeat:['daily','weekly','monthly','yearly'].includes(o.repeat)?o.repeat:'none',interval:Math.max(1,o.interval||1),until:'',remind:typeof o.remind==='number'?o.remind:-1,loc:o.loc||'',note:o.note||''});n++}
+  if(n){persist();render()}return n};
 window.importICS=function(txt){
   const keys=new Set(state.events.map(e=>e.title+'|'+e.start+'|'+(e.tStart||'')));let n=0;
   for(const e of fromICS(txt)){const k=e.title+'|'+e.start+'|'+(e.tStart||'');if(keys.has(k))continue;keys.add(k);state.events.push(e);n++}
