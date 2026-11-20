@@ -360,29 +360,20 @@ window.onResumeApp=(function(f){let last=Date.now();return function(){const n=Da
 </script>
 <script src="launcher.js"></script>
 <script src="fokus.js"></script>
+<script src="buddy.js?v=67"></script>
 <script>
-/* Avatar-Leiste: Text und Figur liefert die Startseite. Kein eigener Zeitgeber – aktualisiert beim Bereichswechsel,
-   beim Zurückkehren und wenn die Startseite neu zeichnet; das DOM ändert sich nur bei neuem Text. */
+/* Begleiter-Figur (buddy.js) statt Avatar-Leiste: Text liefert der Moderator der Startseite.
+   Kein eigener Zeitgeber – aktualisiert beim Bereichswechsel, beim Zurückkehren und wenn die Startseite neu zeichnet. */
 (function(){
-  const bar=document.getElementById('avBar');if(!bar)return;let h0=window.innerHeight;
+  const bar=document.getElementById('avBar');if(bar)bar.hidden=true;document.body.classList.remove('avon');let h0=window.innerHeight;
   window.avUpdate=function(){
-    if(window.innerWidth>=900){bar.hidden=true;document.body.classList.remove('avon');return}
-    let r=null;try{r=call('start','modFor',active==='start'?'home':active)}catch(e){}
-    if(!r){if(!bar.hidden){bar.hidden=true;document.body.classList.remove('avon')}return}
-    bar.dataset.act=r.act||'';
-    if(bar.__h!==r.html){const first=!bar.__h;bar.innerHTML=r.html;bar.__h=r.html;if(!first){bar.classList.remove('mnew');void bar.offsetWidth;bar.classList.add('mnew')}}
-    if(bar.hidden){bar.hidden=false;document.body.classList.add('avon')}
+    const area=active==='start'?'home':active;
+    let r=null;try{r=call('start','modFor',area)}catch(e){}
+    try{window.buddyUpdate&&buddyUpdate(r,area)}catch(e){}
   };
-  bar.addEventListener('click',e=>{try{N&&N.haptic&&N.haptic()}catch(_){}
-    const a=bar.dataset.act||'';
-    if(e.target.closest('[data-brief]')||a==='brief'){showTab('start');setTimeout(()=>call('start','openBriefing'),80);return}
-    if(a.indexOf('tab:')===0){showTab(a.slice(4));return}
-    if(a==='woche:plan'){showTab('woche',{plan:true});return}
-    if(a.indexOf('start:')===0){showTab('start');const f=a.slice(6);setTimeout(()=>call('start',f),80);return}
-    if(a.indexOf('home:')===0){showTab('start');const f=a.slice(5);setTimeout(()=>call('start','modAct',f),80);return}
-    if(a){showTab('start');setTimeout(()=>call('start','modAct',a),80)}
-  });
-  addEventListener('resize',()=>{const kb=window.innerHeight<h0*.75;document.body.classList.toggle('kbup',kb);if(!kb)h0=Math.max(h0,window.innerHeight);avUpdate()});
+  const pn=window.playNote;
+  window.playNote=function(final,preview){let x;try{x=pn&&pn.apply(this,arguments)}catch(e){}if(!preview)try{window.buddyDone&&buddyDone(!!final)}catch(e){}return x};
+  addEventListener('resize',()=>{const kb=window.innerHeight<h0*.75;document.body.classList.toggle('kbup',kb);if(!kb)h0=Math.max(h0,window.innerHeight)});
   setTimeout(avUpdate,1500);
 })();
 </script>

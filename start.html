@@ -902,7 +902,7 @@ body.epon .scrim{z-index:79}
   <div id="green"></div>
   <section class="box" id="tasks"></section>
   <div class="cards" id="cards"></div>
-  <div class="foot">Assistent · Version 6.6<br>Entwickelt von Thorsten von Plotho-Kettner</div>
+  <div class="foot">Assistent · Version 6.7<br>Entwickelt von Thorsten von Plotho-Kettner</div>
 </main>
 <div class="brf" id="brf" role="dialog" aria-label="Briefing"></div>
 <section class="ep" id="ep" aria-label="Ruhiger Startbildschirm">
@@ -1420,6 +1420,7 @@ const sheet=$('sheet'),scrim=$('scrim');let onClose=null;
 function openSheet(h,cb){sheet.innerHTML='<div class="grab"></div>'+h;onClose=cb||null;scrim.classList.add('on');requestAnimationFrame(()=>sheet.classList.add('on'))}
 function closeSheet(){sheet.classList.remove('tall');const f=onClose;onClose=null;if(f)f();sheet.classList.remove('on');scrim.classList.remove('on');document.activeElement&&document.activeElement.blur()}
 scrim.onclick=closeSheet;
+window.openAdd=()=>openAdd();
 function openAdd(){
   openSheet('<div class="h-mid" style="margin:0 4px 6px">Neue Aufgabe</div><input class="field" id="nTask" placeholder="Was steht heute an?" enterkeyhint="done" autocomplete="off"><div class="chips"><button class="d-chip on" data-d="0">Heute</button><button class="d-chip" data-d="1">Morgen</button></div><button class="d-btn primary" id="nGo" style="width:100%">Hinzufügen</button>');
   let day=0;sheet.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{day=+b.dataset.d;sheet.querySelectorAll('[data-d]').forEach(x=>x.classList.toggle('on',x===b))});
@@ -1442,6 +1443,7 @@ $('bMenu').onclick=()=>{
   openSheet('<div class="h-mid" style="margin:0 4px 6px">Dein Assistent</div>'+
     (P&&P.Native&&P.Native.kbState?(()=>{const st=P.Native.kbState();return '<button class="opt" id="oKbd"><span><b>E-Paper-Tastatur (Test)</b><small>'+(st==='active'?'Aktiv · antippen, um die Tastatur zu wechseln':st==='enabled'?'Eingeschaltet · antippen und „Assistent-Tastatur“ wählen':'Schwarz-weiße QWERTZ-Tastatur · antippen zum Einschalten')+'</small></span></button>'})():'')+
     '<div class="lbl">So spreche ich dich an</div><input class="field" id="oName" value="'+esc(NAME)+'" maxlength="30">'+
+    '<div class="lbl">Assistent-Figur</div><div class="chips" id="oBud">'+[['-1','Aus'],['0','Klementine'],['1','Bit'],['2','Olli']].map(b=>'<button class="d-chip'+(String(P&&P.buddyKind?P.buddyKind():0)===b[0]?' on':'')+'" data-bud="'+b[0]+'">'+b[1]+'</button>').join('')+'</div>'+
     '<button class="opt" id="oSnd"><span><b>Töne beim Abhaken</b><small>Jede erledigte Aufgabe spielt den nächsten Ton</small></span><span class="sw'+(snd?' on':'')+'"></span></button>'+
     '<button class="opt" id="oRef"><span><b>Briefing aktualisieren</b><small>Holt Termine, Aufgaben, Mails und Wetter neu</small></span></button>'+
     '<button class="opt" id="oSync"><span><b>Synchronisation</b><small>'+syncLine()+'</small></span></button>'+
@@ -1457,6 +1459,7 @@ $('bMenu').onclick=()=>{
     (window.ASSISTENT_PLATFORM==='android'?'<button class="opt" id="oMig"><span><b>Daten aus alten Apps übernehmen</b><small>Wochenstapel, Mein Kalender, Pinnwand</small></span></button>':''),
     ()=>{const f=$('oName');if(f){const v=f.value.trim();if(v&&v!==NAME){NAME=v;try{localStorage.setItem('planer.name',v)}catch(e){}header()}}});
   sheet.classList.add('tall');sheet.scrollTop=0;
+  sheet.querySelectorAll('[data-bud]').forEach(b=>b.onclick=()=>{const k=+b.dataset.bud;try{P.buddySet(k)}catch(_){}sheet.querySelectorAll('[data-bud]').forEach(x=>x.classList.toggle('on',x===b));if(k>=0)try{P.buddyIntro()}catch(_){}});
   $('oSnd').onclick=()=>{snd=!snd;try{localStorage.setItem('planer.sound',snd?'1':'0')}catch(e){}$('oSnd').querySelector('.sw').classList.toggle('on',snd);if(snd)try{P.playNote&&P.playNote(false,true)}catch(e){}};
   $('oRef').onclick=()=>{closeSheet();try{P.call('wetter','refreshWeather')}catch(e){}D={};load()};
   if($('oNud')){const sv=c=>{try{localStorage.setItem('planer.nudge',JSON.stringify(c))}catch(_){}nudgeSync()};
@@ -1801,6 +1804,7 @@ function openRef(){
 const AVS=[{n:'Bob'},{n:'Dutt'},{n:'Locken'},{n:'Mütze'},{n:'Brille'}];
 function avIdx(){let i=0;try{i=+localStorage.getItem('planer.avatar')||0}catch(_){}return ((i%AVS.length)+AVS.length)%AVS.length}
 function avSVG(mood,i){
+  try{if(P&&P.buddySVG&&P.buddyKind()>=0)return P.buddySVG(mood)}catch(_){}
   const K='#111',L='stroke="'+K+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"',G='url(#avg'+i+')';
   /* Körnung: unregelmäßige weiße Pünktchen auf Schwarz */
   let dots='';const pts=[[3,4],[11,2],[17,9],[6,13],[14,15],[2,18],[19,19],[9,7]];for(const p of pts)dots+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r=".55" fill="#fff" opacity=".75"/>';
@@ -1892,7 +1896,7 @@ window.modFor=function(area){
     m={mood:mn<=1||rp>=60?'busy':code<=2?'happy':'calm',t:day+' '+mn+'–'+mx+'°'+(txt?', '+txt:'')+(rp>=20?' ('+rp+'% Regen)':'')+'. '+tip,s:'',act:''};
   }
   if(!m)return null;
-  return{html:'<span class="mav" data-brief aria-label="Briefing öffnen">'+avSVG(m.mood,avIdx())+'</span><span class="mbub"><span class="mt">'+esc(m.t)+'</span><span class="ms">'+esc(m.s)+'</span></span>',act:m.act};
+  return{html:'<span class="mav" data-brief aria-label="Briefing öffnen">'+avSVG(m.mood,avIdx())+'</span><span class="mbub"><span class="mt">'+esc(m.t)+'</span><span class="ms">'+esc(m.s)+'</span></span>',act:m.act,t:m.t,s:m.s,mood:m.mood};
 };
 window.openClarifyNow=()=>{try{openClarify()}catch(_){}};
 /* Aktionen des Moderators (aus der Leiste unten) */
@@ -1947,7 +1951,7 @@ function openBriefing(keep){
       (ev.length||past?'<div class="brl"><span>Termine</span><span>'+ev.length+(past?' · '+past+' vorbei':'')+'</span></div>'+(ev.length?ev.slice(0,ne).map(eRow).join('')+(ne<ev.length?'<div class="brm">+ '+(ev.length-ne)+(ev.length-ne===1?' weiterer Termin':' weitere Termine')+'</div>':''):'<div class="brm">Alle Termine für heute sind vorbei.</div>'):'')+
       '<div class="brl"><span>'+(low?'Klein anfangen':'Für dich heute')+'</span><span>'+tk.length+' offen</span></div>'+(tk.length?tk.slice(0,nt).map(tRow).join('')+(nt<tk.length?'<div class="brm">+ '+(tk.length-nt)+(tk.length-nt===1?' weitere Aufgabe':' weitere Aufgaben')+'</div>':''):'<div class="brm">Keine Aufgabe mehr offen.</div>')+'</div>';
     $('brX').onclick=closeBriefing;
-    $('brAv').onclick=()=>{let i=avIdx()+1;try{localStorage.setItem('planer.avatar',i%AVS.length)}catch(_){}try{P.Native&&P.Native.haptic()}catch(_){}openBriefing(true);toast('Dein Avatar: '+AVS[avIdx()].n)};
+    $('brAv').onclick=()=>{if(P&&P.buddyOn&&P.buddyKind()>=0){const k=(P.buddyKind()+1)%3;P.buddySet(k);openBriefing(true);toast('Dein Assistent: '+['Klementine','Bit','Olli'][k]);return}let i=avIdx()+1;try{localStorage.setItem('planer.avatar',i%AVS.length)}catch(_){}try{P.Native&&P.Native.haptic()}catch(_){}openBriefing(true);toast('Dein Avatar: '+AVS[avIdx()].n)};
     $('brB').onclick=e=>{const b=e.target.closest('[data-bok]');if(!b)return;const row=b.closest('.bri');row.classList.add('gone');b.classList.add('on');
       try{P.call('woche','completeTask',b.dataset.bok)}catch(_){}try{P.Native&&P.Native.haptic()}catch(_){}try{P.playNote&&P.playNote(false)}catch(_){}
       const av=$('brAv');av.className='brav m-proud hop';av.querySelector('.brfa').innerHTML=avSVG('proud',avIdx());
@@ -2637,7 +2641,7 @@ function epRender(){
   /* Kacheln; der Moderator sitzt direkt unter den drei Feldern (Priorität/Woche/Monat), über deren volle Breite */
   try{setH($('epF'),epTilesHTML())}catch(_){}
   try{let m=null;try{m=modMsg()}catch(_){}
-    const mw=$('epMw'),mh=m?'<button class="epm" id="epM" data-wide="1" data-act="'+m.act+'">'+modHTML(m)+'</button>':'';
+    const mw=$('epMw'),mh=m&&!(P&&P.buddyOn)?'<button class="epm" id="epM" data-wide="1" data-act="'+m.act+'">'+modHTML(m)+'</button>':'';
     const chg=mw.__h&&mw.__h!==mh&&m&&mw.__mt!==m.t;setH(mw,mh);
     if(m){mw.__mt=m.t;if(chg){const b=$('epM');if(b)b.classList.add('mnew')}}
   }catch(_){}

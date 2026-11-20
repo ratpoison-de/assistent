@@ -4,7 +4,7 @@
 (function(){
   var area=(document.currentScript&&document.currentScript.dataset.area)||'';
   var P=window.parent&&window.parent!==window?window.parent:null;
-  if(!P||!area)return;
+  if(!P||!area||P.buddyOn)return; /* ersetzt durch die Begleiter-Figur (buddy.js) */
   var css='.avm{display:flex;align-items:center;gap:10px;width:calc(100% - 28px);max-width:760px;margin:4px auto 10px;padding:8px 14px 8px 8px;border:0;border-radius:16px;background:#fff;box-shadow:0 1px 0 rgba(0,0,0,.05),0 2px 10px rgba(0,0,0,.04);text-align:left;font:inherit;color:#111;cursor:pointer;box-sizing:border-box}'+
     '.avm .mav{flex:none;width:52px;height:52px;border-radius:50%;overflow:hidden;background:#fff;border:2px solid #111}'+
     '.avm .mbub{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}'+
